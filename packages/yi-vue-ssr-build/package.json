@@ -1,6 +1,6 @@
 {
   "name": "yi-vue-ssr-build",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "yi-vue-ssr-build",
   "author": "yicheng <yicheng-me@qq.com>",
   "homepage": "",
@@ -30,6 +30,7 @@
     "@babel/runtime": "^7.9.6",
     "autoprefixer": "^9.7.6",
     "babel-loader": "^8.1.0",
+    "css-hot-loader": "^1.4.4",
     "css-loader": "^3.5.3",
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
