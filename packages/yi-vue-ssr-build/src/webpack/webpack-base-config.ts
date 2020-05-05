@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
+import babelLoader from 'babel-loader';
 import { BuildConfig } from '../build-config';
 
 
@@ -41,7 +42,6 @@ function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configura
         options: {
             // css中的 @import 只需要通过postcss-loader
             importLoaders: 1,
-            localIdentName: '[local]_[hash:base64:8]',
             sourceMap: !isProd,
         },
     });
@@ -99,7 +99,6 @@ function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configura
                 },
                 {
                     test: /\.js$/,
-                    // use: ['cache-loader', 'babel-loader'],
                     use: 'babel-loader',
                     exclude: /node_modules/,
                 },
