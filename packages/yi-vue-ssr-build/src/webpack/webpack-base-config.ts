@@ -85,7 +85,7 @@ function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configura
                 },
                 {
                     test: /\.(js|vue)$/,
-                    loader: path.resolve(__dirname, './loaders/condition-comment-loader.ts'),
+                    loader: path.resolve(__dirname, './loaders/condition-comment-loader'),
                     options: {
                         isProd,
                     },

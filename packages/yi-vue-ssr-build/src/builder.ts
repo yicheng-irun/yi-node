@@ -10,7 +10,7 @@ export class Builder {
     public config: BuildConfig = null;
 
     constructor () {
-        this.isProduction = process.argv.indexOf('production') >= 0;
+        this.isProduction = process.argv.indexOf('--production') >= 0;
         console.log(`build for production: ${this.isProduction}`);
         this.config = createBuildConfig({
             isProduction: this.isProduction,

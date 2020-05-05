@@ -11,7 +11,7 @@ lerna add dotenv @babel/core @babel/plugin-proposal-optional-chaining @babel/plu
 
 lerna add glob packages/yi-vue-ssr-build
 
-npx lerna add vue packages/yi-vue-ssr-build
+npx lerna add file-loader packages/yi-vue-ssr-build
 
 lerna add @types/cssnano @types/html-webpack-plugin @types/loader-utils @types/mini-css-extract-plugin @types/webpack @types/webpack-dev-server @types/webpack-merge --dev packages/yi-vue-ssr-build
 
