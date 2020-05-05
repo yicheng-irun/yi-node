@@ -1,5 +1,5 @@
 /node_module
 /dist
 
-packages/*/lib/*.js
-packages/*/lib/*.d.ts
+packages/*/lib/**/*.js
+packages/*/lib/**/*.d.ts
