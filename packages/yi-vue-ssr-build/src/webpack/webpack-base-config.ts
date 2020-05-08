@@ -6,7 +6,6 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
-import babelLoader from 'babel-loader';
 import { BuildConfig } from '../build-config';
 
 

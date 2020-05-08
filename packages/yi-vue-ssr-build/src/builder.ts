@@ -12,7 +12,10 @@ export class Builder {
     constructor () {
         this.isProduction = process.argv.indexOf('--production') >= 0;
         console.log(`build for production: ${this.isProduction}`);
-        this.config = createBuildConfig({
+    }
+
+    public async loadConfig (): Promise<void> {
+        this.config = await createBuildConfig({
             isProduction: this.isProduction,
         });
     }

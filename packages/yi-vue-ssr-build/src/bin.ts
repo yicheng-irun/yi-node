@@ -2,4 +2,4 @@
 
 import { startBuild } from './index';
 
-startBuild();
+startBuild().catch((e) => console.error(e));

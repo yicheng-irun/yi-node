@@ -1,6 +1,6 @@
 {
   "name": "yi-vue-ssr-middleware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "yicheng <yicheng-me@qq.com>",
   "homepage": "",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "koa": "^2.11.0",
+    "vue": "^2.6.11",
     "vue-server-renderer": "^2.6.11"
   },
   "devDependencies": {

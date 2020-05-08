@@ -20,7 +20,7 @@ function ssrHandler ({
 }: {
     /**
      * bundlePath  vue ssr bundle 的路径
-     * 通常情况下，配合yi-vue-ssr-builder,此值应该设置为 dist/client-bundle
+     * 通常情况下，配合yi-vue-ssr-builder,此值应该设置为 dist/server-bundle
      */
     bundlePath: string;
 
