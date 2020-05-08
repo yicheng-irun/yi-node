@@ -21,6 +21,9 @@ npx lerna add @types/vue-server-renderer --dev packages/yi-vue-ssr-build
 
 npx lerna add typescript
 
+
+npx lerna add koa packages/yi-vue-ssr-middleware
+
 ```
 
 
