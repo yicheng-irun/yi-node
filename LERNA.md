@@ -34,3 +34,7 @@ npx lerna add koa packages/yi-vue-ssr-middleware
 npx lerna publish packages/yi-vue-ssr-build
 
 ```
+
+
+
+# yi-admin

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <title>{% block title %}{% raw %}{{ ssrParams.title }}{% endraw %}{% endblock %}</title>
+    {% block header %}{% endblock %}
+</head>
+<body>
+    {% block body %}
+    <!--vue-ssr-outlet-->
+    {% endblock %}
+    <script>var _SSR_PAGE_="{% raw %}{{pagePath}}{% endraw %}";</script>
+    {% block footer %}{% endblock %}
+</body>
+</html>
