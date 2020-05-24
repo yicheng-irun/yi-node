@@ -1,7 +1,7 @@
 import koaSSRHandler from './koa-middleware';
 
-export const vueSSRKowMiddleware = koaSSRHandler;
+export const vueSSRKoaMiddleware = koaSSRHandler;
 
 export default {
-    vueSSRKowMiddleware,
+    vueSSRKoaMiddleware,
 };
