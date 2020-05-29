@@ -39,5 +39,6 @@ export default function getConfig (buildConfig: BuildConfig): webpack.Configurat
         target: 'node',
         watch: !buildConfig.isProduction,
     });
-    return config;
+
+    return buildConfig.webpack.serverConfigProcess(config, buildConfig);
 }

@@ -14,7 +14,7 @@ import { BuildConfig } from '../build-config';
  * @param chunks
  * @param buildConfig
  */
-function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configuration {
+export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack.Configuration {
     const isProd = buildConfig.isProduction;
 
     const PostCSSLoader = (): webpack.RuleSetUseItem => ({
@@ -138,23 +138,14 @@ function getConfig (chunks: string, buildConfig: BuildConfig): webpack.Configura
                     console.info(`${chunks} 构建就绪`);
                 }
             }),
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css',
+            }),
         ],
     };
 
-    return config;
-}
-
-
-export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack.Configuration {
-    const config = getConfig(chunks, buildConfig);
-
-    // 使页面的顶部有vue ssr预渲染的style标签
-    config.plugins.push(new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css',
-    }));
-
-    return config;
+    return buildConfig.webpack.baseConfigProcess(config, buildConfig, chunks);
 }
 
 

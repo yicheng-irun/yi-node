@@ -38,6 +38,7 @@ export interface BuildConfig {
  * 获取构建配置
  * @param param0
  */
-export default function createBuildConfig({ isProduction, }?: {
+export default function createBuildConfig({ isProduction, ssrBuildConfigFile, }: {
     isProduction?: boolean;
+    ssrBuildConfigFile: string;
 }): Promise<BuildConfig>;

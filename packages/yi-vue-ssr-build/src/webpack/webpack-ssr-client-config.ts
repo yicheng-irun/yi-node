@@ -76,5 +76,5 @@ export default function getConfig (buildConfig: BuildConfig): webpack.Configurat
         },
     };
 
-    return config;
+    return buildConfig.webpack.clientConfigProcess(config, buildConfig);
 }

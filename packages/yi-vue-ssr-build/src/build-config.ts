@@ -54,8 +54,6 @@ export interface BuildConfig {
 
 const projectRootPath = process.cwd();
 
-const projectConfigFile = path.join(projectRootPath, 'yi-vue-ssr-config.js');
-
 const defaultConfigJSCode = `// 感谢使用yi-vue-ssr-build工具
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
@@ -123,13 +121,15 @@ module.exports = {
 `;
 
 
-async function getUserBuildConfig (): Promise<UserConfig> {
+async function getUserBuildConfig (ssrBuildConfigFile: string): Promise<UserConfig> {
+    const configFile = path.resolve(projectRootPath, ssrBuildConfigFile);
+
     // 不存在则创建配置文件
-    if (!fs.existsSync(projectConfigFile)) {
-        fs.writeFileSync(projectConfigFile, defaultConfigJSCode);
+    if (!fs.existsSync(configFile)) {
+        fs.writeFileSync(configFile, defaultConfigJSCode);
     }
 
-    const config: UserConfig = await import(projectConfigFile);
+    const config: UserConfig = await import(configFile);
     return config;
 }
 
@@ -139,10 +139,12 @@ async function getUserBuildConfig (): Promise<UserConfig> {
  */
 export default async function createBuildConfig ({
     isProduction = false,
+    ssrBuildConfigFile,
 }: {
     isProduction?: boolean;
-} = {}): Promise<BuildConfig> {
-    const userConfig = await getUserBuildConfig();
+    ssrBuildConfigFile: string;
+}): Promise<BuildConfig> {
+    const userConfig = await getUserBuildConfig(ssrBuildConfigFile);
 
     const projectPath = userConfig.projectPath || projectRootPath;
 
