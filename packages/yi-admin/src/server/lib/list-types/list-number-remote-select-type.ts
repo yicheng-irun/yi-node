@@ -1,6 +1,6 @@
-import ListBaseType, { ListBaseTypeConfig } from './list-base-type';
+import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
 
-export default class ListNumberRemoteSelectType extends ListBaseType {
+export class ListNumberRemoteSelectType extends ListBaseType {
    /**
     * 前端的组件名称
     */

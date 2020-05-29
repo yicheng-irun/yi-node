@@ -2,19 +2,20 @@ import {
    Model, Document, SchemaTypeOpts, SchemaType,
 } from 'mongoose';
 import { Context } from 'koa';
-import ModelAdminBase, {
+import {
+   ModelAdminBase,
    ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody,
 } from './model-admin-base';
-import EditBaseType from './edit-types/edit-base-type';
-import EditStringType from './edit-types/edit-string-type';
-import EditStringEnumType from './edit-types/edit-string-enum-type';
-import EditNumberType from './edit-types/edit-number-type';
-import EditNumberEnumType from './edit-types/edit-number-enum-type';
-import EditBooleanType from './edit-types/edit-boolean-type';
-import EditDateTimeType from './edit-types/edit-date-time-type';
-import ListBaseType from './list-types/list-base-type';
-import ListBooleanType from './list-types/list-boolean-type';
-import ModelAdminListAction, { ListActionResult } from './model-admin-list-action';
+import { EditBaseType } from './edit-types/edit-base-type';
+import { EditStringType } from './edit-types/edit-string-type';
+import { EditStringEnumType } from './edit-types/edit-string-enum-type';
+import { EditNumberType } from './edit-types/edit-number-type';
+import { EditNumberEnumType } from './edit-types/edit-number-enum-type';
+import { EditBooleanType } from './edit-types/edit-boolean-type';
+import { EditDateTimeType } from './edit-types/edit-date-time-type';
+import { ListBaseType } from './list-types/list-base-type';
+import { ListBooleanType } from './list-types/list-boolean-type';
+import { ListActionResult, ModelAdminListAction } from './model-admin-list-action';
 
 /**
  * 映射mongoose的默认类型的图
@@ -104,7 +105,7 @@ const INSTANCE_LIST_TYPE_MAP: {
    },
 };
 
-export default class MongooseModelAdmin extends ModelAdminBase {
+export class MongooseModelAdmin extends ModelAdminBase {
    public model: Model<Document, {}>;
 
    constructor (options: ModelAdminBaseParams & {

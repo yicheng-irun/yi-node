@@ -6,7 +6,7 @@ export interface ListBaseTypeConfig {
    fieldNameAlias?: string;
 }
 
-export default class ListBaseType {
+export class ListBaseType {
    /**
     * 前端的组件名称
     */

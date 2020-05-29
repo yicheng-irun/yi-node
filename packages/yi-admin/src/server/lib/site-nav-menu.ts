@@ -1,5 +1,5 @@
 
-export default class SiteNavMenu {
+export class SiteNavMenu {
    /**
     * 菜单名称
     */

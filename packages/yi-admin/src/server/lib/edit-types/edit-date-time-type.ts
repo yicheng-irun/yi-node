@@ -1,6 +1,6 @@
-import EditBaseType, { EditBaseComponentConfig } from './edit-base-type';
+import { EditBaseType, EditBaseComponentConfig } from './edit-base-type';
 
-export default class EditDateTimeType extends EditBaseType {
+export class EditDateTimeType extends EditBaseType {
    /**
     * 前端的组件名称
     */

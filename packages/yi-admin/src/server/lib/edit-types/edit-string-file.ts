@@ -1,8 +1,8 @@
 import { Context } from 'koa';
-import { unlinkSync, fstat, existsSync } from 'fs';
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { unlinkSync, existsSync } from 'fs';
+import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
-export default class EditStringFileType extends EditBaseType {
+export class EditStringFileType extends EditBaseType {
    /**
     * 前端的组件名称
     */

@@ -38,3 +38,9 @@ npx lerna publish packages/yi-vue-ssr-build
 
 
 # yi-admin
+
+```
+
+npx lerna add babel-eslint --dev packages/yi-admin
+
+```

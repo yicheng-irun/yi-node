@@ -1,6 +1,6 @@
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 
-export default class EditStringType extends EditBaseType {
+export class EditStringType extends EditBaseType {
    /**
     * 前端的组件名称
     */

@@ -3,17 +3,17 @@ import { Context, Next } from 'koa';
 import koaBody from 'koa-body';
 import { vueSSRKoaMiddleware } from 'yi-vue-ssr-middleware';
 import { resolve } from 'path';
-import ModelAdminBase from './model-admin-base';
-import EditBaseType from './edit-types/edit-base-type';
-import ModelAdminListAction from './model-admin-list-action';
-import SiteNavMenu from './site-nav-menu';
-import ListBaseType from './list-types/list-base-type';
+import { ModelAdminBase } from './model-admin-base';
+import { EditBaseType } from './edit-types/edit-base-type';
+import { ModelAdminListAction } from './model-admin-list-action';
+import { SiteNavMenu } from './site-nav-menu';
+import { ListBaseType } from './list-types/list-base-type';
 import { EditTypes, ListTypes } from './types';
 
 /**
  * admin站点
  */
-export default class YiAdmin {
+export class YiAdmin {
    /**
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常或者返回false

@@ -24,7 +24,7 @@ export interface EditBaseComponentConfig {
    helpText: string;
 }
 
-export default class EditBaseType {
+export class EditBaseType {
    /**
     * 前端的组件名称
     */

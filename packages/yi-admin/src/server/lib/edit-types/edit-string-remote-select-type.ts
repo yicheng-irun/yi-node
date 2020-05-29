@@ -1,6 +1,6 @@
-import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
-import ListStringRemoteSelectType from '../list-types/list-string-remote-select-type';
-import ListBaseType from '../list-types/list-base-type';
+import { EditBaseType, EditBaseTypeConfig } from './edit-base-type';
+import { ListStringRemoteSelectType } from '../list-types/list-string-remote-select-type';
+import { ListBaseType } from '../list-types/list-base-type';
 
 export interface EditStringRemoteSelectTypeParam {
    /**
@@ -19,7 +19,7 @@ export interface EditStringRemoteSelectTypeParam {
    })[]>;
 }
 
-export default class EditStringRemoteSelectType extends EditBaseType {
+export class EditStringRemoteSelectType extends EditBaseType {
    /**
     * 前端的组件名称
     */

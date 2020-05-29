@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { Context, Next } from 'koa';
-import EditBaseType from './edit-types/edit-base-type';
-import ListBaseType from './list-types/list-base-type';
-import ModelAdminListAction from './model-admin-list-action';
+import { EditBaseType } from './edit-types/edit-base-type';
+import { ListBaseType } from './list-types/list-base-type';
+import { ModelAdminListAction } from './model-admin-list-action';
 
 export interface ModelAdminBaseParams {
    /**
@@ -64,7 +64,7 @@ export interface DataListResponseBody {
    dataList: ModelDataItem[];
 }
 
-export default class ModelAdminBase {
+export class ModelAdminBase {
    /**
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常或者返回false

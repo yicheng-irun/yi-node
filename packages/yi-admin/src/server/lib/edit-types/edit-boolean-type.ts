@@ -1,8 +1,8 @@
-import EditBaseType from './edit-base-type';
-import ListBaseType from '../list-types/list-base-type';
-import ListBooleanType from '../list-types/list-boolean-type';
+import { EditBaseType } from './edit-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
+import { ListBooleanType } from '../list-types/list-boolean-type';
 
-export default class EditBooleanType extends EditBaseType {
+export class EditBooleanType extends EditBaseType {
    /**
     * 前端的组件名称
     */
