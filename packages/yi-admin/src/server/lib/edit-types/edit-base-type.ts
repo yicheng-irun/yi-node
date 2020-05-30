@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import ListBaseType from '../list-types/list-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
 
 export interface EditBaseTypeConfig {
    required?: boolean;

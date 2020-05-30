@@ -1,5 +1,5 @@
 <template>
-   <div
+   <no-ssr
       v-loading="state.loading"
       class="table-view"
    >
@@ -175,7 +175,7 @@
             />
          </div>
       </div>
-   </div>
+   </no-ssr>
 </template>
 
 <script>

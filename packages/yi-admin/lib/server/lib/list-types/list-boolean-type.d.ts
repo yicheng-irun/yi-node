@@ -1,5 +1,5 @@
-import ListBaseType from './list-base-type';
-export default class ListBooleanType extends ListBaseType {
+import { ListBaseType } from './list-base-type';
+export declare class ListBooleanType extends ListBaseType {
     /**
      * 前端的组件名称
      */

@@ -1,6 +1,6 @@
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
-import ListBaseType from '../list-types/list-base-type';
-export default class EditNumberEnumType extends EditBaseType {
+import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
+export declare class EditNumberEnumType extends EditBaseType {
     /**
      * 前端的组件名称
      */

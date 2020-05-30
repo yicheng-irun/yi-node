@@ -1,5 +1,5 @@
-import ListBaseType, { ListBaseTypeConfig } from './list-base-type';
-export default class ListStringEnumType extends ListBaseType {
+import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
+export declare class ListStringEnumType extends ListBaseType {
     /**
      * 前端的组件名称
      */

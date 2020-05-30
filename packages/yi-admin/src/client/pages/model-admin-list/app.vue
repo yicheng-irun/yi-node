@@ -1,9 +1,8 @@
 <template>
    <div
       id="app"
-      :style="{ opacity, }"
    >
-      <div class="breadcrumb">
+      <no-ssr class="breadcrumb">
          <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '../../' }">
                <a
@@ -13,7 +12,7 @@
             </el-breadcrumb-item>
             <el-breadcrumb-item>{{ state.modelInfo.title || state.modelInfo.name }} 管理</el-breadcrumb-item>
          </el-breadcrumb>
-      </div>
+      </no-ssr>
       <TableView />
       <pre v-text="JSON.stringify(state, null, '  ')" />
    </div>
@@ -37,7 +36,6 @@ export default {
    },
    data () {
       return {
-         opacity: 0,
       };
    },
    computed: {
@@ -46,7 +44,6 @@ export default {
       },
    },
    mounted () {
-      this.opacity = 1;
    },
 };
 </script>

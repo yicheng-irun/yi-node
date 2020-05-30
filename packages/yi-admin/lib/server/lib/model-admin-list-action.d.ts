@@ -16,7 +16,7 @@ export declare type ButtonType = '' | 'primary' | 'success' | 'info' | 'warning'
 /**
  * 列表页的用户动作类
  */
-export default class ModelAdminListAction {
+export declare class ModelAdminListAction {
     constructor(config: {
         /**
          * 动作名称在每一个model中应当是唯一的，两个对象拥有相同的actionName时，第一个会被执行，后面的不会被执行

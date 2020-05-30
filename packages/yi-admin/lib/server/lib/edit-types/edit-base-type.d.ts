@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import ListBaseType from '../list-types/list-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
 export interface EditBaseTypeConfig {
     required?: boolean;
     /**
@@ -18,7 +18,7 @@ export interface EditBaseComponentConfig {
     required: boolean;
     helpText: string;
 }
-export default class EditBaseType {
+export declare class EditBaseType {
     /**
      * 前端的组件名称
      */

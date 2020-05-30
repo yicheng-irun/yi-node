@@ -2,7 +2,7 @@
  * 用于 EditStringFileType中的本地文件 fileWrite
  * @param param0
  */
-declare function getFileWriter({ folder, baseUploadsFolder, baseUrlPath, }?: {
+export declare function getFileWriter({ folder, baseUploadsFolder, baseUrlPath, }?: {
     folder?: string;
     baseUploadsFolder?: string;
     baseUrlPath?: string;
@@ -16,7 +16,3 @@ declare function getFileWriter({ folder, baseUploadsFolder, baseUrlPath, }?: {
 }) => Promise<{
     url: string;
 }>;
-declare const _default: {
-    getFileWriter: typeof getFileWriter;
-};
-export default _default;

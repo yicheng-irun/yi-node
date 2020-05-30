@@ -1,6 +1,6 @@
 <template>
    <div id="app">
-      <div class="breadcrumb">
+      <no-ssr class="breadcrumb">
          <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '../../' }">
                <a
@@ -18,7 +18,7 @@
             </el-breadcrumb-item>
             <el-breadcrumb-item>{{ state.modelInfo.title || state.modelInfo.name }} {{ state.editId ? '编辑' : '新增' }}</el-breadcrumb-item>
          </el-breadcrumb>
-      </div>
+      </no-ssr>
       <edit-form
          :edit-id="state.editId"
          :edit-form-fields="state.editFormFields"

@@ -1,6 +1,6 @@
-import EditBaseType, { EditBaseTypeConfig } from './edit-base-type';
-import ListBaseType from '../list-types/list-base-type';
-export default class EditNumberRemoteSelectType extends EditBaseType {
+import { EditBaseType, EditBaseTypeConfig } from './edit-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
+export declare class EditNumberRemoteSelectType extends EditBaseType {
     /**
      * 前端的组件名称
      */

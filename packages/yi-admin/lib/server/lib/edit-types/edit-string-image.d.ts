@@ -1,7 +1,7 @@
 import { EditBaseComponentConfig } from './edit-base-type';
-import EditStringFileType from './edit-string-file';
-import ListBaseType from '../list-types/list-base-type';
-export default class EditStringImageType extends EditStringFileType {
+import { EditStringFileType } from './edit-string-file';
+import { ListBaseType } from '../list-types/list-base-type';
+export declare class EditStringImageType extends EditStringFileType {
     /**
      * 前端的组件名称
      */

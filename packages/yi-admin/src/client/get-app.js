@@ -2,10 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import runtime from './lib/runtime';
 import pages from './pages';
+import NoSSR from './comps/no-ssr.vue';
 
 import './comps/layout.styl';
 
 Vue.use(Vuex);
+Vue.component('NoSsr', NoSSR);
 
 export default async function getApp () {
    const { pagePath } = runtime;

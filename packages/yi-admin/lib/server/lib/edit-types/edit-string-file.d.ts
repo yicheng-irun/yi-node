@@ -1,6 +1,7 @@
 import { Context } from 'koa';
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
-export default class EditStringFileType extends EditBaseType {
+import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { getFileWriter } from '../../tools/file-writer';
+export declare class EditStringFileType extends EditBaseType {
     /**
      * 前端的组件名称
      */
@@ -52,4 +53,5 @@ export default class EditStringFileType extends EditBaseType {
     action(actionName: string, actionData: any, ctx: Context): Promise<{
         url: string;
     }>;
+    static getFileWriter: typeof getFileWriter;
 }

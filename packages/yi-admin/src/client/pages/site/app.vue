@@ -23,18 +23,20 @@
             class="ya-left-block"
             :class="isCollapse ? 'collapse-style' : ''"
          >
-            <el-menu
-               v-if="siteMenu && siteMenu.childrens"
-               :collapse="isCollapse"
-            >
-               <menu-tree
-                  v-for="(item, index) in siteMenu.childrens"
-                  :key="index"
-                  :site-menu="item"
-                  :index="`${index}`"
-                  :get-self-compnent="getSelfCompnent"
-               />
-            </el-menu>
+            <no-ssr>
+               <el-menu
+                  v-if="siteMenu && siteMenu.childrens"
+                  :collapse="isCollapse"
+               >
+                  <menu-tree
+                     v-for="(item, index) in siteMenu.childrens"
+                     :key="index"
+                     :site-menu="item"
+                     :index="`${index}`"
+                     :get-self-compnent="getSelfCompnent"
+                  />
+               </el-menu>
+            </no-ssr>
          </div>
          <div
             class="ya-right-block"
@@ -77,6 +79,9 @@ export default {
       siteMenu () {
          return this.state.siteMenu;
       },
+   },
+   mounted () {
+      console.log(22233);
    },
    methods: {
       getSelfCompnent () {

@@ -1,9 +1,9 @@
 import { Model, Document } from 'mongoose';
 import { Context } from 'koa';
-import ModelAdminBase, { ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody } from './model-admin-base';
-import EditBaseType from './edit-types/edit-base-type';
-import ListBaseType from './list-types/list-base-type';
-export default class MongooseModelAdmin extends ModelAdminBase {
+import { ModelAdminBase, ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody } from './model-admin-base';
+import { EditBaseType } from './edit-types/edit-base-type';
+import { ListBaseType } from './list-types/list-base-type';
+export declare class MongooseModelAdmin extends ModelAdminBase {
     model: Model<Document, {}>;
     constructor(options: ModelAdminBaseParams & {
         model: Model<Document, {}>;

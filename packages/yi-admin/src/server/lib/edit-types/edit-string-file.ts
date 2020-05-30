@@ -1,6 +1,7 @@
 import { Context } from 'koa';
 import { unlinkSync, existsSync } from 'fs';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { getFileWriter } from '../../tools/file-writer';
 
 export class EditStringFileType extends EditBaseType {
    /**
@@ -100,4 +101,6 @@ export class EditStringFileType extends EditBaseType {
       }
       throw new Error(`接收到非法actionName ${actionName}`);
    }
+
+   static getFileWriter = getFileWriter
 }

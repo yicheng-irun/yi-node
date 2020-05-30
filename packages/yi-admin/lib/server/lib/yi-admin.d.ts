@@ -1,14 +1,14 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
-import ModelAdminBase from './model-admin-base';
-import EditBaseType from './edit-types/edit-base-type';
-import SiteNavMenu from './site-nav-menu';
-import ListBaseType from './list-types/list-base-type';
+import { ModelAdminBase } from './model-admin-base';
+import { EditBaseType } from './edit-types/edit-base-type';
+import { SiteNavMenu } from './site-nav-menu';
+import { ListBaseType } from './list-types/list-base-type';
 /**
  * admin站点
  */
-export default class YiAdmin {
+export declare class YiAdmin {
     /**
      * 判断用户是否有权限
      * 如果没有权限，直接在里侧抛出异常或者返回false
@@ -47,26 +47,26 @@ export default class YiAdmin {
     }): void;
     static EditTypes: {
         EditBaseType: typeof EditBaseType;
-        EditBooleanType: typeof import("./edit-types/edit-boolean-type").default;
-        EditDateTimeType: typeof import("./edit-types/edit-date-time-type").default;
-        EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").default;
-        EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").default;
-        EditNumberType: typeof import("./edit-types/edit-number-type").default;
-        EditStringColorType: typeof import("./edit-types/edit-string-color-type").default;
-        EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").default;
-        EditStringFileType: typeof import("./edit-types/edit-string-file").default;
-        EditStringImageType: typeof import("./edit-types/edit-string-image").default;
-        EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").default;
-        EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").default;
-        EditStringType: typeof import("./edit-types/edit-string-type").default;
+        EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;
+        EditDateTimeType: typeof import("./edit-types/edit-date-time-type").EditDateTimeType;
+        EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").EditNumberEnumType;
+        EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").EditNumberRemoteSelectType;
+        EditNumberType: typeof import("./edit-types/edit-number-type").EditNumberType;
+        EditStringColorType: typeof import("./edit-types/edit-string-color-type").EditStringColorType;
+        EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").EditStringEnumType;
+        EditStringFileType: typeof import("./edit-types/edit-string-file").EditStringFileType;
+        EditStringImageType: typeof import("./edit-types/edit-string-image").EditStringImageType;
+        EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").EditStringRemoteSelectType;
+        EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").EditStringTextareaType;
+        EditStringType: typeof import("./edit-types/edit-string-type").EditStringType;
     };
     static ListTypes: {
         ListBaseType: typeof ListBaseType;
-        ListBooleanType: typeof import("./list-types/list-boolean-type").default;
-        ListNumberEnumType: typeof import("./list-types/list-number-enum-type").default;
-        ListNumberRemoteSelectType: typeof import("./list-types/list-number-remote-select-type").default;
-        ListStringEnumType: typeof import("./list-types/list-string-enum-type").default;
-        ListStringImageType: typeof import("./list-types/list-string-image-type").default;
-        ListStringRemoteSelectType: typeof import("./list-types/list-string-remote-select-type").default;
+        ListBooleanType: typeof import("./list-types/list-boolean-type").ListBooleanType;
+        ListNumberEnumType: typeof import("./list-types/list-number-enum-type").ListNumberEnumType;
+        ListNumberRemoteSelectType: typeof import("./list-types/list-number-remote-select-type").ListNumberRemoteSelectType;
+        ListStringEnumType: typeof import("./list-types/list-string-enum-type").ListStringEnumType;
+        ListStringImageType: typeof import("./list-types/list-string-image-type").ListStringImageType;
+        ListStringRemoteSelectType: typeof import("./list-types/list-string-remote-select-type").ListStringRemoteSelectType;
     };
 }

@@ -1,5 +1,5 @@
 <template>
-   <div
+   <no-ssr
       v-loading="state.loading"
       class="edit-form"
    >
@@ -52,7 +52,7 @@
             </el-button>
          </el-form-item>
       </el-form>
-   </div>
+   </no-ssr>
 </template>
 
 <script>

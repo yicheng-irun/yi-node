@@ -1,5 +1,5 @@
-import EditBaseType, { EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
-export default class EditStringColorType extends EditBaseType {
+import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+export declare class EditStringColorType extends EditBaseType {
     /**
      * 前端的组件名称
      */

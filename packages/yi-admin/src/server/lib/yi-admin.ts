@@ -3,12 +3,14 @@ import { Context, Next } from 'koa';
 import koaBody from 'koa-body';
 import { vueSSRKoaMiddleware } from 'yi-vue-ssr-middleware';
 import { resolve } from 'path';
+import url from 'url';
 import { ModelAdminBase } from './model-admin-base';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
 import { SiteNavMenu } from './site-nav-menu';
 import { ListBaseType } from './list-types/list-base-type';
 import { EditTypes, ListTypes } from './types';
+import { assetsRouter } from './assets-router';
 
 /**
  * admin站点
@@ -65,14 +67,24 @@ export class YiAdmin {
       serverOrigin: string;
    }): void {
       this.koaRouter = new Router();
-      this.koaRouter.all(/.*/); // 使app中的use不再按需进入此路由
-      this.koaRouter.use(koaBody({
+      this.koaRouter.use(assetsRouter.middleware(), assetsRouter.allowedMethods());
+
+      const koaBodyMiddleware = koaBody({
          jsonLimit: '10mb',
          multipart: true,
          formidable: {
             // keepExtensions: true,
          },
-      }));
+      });
+      // 允许用户自定义koaBody
+      this.koaRouter.use(async (ctx, next) => {
+         if (ctx.request.body) {
+            await next();
+         } else {
+            await koaBodyMiddleware(ctx, next);
+         }
+      });
+
       this.koaRouter.use(vueSSRKoaMiddleware({
          bundlePath: resolve(__dirname, '../../../lib/server-bundle'),
          serverOrigin,
@@ -93,9 +105,19 @@ export class YiAdmin {
 
    private appendSiteHomeRouter (): void {
       this.koaRouter.get('/', async (ctx) => {
-         if (ctx.render) { await ctx.render('yi-admin/site', {}); }
+         if (ctx.render) {
+            await ctx.render('yi-admin/site', {
+               assetsPath: url.resolve(ctx.path, '__yi-admin-assets__/'),
+            });
+         }
       });
       this.koaRouter.get('/site-menu/', async (ctx: Context) => {
+         ctx.body = {
+            success: true,
+            data: this.siteNavMenu,
+         };
+      });
+      this.koaRouter.post('/site-menu/', async (ctx: Context) => {
          ctx.body = {
             success: true,
             data: this.siteNavMenu,
@@ -112,11 +134,19 @@ export class YiAdmin {
       const modelRouter = new Router<any, Context>();
 
       modelRouter.get('/', async (ctx) => {
-         if (ctx.render) { await ctx.render('yi-admin/model-admin-list', {}); }
+         if (ctx.render) {
+            await ctx.render('yi-admin/model-admin-list', {
+               assetsPath: url.resolve(ctx.path, '../../__yi-admin-assets__/'),
+            });
+         }
       });
 
       modelRouter.get('/edit/', async (ctx: Context) => {
-         if (ctx.render) { await ctx.render('yi-admin/model-admin-edit', {}); }
+         if (ctx.render) {
+            await ctx.render('yi-admin/model-admin-edit', {
+               assetsPath: url.resolve(ctx.path, '../../../__yi-admin-assets__/'),
+            });
+         }
       });
 
       modelRouter.get('/edit/fields/', async (ctx: Context) => {
