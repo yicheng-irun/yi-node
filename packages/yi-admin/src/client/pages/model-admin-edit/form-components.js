@@ -1,5 +1,6 @@
 
 const FormComponents = {
+   array: () => import('./form-components/array.vue'),
    base: () => import('./form-components/base.vue'),
    boolean: () => import('./form-components/boolean.vue'),
    'date-time': () => import('./form-components/date-time.vue'),

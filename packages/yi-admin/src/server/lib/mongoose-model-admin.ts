@@ -16,6 +16,7 @@ import { EditDateTimeType } from './edit-types/edit-date-time-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ListBooleanType } from './list-types/list-boolean-type';
 import { ListActionResult, ModelAdminListAction } from './model-admin-list-action';
+import { EditArrayType } from './edit-types/edit-array-type';
 
 /**
  * 映射mongoose的默认类型的图
@@ -71,6 +72,15 @@ const INSTANCE_EDIT_TYPE_MAP: {
       return new EditBooleanType({
          required: schemaTypeOpts.required,
          fieldNameAlias: schemaTypeOpts.name,
+      });
+   },
+   Array (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+      return new EditArrayType({
+         required: schemaTypeOpts.required,
+         fieldNameAlias: schemaTypeOpts.name,
+         maxLength: schemaTypeOpts.maxlength,
+         minLength: schemaTypeOpts.minlength,
+         childrenType: new EditBaseType({}),
       });
    },
 };

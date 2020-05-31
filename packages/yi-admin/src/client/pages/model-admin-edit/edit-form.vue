@@ -30,6 +30,7 @@
                :is="getComponent(item.componentName)"
                v-model="editFormData[item.fieldName]"
                :edit-form-data="editFormData"
+               :object-key="item.fieldName"
                :name="item.fieldName"
                :config="item.componentConfig"
                :field-name="item.fieldName"
@@ -156,14 +157,18 @@ export default {
    }
    .el-button--small {
       padding 0.6em 1.5em
+      &.is-circle {
+         padding 0.2em
+      }
    }
    .el-form-item__content {
-      >.ya-help-text {
-         margin 0.5em 0 0
-         color #0007
-         font-size 0.8em
-         line-height 1.5
-      }
+
+   }
+   .ya-help-text {
+      margin 0.5em 0 0
+      color #0007
+      font-size 0.8em
+      line-height 1.5
    }
 }
 </style>

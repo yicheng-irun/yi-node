@@ -1,3 +1,4 @@
+import { EditArrayType } from './edit-types/edit-array-type';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { EditBooleanType } from './edit-types/edit-boolean-type';
 import { EditDateTimeType } from './edit-types/edit-date-time-type';
@@ -21,6 +22,7 @@ import { ListStringEnumType } from './list-types/list-string-enum-type';
 import { ListStringImageType } from './list-types/list-string-image-type';
 import { ListStringRemoteSelectType } from './list-types/list-string-remote-select-type';
 export declare const EditTypes: {
+    EditArrayType: typeof EditArrayType;
     EditBaseType: typeof EditBaseType;
     EditBooleanType: typeof EditBooleanType;
     EditDateTimeType: typeof EditDateTimeType;
