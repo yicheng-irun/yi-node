@@ -186,7 +186,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
 
          if (typeInstance) {
             typeInstance.fieldName = schemaPath.path;
-            if (typeInstance.fieldNameAlias === null) {
+            if (!typeInstance.fieldNameAlias) {
                typeInstance.fieldNameAlias = schemaPath.options.name || '';
             }
             if (typeInstance.componentConfig.helpText === null && schemaPath.options.helpText) {
@@ -289,7 +289,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
 
          if (typeInstance) {
             typeInstance.fieldName = schemaPath.path;
-            if (typeInstance.fieldNameAlias === null) {
+            if (!typeInstance.fieldNameAlias) {
                typeInstance.fieldNameAlias = schemaPath.options.name || '';
             }
             fields.push(typeInstance);
