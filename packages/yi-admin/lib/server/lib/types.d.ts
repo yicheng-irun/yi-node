@@ -8,6 +8,7 @@ import { EditStringColorType } from './edit-types/edit-string-color-type';
 import { EditStringEnumType } from './edit-types/edit-string-enum-type';
 import { EditStringFileType } from './edit-types/edit-string-file';
 import { EditStringImageType } from './edit-types/edit-string-image';
+import { EditStringJoditEditorType } from './edit-types/edit-string-jodit-type';
 import { EditStringRemoteSelectType } from './edit-types/edit-string-remote-select-type';
 import { EditStringTextareaType } from './edit-types/edit-string-textarea-type';
 import { EditStringType } from './edit-types/edit-string-type';
@@ -29,6 +30,7 @@ export declare const EditTypes: {
     EditStringEnumType: typeof EditStringEnumType;
     EditStringFileType: typeof EditStringFileType;
     EditStringImageType: typeof EditStringImageType;
+    EditStringJoditEditorType: typeof EditStringJoditEditorType;
     EditStringRemoteSelectType: typeof EditStringRemoteSelectType;
     EditStringTextareaType: typeof EditStringTextareaType;
     EditStringType: typeof EditStringType;

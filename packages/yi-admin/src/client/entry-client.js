@@ -7,14 +7,16 @@ import Vue from 'vue';
 import runtime from './lib/runtime';
 import ajax from './lib/ajax';
 import createApp from './get-app';
-import { loadScript, loadStyle } from './lib/load-file';
+import {
+   loadStyleFromAssets, loadScriptFromAssets,
+} from './lib/load-file';
 
 window.Vue = Vue;
 Vue.prototype.$ajax = ajax;
 
 async function start () {
-   loadStyle(`${window._ASSETS_PATH_}element-ui/theme-chalk/index.css`);
-   await loadScript(`${window._ASSETS_PATH_}element-ui/index.js`);
+   loadStyleFromAssets('element-ui/theme-chalk/index.css');
+   await loadScriptFromAssets('element-ui/index.js');
    const App = await createApp();
    let store = null;
    if (typeof App.createStore === 'function') {

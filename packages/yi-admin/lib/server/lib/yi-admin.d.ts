@@ -56,6 +56,7 @@ export declare class YiAdmin {
         EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").EditStringEnumType;
         EditStringFileType: typeof import("./edit-types/edit-string-file").EditStringFileType;
         EditStringImageType: typeof import("./edit-types/edit-string-image").EditStringImageType;
+        EditStringJoditEditorType: typeof import("./edit-types/edit-string-jodit-type").EditStringJoditEditorType;
         EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").EditStringRemoteSelectType;
         EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").EditStringTextareaType;
         EditStringType: typeof import("./edit-types/edit-string-type").EditStringType;

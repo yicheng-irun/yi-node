@@ -1,7 +1,11 @@
 import { Context } from 'koa';
-import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import { EditStringTextareaType } from './edit-string-textarea-type';
+import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter } from '../tools/file-writer';
-export declare class EditStringFileType extends EditBaseType {
+/**
+ * 富文本编辑器类型  jodit
+ */
+export declare class EditStringJoditEditorType extends EditStringTextareaType {
     /**
      * 前端的组件名称
      */
@@ -11,6 +15,14 @@ export declare class EditStringFileType extends EditBaseType {
      */
     componentConfig: EditBaseComponentConfig & {
         placeholder: string;
+        /**
+         * 最小长度
+         */
+        minLength: number;
+        /**
+         * 最大长度
+         */
+        maxLength?: number;
         maxFileSize: number;
         /**
          * https://www.w3school.com.cn/media/media_mimeref.asp
@@ -50,8 +62,6 @@ export declare class EditStringFileType extends EditBaseType {
     }) => Promise<{
         url: string;
     }>;
-    action(actionName: string, actionData: any, ctx: Context): Promise<{
-        url: string;
-    }>;
+    action(actionName: string, actionData: any, ctx: Context): Promise<any>;
     static getFileWriter: typeof getFileWriter;
 }

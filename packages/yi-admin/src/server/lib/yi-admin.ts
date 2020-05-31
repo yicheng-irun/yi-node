@@ -11,6 +11,7 @@ import { SiteNavMenu } from './site-nav-menu';
 import { ListBaseType } from './list-types/list-base-type';
 import { EditTypes, ListTypes } from './types';
 import { assetsRouter } from './assets-router';
+import { jsonErrorMiddleware } from './tools/json-error-middleware';
 
 /**
  * admin站点
@@ -149,7 +150,7 @@ export class YiAdmin {
          }
       });
 
-      modelRouter.get('/edit/fields/', async (ctx: Context) => {
+      modelRouter.get('/edit/fields/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const modelAdmin = this.modelAdminsMap[modelName];
          const fields = modelAdmin.getEditFormFields();
@@ -165,7 +166,7 @@ export class YiAdmin {
          };
       });
 
-      modelRouter.get('/edit/values/', async (ctx: Context) => {
+      modelRouter.get('/edit/values/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const { id } = ctx.query;
          const values = await this.modelAdminsMap[modelName].getEditData(id, ctx);
@@ -176,7 +177,7 @@ export class YiAdmin {
       });
 
       // 表单组件的请求
-      modelRouter.post('/edit/component-action/', async (ctx: Context) => {
+      modelRouter.post('/edit/component-action/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
          const { fieldName, actionName, actionData } = {
@@ -208,7 +209,7 @@ export class YiAdmin {
          };
       });
 
-      modelRouter.post('/edit/submit/', async (ctx: Context) => {
+      modelRouter.post('/edit/submit/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const { editId = '', formData = {} } = ctx.request.body;
          const value = await this.modelAdminsMap[modelName].formSubmit(editId, formData, ctx);
@@ -221,7 +222,7 @@ export class YiAdmin {
       /**
        * 拉取列表页的字段信息
        */
-      modelRouter.get('/list/fields/', async (ctx: Context) => {
+      modelRouter.get('/list/fields/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const modelAdmin = this.modelAdminsMap[modelName];
          const fields = modelAdmin.getDataListFields();
@@ -240,7 +241,7 @@ export class YiAdmin {
       /**
        * 拉取列表页的字段信息
        */
-      modelRouter.get('/list/actions/', async (ctx: Context) => {
+      modelRouter.get('/list/actions/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const actions = this.modelAdminsMap[modelName].listActions;
          ctx.body = {
@@ -250,7 +251,7 @@ export class YiAdmin {
       });
 
       // 表单组件的请求
-      modelRouter.post('/list/component-action/', async (ctx: Context) => {
+      modelRouter.post('/list/component-action/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getDataListFields();
 
@@ -285,7 +286,7 @@ export class YiAdmin {
       /**
        * 拉取列表页的数据
        */
-      modelRouter.get('/list/data/', async (ctx: Context) => {
+      modelRouter.get('/list/data/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const { pageIndex = '1', pageSize = '10', sort = '' } = ctx.query;
          const pageIndexNumber = Number.parseInt(pageIndex, 10);
@@ -307,7 +308,7 @@ export class YiAdmin {
       /**
        * 执行列表操作
        */
-      modelRouter.post('/list/action/', async (ctx: Context) => {
+      modelRouter.post('/list/action/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const actions = this.modelAdminsMap[modelName].listActions;
          const {

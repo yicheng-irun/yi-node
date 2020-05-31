@@ -8,9 +8,11 @@ import { EditStringColorType } from './edit-types/edit-string-color-type';
 import { EditStringEnumType } from './edit-types/edit-string-enum-type';
 import { EditStringFileType } from './edit-types/edit-string-file';
 import { EditStringImageType } from './edit-types/edit-string-image';
+import { EditStringJoditEditorType } from './edit-types/edit-string-jodit-type';
 import { EditStringRemoteSelectType } from './edit-types/edit-string-remote-select-type';
 import { EditStringTextareaType } from './edit-types/edit-string-textarea-type';
 import { EditStringType } from './edit-types/edit-string-type';
+
 import { ListBaseType } from './list-types/list-base-type';
 import { ListBooleanType } from './list-types/list-boolean-type';
 import { ListNumberEnumType } from './list-types/list-number-enum-type';
@@ -30,6 +32,7 @@ export const EditTypes = {
    EditStringEnumType,
    EditStringFileType,
    EditStringImageType,
+   EditStringJoditEditorType,
    EditStringRemoteSelectType,
    EditStringTextareaType,
    EditStringType,

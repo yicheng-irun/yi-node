@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import formatFileSize from '../../components/utils/format-file-size';
+import formatFileSize from '../components-utils/format-file-size';
 
 export default {
    model: {

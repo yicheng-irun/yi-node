@@ -1,19 +1,33 @@
+import { existsSync, unlinkSync } from 'fs';
 import { Context } from 'koa';
-import { unlinkSync, existsSync } from 'fs';
-import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
+import mime from 'mime';
+import { EditStringTextareaType } from './edit-string-textarea-type';
+import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter } from '../tools/file-writer';
 
-export class EditStringFileType extends EditBaseType {
+/**
+ * 富文本编辑器类型  jodit
+ */
+export class EditStringJoditEditorType extends EditStringTextareaType {
    /**
     * 前端的组件名称
     */
-   public componentName = 'string-file'
+   public componentName = 'string-jodit-editor'
 
    /**
     * 前端组件的参数
     */
    public componentConfig: EditBaseComponentConfig & {
       placeholder: string;
+      /**
+       * 最小长度
+       */
+      minLength: number;
+      /**
+       * 最大长度
+       */
+      maxLength?: number;
+
       maxFileSize: number;
       /**
        * https://www.w3school.com.cn/media/media_mimeref.asp
@@ -21,7 +35,6 @@ export class EditStringFileType extends EditBaseType {
       mimeType: string;
    } = {
       ...this.componentConfig,
-      placeholder: '',
       /**
        * 注意，文件大小限制除了这里进行了限制，同时也受到koa-body这个库的限制
        */
@@ -35,6 +48,7 @@ export class EditStringFileType extends EditBaseType {
          minLength?: number;
          maxLength?: number;
          placeholder?: string;
+
          maxFileSize?: number;
 
          /**
@@ -58,7 +72,7 @@ export class EditStringFileType extends EditBaseType {
       },
    ) {
       super(config);
-      this.componentConfig.placeholder = config.placeholder || '';
+
       if (config.maxFileSize !== undefined) { this.componentConfig.maxFileSize = config.maxFileSize; }
       if (config.mimeType !== undefined) { this.componentConfig.mimeType = config.mimeType; }
 
@@ -77,27 +91,44 @@ export class EditStringFileType extends EditBaseType {
      url: string;
   }>;
 
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<{
-      url: string;
-   }> {
-      if (actionName === 'upload') {
+   // eslint-disable-next-line class-methods-use-this
+   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
+      if (actionName === 'uploader') {
          const { files } = ctx.request;
-         if (!files) throw new Error('未识别到上传的文件');
-         const file = files?.file;
-         try {
-            const result = await this.writeFile(file);
-            if (!result?.url) throw new Error('上传文件失败');
-            return {
-               url: result.url,
-            };
-         } finally {
-            try {
-               // 上传完毕后，清理缓存文件
-               if (existsSync(file.path)) { unlinkSync(file.path); }
-            } catch (e) {
-               console.error(e);
+         const results = [];
+         for (let i = 0; ; i += 1) {
+            const fname = `files[${i}]`;
+            if (files && files[fname]) {
+               const file = files[fname];
+               try {
+                  // eslint-disable-next-line no-await-in-loop
+                  const result = await this.writeFile(file);
+                  if (!result?.url) throw new Error('上传文件失败');
+                  results.push(result.url);
+               } finally {
+                  try {
+                     // 上传完毕后，清理缓存文件
+                     if (existsSync(file.path)) { unlinkSync(file.path); }
+                  } catch (e) {
+                     console.error(e);
+                  }
+               }
+            } else {
+               break;
             }
          }
+         return {
+            files: results,
+            path: '',
+            baseurl: '',
+            isImages: results.map((t) => {
+               const a = mime.getType(t);
+               if (a && /^image\//.test(a)) {
+                  return true;
+               }
+               return false;
+            }),
+         };
       }
       throw new Error(`接收到非法actionName ${actionName}`);
    }
