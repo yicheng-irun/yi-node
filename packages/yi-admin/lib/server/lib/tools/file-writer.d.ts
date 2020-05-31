@@ -1,3 +1,4 @@
+export declare function mkdirTraverse(dirpath: string): void;
 /**
  * 用于 EditStringFileType中的本地文件 fileWrite
  * @param param0

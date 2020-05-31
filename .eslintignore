@@ -1,5 +1,6 @@
-/node_module
+node_modules
 /dist
 
 packages/*/lib/**/*.js
 packages/*/lib/**/*.d.ts
+packages/*/lib/**/*.html

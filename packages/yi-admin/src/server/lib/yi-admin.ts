@@ -177,7 +177,7 @@ export class YiAdmin {
       });
 
       // 表单组件的请求
-      modelRouter.post('/edit/component-action/', jsonErrorMiddleware, async (ctx: Context) => {
+      modelRouter.all('/edit/component-action/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const fields = this.modelAdminsMap[modelName].getEditFormFields();
          const { fieldName, actionName, actionData } = {
@@ -196,10 +196,12 @@ export class YiAdmin {
 
          if (editField) {
             const result = await editField.action(actionName, actionData, ctx);
-            ctx.body = {
-               success: true,
-               data: result,
-            };
+            if (result !== undefined) {
+               ctx.body = {
+                  success: true,
+                  data: result,
+               };
+            }
             return;
          }
 
@@ -270,10 +272,12 @@ export class YiAdmin {
 
          if (listField) {
             const result = await listField.action(actionName, actionData);
-            ctx.body = {
-               success: true,
-               data: result,
-            };
+            if (result !== undefined) {
+               ctx.body = {
+                  success: true,
+                  data: result,
+               };
+            }
             return;
          }
 

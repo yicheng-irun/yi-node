@@ -6,7 +6,9 @@ import { Context } from 'koa';
 export const assetsRouter = new Router<{}, Context>();
 
 
-const allowFile = ['.js', '.css', '.html', '.tff', '.woff'];
+const allowFile = ['.js', '.css', '.html', '.tff', '.woff', '.png', '.jpg', '.gif',
+   '.json', '.eot', '.svg', '.swf',
+];
 
 const clientAssetsPath = resolve(__dirname, '../../client/assets');
 assetsRouter.get(/__yi-admin-assets__\/assets\/(.*)/, async (ctx) => {

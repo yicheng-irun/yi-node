@@ -12,6 +12,7 @@ import { EditStringJoditEditorType } from './edit-types/edit-string-jodit-type';
 import { EditStringRemoteSelectType } from './edit-types/edit-string-remote-select-type';
 import { EditStringTextareaType } from './edit-types/edit-string-textarea-type';
 import { EditStringType } from './edit-types/edit-string-type';
+import { EditStringUEditorType } from './edit-types/edit-string-ueditor-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ListBooleanType } from './list-types/list-boolean-type';
 import { ListNumberEnumType } from './list-types/list-number-enum-type';
@@ -34,6 +35,7 @@ export declare const EditTypes: {
     EditStringRemoteSelectType: typeof EditStringRemoteSelectType;
     EditStringTextareaType: typeof EditStringTextareaType;
     EditStringType: typeof EditStringType;
+    EditStringUEditorType: typeof EditStringUEditorType;
 };
 export declare const ListTypes: {
     ListBaseType: typeof ListBaseType;

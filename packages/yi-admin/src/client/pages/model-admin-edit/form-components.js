@@ -14,6 +14,7 @@ const FormComponents = {
    'string-remote-select': () => import('./form-components/string-remote-select.vue'),
    string: () => import('./form-components/string.vue'),
    'string-textarea': () => import('./form-components/string-textarea.vue'),
+   'string-ueditor': () => import('./form-components/string-ueditor.vue'),
 };
 
 export default FormComponents;

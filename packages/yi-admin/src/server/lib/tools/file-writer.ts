@@ -6,10 +6,10 @@ import {
 } from 'path';
 import { createHash } from 'crypto';
 
-function mkdirs (dirpath: string): void {
+export function mkdirTraverse (dirpath: string): void {
    if (!existsSync(dirpath)) {
       const bpath = dirname(dirpath);
-      mkdirs(bpath);
+      mkdirTraverse(bpath);
       mkdirSync(dirpath);
    }
 }
@@ -55,7 +55,7 @@ export function getFileWriter ({
       const fileName = `${hash}_${fileData.length}${extName}`;
 
       const savePath = resolve(uploadFolder, fileName);
-      mkdirs(dirname(savePath));
+      mkdirTraverse(dirname(savePath));
       const url = `${baseUrlPath}${relative(baseUploadsFolder, savePath).replace(/\\+/g, '/')}`;
 
       writeFileSync(savePath, fileData);

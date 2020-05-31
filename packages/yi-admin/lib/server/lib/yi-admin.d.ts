@@ -60,6 +60,7 @@ export declare class YiAdmin {
         EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").EditStringRemoteSelectType;
         EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").EditStringTextareaType;
         EditStringType: typeof import("./edit-types/edit-string-type").EditStringType;
+        EditStringUEditorType: typeof import("./edit-types/edit-string-ueditor-type").EditStringUEditorType;
     };
     static ListTypes: {
         ListBaseType: typeof ListBaseType;
