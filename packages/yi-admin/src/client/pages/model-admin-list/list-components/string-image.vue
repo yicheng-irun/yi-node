@@ -9,6 +9,7 @@
          <img
             :src="value"
             :alt="value"
+            :style="imgStyle"
          >
       </a>
    </div>
@@ -30,6 +31,18 @@ export default {
          default () {
             return {};
          },
+      },
+   },
+   computed: {
+      imgStyle () {
+         const style = {};
+         if (this.config.styleMaxWidth) {
+            style.maxWidth = this.config.styleMaxWidth;
+         }
+         if (this.config.styleMaxHeight) {
+            style.maxHeight = this.config.styleMaxHeight;
+         }
+         return style;
       },
    },
 };

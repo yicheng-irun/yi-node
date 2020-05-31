@@ -3,6 +3,33 @@ import { unlinkSync, existsSync } from 'fs';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 import { getFileWriter } from '../tools/file-writer';
 
+
+export type EditStringFileTypeConfig = EditBaseTypeConfig & {
+   minLength?: number;
+   maxLength?: number;
+   placeholder?: string;
+   maxFileSize?: number;
+
+   /**
+    * https://www.w3school.com.cn/media/media_mimeref.asp
+    */
+   mimeType?: string;
+
+   /**
+    * 文件上传，使用koa-body，此函数调用完毕后会自动清理掉暂存文件
+    */
+   writeFile: (file: {
+      size: number;
+      path: string;
+      name: string;
+      type: string;
+      lastModifiedDate?: Date;
+      hash?: string;
+  }) => Promise<{
+     url: string;
+  }>;
+}
+
 export class EditStringFileType extends EditBaseType {
    /**
     * 前端的组件名称
@@ -31,31 +58,7 @@ export class EditStringFileType extends EditBaseType {
    }
 
    constructor (
-      config: EditBaseTypeConfig & {
-         minLength?: number;
-         maxLength?: number;
-         placeholder?: string;
-         maxFileSize?: number;
-
-         /**
-          * https://www.w3school.com.cn/media/media_mimeref.asp
-          */
-         mimeType?: string;
-
-         /**
-          * 文件上传，使用koa-body，此函数调用完毕后会自动清理掉暂存文件
-          */
-         writeFile: (file: {
-            size: number;
-            path: string;
-            name: string;
-            type: string;
-            lastModifiedDate?: Date;
-            hash?: string;
-        }) => Promise<{
-           url: string;
-        }>;
-      },
+      config: EditStringFileTypeConfig,
    ) {
       super(config);
       this.componentConfig.placeholder = config.placeholder || '';

@@ -1,5 +1,5 @@
 import { EditBaseComponentConfig } from './edit-base-type';
-import { EditStringFileType } from './edit-string-file';
+import { EditStringFileType, EditStringFileTypeConfig } from './edit-string-file';
 import { ListBaseType } from '../list-types/list-base-type';
 export declare class EditStringImageType extends EditStringFileType {
     /**
@@ -13,6 +13,28 @@ export declare class EditStringImageType extends EditStringFileType {
         placeholder: string;
         maxFileSize: number;
         mimeType: string;
+        /**
+         * max-width: 10em
+         * 120px
+         */
+        listStyleMaxWidth?: string;
+        /**
+         * max-width: 6em
+         * 72px
+         */
+        listStyleMaxHeight?: string;
     };
+    constructor(config: EditStringFileTypeConfig & {
+        /**
+         * max-width: 10em
+         * 120px
+         */
+        listStyleMaxWidth?: string;
+        /**
+         * max-width: 6em
+         * 72px
+         */
+        listStyleMaxHeight?: string;
+    });
     getListType(): ListBaseType;
 }
