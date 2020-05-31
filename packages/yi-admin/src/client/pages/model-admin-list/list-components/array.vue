@@ -1,41 +1,23 @@
 <template>
    <div
-      class="form-components-array"
+      class="list-components-array"
    >
       <div
          v-for="(item, index) in value"
          :key="index"
-         class="form-components-array-item"
+         class="list-components-array-item"
+         :class="config.listStyleInline ? 'inline-type' : ''"
       >
-         <div class="delete-btn">
-            <el-button
-               type="danger"
-               icon="el-icon-minus"
-               circle
-               @click="value.splice(index, 1)"
-            />
-         </div>
          <component
             :is="getComponent"
-            v-model="value[index]"
-            :edit-form-data="value"
-            :object-key="index"
-            :name="index"
+            :id="id"
             :config="componentConfig"
             :field-name="fieldName"
+            :values="value"
+            :object-key="index"
+            :value="value[index]"
          />
       </div>
-      <el-button
-         icon="el-icon-plus"
-         type="primary"
-         circle
-         @click="value.push(null)"
-      />
-      <p
-         v-if="componentConfig.helpText"
-         class="ya-help-text"
-         v-text="componentConfig.helpText"
-      />
    </div>
 </template>
 
@@ -52,28 +34,27 @@ export default {
             return [];
          },
       },
-      config: {
-         type: Object,
-         default () {
-            return {
-               required: false,
-               helpText: '',
-               minLength: 0,
-               childrenType: {
-                  componentName: 'base',
-                  fieldName: '',
-                  componentConfig: {
-                     required: false,
-                     helpText: '',
-                  },
-                  fieldNameAlias: '',
-               },
-            };
-         },
+      id: {
+         type: String,
+         default: '',
       },
       fieldName: {
          type: String,
          default: '',
+      },
+      config: {
+         type: Object,
+         default () {
+            return {
+               listStyleInline: false,
+               childrenType: {
+                  componentName: 'base',
+                  fieldName: '',
+                  componentConfig: {},
+                  fieldNameAlias: '',
+               },
+            };
+         },
       },
    },
    computed: {
@@ -84,7 +65,7 @@ export default {
    methods: {
       async getComponent () {
          const componentName = this.config?.childrenType?.componentName;
-         const { default: FormComponents } = await import('../form-components');
+         const { default: FormComponents } = await import('../list-components');
          if (Object.prototype.hasOwnProperty.call(FormComponents, componentName)) {
             return FormComponents[componentName]();
          }
@@ -95,15 +76,14 @@ export default {
 </script>
 
 <style lang="stylus">
-.form-components-array {
-   color #606266
-   >.form-components-array-item {
+.list-components-array {
+   text-align center
+   .list-components-array-item {
       position relative
-      margin 0 0 0.5em 2em
-      min-height 2em
-      >.delete-btn {
-         position absolute
-         left -2em
+      margin 0.3em
+      &.inline-type {
+         display inline-block
+         background #0001
       }
    }
 }

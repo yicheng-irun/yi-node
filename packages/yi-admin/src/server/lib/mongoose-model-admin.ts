@@ -17,6 +17,7 @@ import { ListBaseType } from './list-types/list-base-type';
 import { ListBooleanType } from './list-types/list-boolean-type';
 import { ListActionResult, ModelAdminListAction } from './model-admin-list-action';
 import { EditArrayType } from './edit-types/edit-array-type';
+import { ListArrayType } from './list-types/list-array-type';
 
 /**
  * 映射mongoose的默认类型的图
@@ -111,6 +112,12 @@ const INSTANCE_LIST_TYPE_MAP: {
    Boolean (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
       return new ListBooleanType({
          fieldNameAlias: schemaTypeOpts.name,
+      });
+   },
+   Array (schemaTypeOpts: SchemaTypeOpts<{}>): ListBaseType {
+      return new ListArrayType({
+         fieldNameAlias: schemaTypeOpts.name,
+         childrenType: new ListBaseType({}),
       });
    },
 };

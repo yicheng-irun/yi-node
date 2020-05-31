@@ -1,5 +1,7 @@
 import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
+import { ListArrayType } from '../list-types/list-array-type';
 
 export class EditArrayType extends EditBaseType {
    /**
@@ -24,6 +26,11 @@ export class EditArrayType extends EditBaseType {
        * 数组的子类型
        */
       childrenType: EditBaseType;
+
+      /**
+       * 在列表中展示时使用inline的方式
+       */
+      listStyleInline?: boolean;
    } = {
       ...this.componentConfig,
       minLength: 0,
@@ -39,6 +46,11 @@ export class EditArrayType extends EditBaseType {
           * 数组的子类型
           */
          childrenType: EditBaseType;
+
+         /**
+          * 设置列表中是否换行
+          */
+         listStyleInline?: boolean;
       },
    ) {
       super(config);
@@ -53,6 +65,7 @@ export class EditArrayType extends EditBaseType {
       } else {
          throw new Error('数组的子类型childrenType 必须是一个EditBaseType');
       }
+      this.componentConfig.listStyleInline = config.listStyleInline;
    }
 
    /**
@@ -66,5 +79,13 @@ export class EditArrayType extends EditBaseType {
    }> {
       const result = await this.componentConfig.childrenType.action(actionName, actionData, ctx);
       return result;
+   }
+
+   public getListType (): ListBaseType {
+      return new ListArrayType({
+         fieldNameAlias: this.fieldNameAlias,
+         childrenType: this.componentConfig.childrenType.getListType(),
+         listStyleInline: this.componentConfig.listStyleInline,
+      });
    }
 }

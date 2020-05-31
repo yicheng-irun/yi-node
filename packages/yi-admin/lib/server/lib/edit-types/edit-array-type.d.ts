@@ -1,5 +1,6 @@
 import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
+import { ListBaseType } from '../list-types/list-base-type';
 export declare class EditArrayType extends EditBaseType {
     /**
      * 前端的组件名称
@@ -21,6 +22,10 @@ export declare class EditArrayType extends EditBaseType {
          * 数组的子类型
          */
         childrenType: EditBaseType;
+        /**
+         * 在列表中展示时使用inline的方式
+         */
+        listStyleInline?: boolean;
     };
     constructor(config: EditBaseTypeConfig & {
         minLength?: number;
@@ -29,6 +34,10 @@ export declare class EditArrayType extends EditBaseType {
          * 数组的子类型
          */
         childrenType: EditBaseType;
+        /**
+         * 设置列表中是否换行
+         */
+        listStyleInline?: boolean;
     });
     /**
      * 交给子组件去处理
@@ -39,4 +48,5 @@ export declare class EditArrayType extends EditBaseType {
     action(actionName: string, actionData: any, ctx: Context): Promise<{
         url: string;
     }>;
+    getListType(): ListBaseType;
 }

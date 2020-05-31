@@ -1,5 +1,6 @@
 
 const FormComponents = {
+   array: () => import('./list-components/array.vue'),
    base: () => import('./list-components/base.vue'),
    boolean: () => import('./list-components/boolean.vue'),
    'string-enum': () => import('./list-components/string-enum.vue'),

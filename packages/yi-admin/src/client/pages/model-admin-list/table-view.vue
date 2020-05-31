@@ -148,6 +148,7 @@
                               :config="fieldItem.componentConfig"
                               :field-name="fieldItem.fieldName"
                               :values="item.values"
+                              :object-key="fieldItem.fieldName"
                               :value="item.values[fieldItem.fieldName]"
                            />
                         </div>

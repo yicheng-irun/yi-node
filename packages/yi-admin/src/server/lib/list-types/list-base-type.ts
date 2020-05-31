@@ -1,3 +1,4 @@
+import { Context } from 'koa';
 
 export interface ListBaseTypeConfig {
    /**
@@ -34,7 +35,7 @@ export class ListBaseType {
    }
 
    // eslint-disable-next-line class-methods-use-this
-   public async action (actionName: string, actionData: any): Promise<any> {
+   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
       //
    }
 }

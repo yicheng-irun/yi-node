@@ -13,7 +13,7 @@ export default {
    },
    props: {
       value: {
-         type: [String, Number],
+         type: [String, Number, Boolean, Date],
          default: '',
       },
       config: {

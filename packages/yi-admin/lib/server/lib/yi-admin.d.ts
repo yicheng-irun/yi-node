@@ -64,6 +64,7 @@ export declare class YiAdmin {
         EditStringUEditorType: typeof import("./edit-types/edit-string-ueditor-type").EditStringUEditorType;
     };
     static ListTypes: {
+        ListArrayType: typeof import("./list-types/list-array-type").ListArrayType;
         ListBaseType: typeof ListBaseType;
         ListBooleanType: typeof import("./list-types/list-boolean-type").ListBooleanType;
         ListNumberEnumType: typeof import("./list-types/list-number-enum-type").ListNumberEnumType;
