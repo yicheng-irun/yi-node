@@ -35,6 +35,13 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
         },
     });
 
+    const LessLoader = (): webpack.RuleSetUseItem => ({
+        loader: 'less-loader',
+        options: {
+            sourceMap: !isProd,
+        },
+    });
+
     const CSSLoader = (): webpack.RuleSetUseItem => ({
         // pre render 时需要用css-loader/locals，SSR 时不需要
         loader: 'css-loader',
@@ -108,6 +115,10 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
                 {
                     test: /\.(stylus|styl)$/,
                     use: getBaseCssLoaders().concat([StylusLoader()]),
+                },
+                {
+                    test: /\.less$/,
+                    use: getBaseCssLoaders().concat([LessLoader()]),
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
