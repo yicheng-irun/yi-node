@@ -271,7 +271,7 @@ export class YiAdmin {
          }
 
          if (listField) {
-            const result = await listField.action(actionName, actionData);
+            const result = await listField.action(actionName, actionData, ctx);
             if (result !== undefined) {
                ctx.body = {
                   success: true,

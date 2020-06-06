@@ -80,9 +80,6 @@ export default {
          return this.state.siteMenu;
       },
    },
-   mounted () {
-      console.log(22233);
-   },
    methods: {
       getSelfCompnent () {
          return MenuTree;

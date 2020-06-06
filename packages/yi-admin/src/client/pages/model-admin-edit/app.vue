@@ -11,7 +11,6 @@
             <el-breadcrumb-item>
                <a
                   href="../"
-                  target="_top"
                >
                   {{ state.modelInfo.title || state.modelInfo.name }} 管理
                </a>
@@ -24,8 +23,8 @@
          :edit-form-fields="state.editFormFields"
          :edit-form-data="state.editFormData"
       />
-      <pre v-text="JSON.stringify(state.editFormData, null, '  ')" />
-      <pre v-text="JSON.stringify(state, null, '  ')" />
+      <!-- <pre v-text="JSON.stringify(state.editFormData, null, '  ')" />
+      <pre v-text="JSON.stringify(state, null, '  ')" /> -->
    </div>
 </template>
 
