@@ -49,6 +49,8 @@ module.exports = {
          * @param buildConfig BuildConfig
          */
       clientConfigProcess (configuration, buildConfig) {
+         delete configuration.output.publicPath;
+         configuration.plugins[4].options.inject = false;
          return configuration;
       },
 
@@ -58,6 +60,8 @@ module.exports = {
          * @param buildConfig BuildConfig
          */
       serverConfigProcess (configuration, buildConfig) {
+         delete configuration.output.publicPath;
+         configuration.plugins[4].options.inject = false;
          return configuration;
       },
    },

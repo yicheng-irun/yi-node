@@ -10,7 +10,6 @@
     "lib": "lib",
     "test": "__tests__"
   },
-
   "files": [
     "lib",
     "static"
@@ -21,9 +20,9 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "dev:client": "yi-vue-ssr-build build -c yi-vue-ssr-config-dev.js",
-    "dev:server": "tsc --watch -p ./src/server",
-    "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
+    "dev:client": "yi-vue-ssr-build serve -c yi-vue-ssr-config-dev.js",
+    "dev:examples": "ts-node-dev --no-notify --respawn --transpile-only --ignore-watch node_modules --clear --watch src/server,src/examples,.env -r dotenv/config ./src/examples/index.ts",
+    "dev": "concurrently \"npm:dev:client\" \"npm:dev:examples\"",
     "build:client": "yi-vue-ssr-build build",
     "build:server": "tsc -p ./src/server",
     "build": "npm run build:client && npm run build:server"

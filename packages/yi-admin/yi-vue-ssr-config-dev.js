@@ -17,9 +17,9 @@ module.exports = {
    distPath: path.resolve(projectPath, './lib/client'),
 
    /**
-      * 默认情况下是 dist/server-bundle
-      * 路径最终需要传给yi-vue-ssr-middleware库来使用
-      */
+     * 默认情况下是 dist/server-bundle
+     * 路径最终需要传给yi-vue-ssr-middleware库来使用
+     */
    distBundlePath: path.resolve(projectPath, './lib/server-bundle'),
 
    /**
@@ -49,10 +49,6 @@ module.exports = {
          * @param buildConfig BuildConfig
          */
       clientConfigProcess (configuration, buildConfig) {
-         // configuration.output.publicPath = './';
-         delete configuration.output.publicPath;
-         configuration.watch = true;
-         configuration.plugins[4].options.inject = false;
          return configuration;
       },
 
@@ -62,10 +58,6 @@ module.exports = {
          * @param buildConfig BuildConfig
          */
       serverConfigProcess (configuration, buildConfig) {
-         // configuration.output.publicPath = './';
-         delete configuration.output.publicPath;
-         configuration.watch = true;
-         configuration.plugins[4].options.inject = false;
          return configuration;
       },
    },
