@@ -38,17 +38,25 @@ export class YiAdmin {
       title: 'root',
    });
 
+   public siteConfig: {
+      siteName: string;
+   };
+
    public modelNavMenu: SiteNavMenu = new SiteNavMenu({
       title: '数据模型管理',
    });
 
-   constructor ({ permission, serverOrigin }: {
+   constructor ({ permission, serverOrigin, siteConfig = {} }: {
       permission?: (ctx: Context, next: Next) => Promise<any>;
       /**
        * example: "http://127.0.0.1:80"
        * 请返回koa.lisen的端口，用于vue服务端渲染(SSR)中进行数据接口请求
        */
       serverOrigin: string;
+
+      siteConfig?: {
+         siteName?: string;
+      };
    }) {
       this.createKoaRouter({
          serverOrigin,
@@ -58,6 +66,10 @@ export class YiAdmin {
          this.permission = permission;
       }
       this.siteNavMenu.add(this.modelNavMenu);
+
+      this.siteConfig = {
+         siteName: siteConfig?.siteName || 'yi-admin',
+      };
 
       this.appendPermissionCheckRouter();
       this.appendSiteHomeRouter();
@@ -118,10 +130,10 @@ export class YiAdmin {
             data: this.siteNavMenu,
          };
       });
-      this.koaRouter.post('/site-menu/', async (ctx: Context) => {
+      this.koaRouter.get('/site-config/', async (ctx: Context) => {
          ctx.body = {
             success: true,
-            data: this.siteNavMenu,
+            data: this.siteConfig,
          };
       });
    }

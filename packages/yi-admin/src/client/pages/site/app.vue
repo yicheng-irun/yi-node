@@ -15,7 +15,7 @@
             />
          </span>
          <span class="site-name">
-            yi-admin
+            {{ siteConfig.siteName }}
          </span>
       </div>
       <div class="ya-main">
@@ -65,6 +65,7 @@ export default {
    async fetchData (context) {
       await Promise.all([
          context.store.dispatch('fetchSiteMenu'),
+         context.store.dispatch('fetchSiteConfig'),
       ]);
    },
    data () {
@@ -79,6 +80,9 @@ export default {
       siteMenu () {
          return this.state.siteMenu;
       },
+      siteConfig () {
+         return this.state.siteConfig;
+      }
    },
    methods: {
       getSelfCompnent () {

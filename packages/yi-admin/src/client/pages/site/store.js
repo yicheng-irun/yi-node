@@ -6,6 +6,7 @@ export default function ({
    const store = new Vuex.Store({
       state: {
          siteMenu: null,
+         siteConfig: {},
          iframeSrc: '',
       },
 
@@ -13,14 +14,21 @@ export default function ({
          setSiteMenu (state, siteMenu) {
             state.siteMenu = siteMenu;
          },
+         setSiteConfig (state, siteConfig) {
+            state.siteConfig = siteConfig;
+         },
       },
 
       actions: {
          async fetchSiteMenu ({ commit }) {
-            // 这里可以请求 后台cgi 数据
             const rsp = await get('site-menu/', {});
             const result = rsp.data;
             commit('setSiteMenu', result.data);
+         },
+         async fetchSiteConfig ({ commit }) {
+            const rsp = await get('site-config/', {});
+            const result = rsp.data;
+            commit('setSiteConfig', result.data);
          },
       },
    });

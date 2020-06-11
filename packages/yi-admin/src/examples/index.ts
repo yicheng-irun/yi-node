@@ -9,6 +9,8 @@ export default async function createApp (): Promise<Koa> {
 
    const app = new Koa();
 
+   myadmin.koaRouter.prefix('/test');
+
    app.use(myadmin.koaRouter.routes()).use(myadmin.koaRouter.allowedMethods());
 
    return app;
