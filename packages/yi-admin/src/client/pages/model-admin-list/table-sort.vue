@@ -6,21 +6,21 @@
          :key="idx"
          class="sort-item"
       >
-         <el-select
+         <a-select
             v-model="sortList[idx]"
             placeholder="请选择"
-            size="mini"
+            style="min-width:150px"
             @change="handleChange"
          >
-            <el-option
+            <a-select-option
                v-for="item in getOptions(idx)"
                :key="item.value"
                :label="item.label"
                :value="item.value"
             >
                <span>{{ item.label }}</span>
-            </el-option>
-         </el-select>
+            </a-select-option>
+         </a-select>
          <div class="sort-item-info">
             <button
                class="text-button danger"

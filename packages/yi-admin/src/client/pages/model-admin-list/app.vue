@@ -2,19 +2,21 @@
    <div
       id="app"
    >
-      <no-ssr class="breadcrumb">
-         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '../../' }">
-               <a
-                  href="../../"
-                  target="_top"
-               >首页</a>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>{{ state.modelInfo.title || state.modelInfo.name }} 管理</el-breadcrumb-item>
-         </el-breadcrumb>
-      </no-ssr>
+      <a-breadcrumb separator=">">
+         <a-breadcrumb-item>
+            <a
+               href="../../"
+               target="_top"
+            >
+               首页
+            </a>
+         </a-breadcrumb-item>
+         <a-breadcrumb-item>
+            {{ state.modelInfo.title || state.modelInfo.name }} 管理
+         </a-breadcrumb-item>
+      </a-breadcrumb>
       <TableView />
-      <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
+      <pre v-text="JSON.stringify(state, null, '  ')" />
    </div>
 </template>
 
@@ -55,6 +57,10 @@ body {
 #app {
    padding 0 0 2em
    transition opacity 0.3s
+   >.ant-breadcrumb {
+      padding 1em 0
+      margin 0 1.2em
+   }
    >pre {
       font-size 12px
    }

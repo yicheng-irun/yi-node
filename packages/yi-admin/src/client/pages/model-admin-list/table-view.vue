@@ -1,68 +1,63 @@
 <template>
-   <no-ssr
-      v-loading="state.loading"
+   <a-spin
+      :spinning="state.loading"
       class="table-view"
    >
       <div class="top-action">
          <TableSort class="top-action-row" />
          <div class="top-action-row">
-            <el-button
-               class="create-btn"
-               size="mini"
-               icon="el-icon-plus"
+            <a-button
+               icon="plus"
+               type="dashed"
                @click="createData"
             >
                新增
-            </el-button>
-            <el-button
-               class="refresh-btn"
-               size="mini"
-               icon="el-icon-refresh-right"
+            </a-button>
+            <a-button
+               icon="reload"
+               type="dashed"
                @click="reloadData"
             >
                刷新
-            </el-button>
+            </a-button>
          </div>
          <div class="top-action-row">
             <span class="action-lable">对选中项进行</span>
-            <el-select
+            <!-- <a-select
                v-model="batchActionIndex"
                placeholder="请选择操作"
-               size="mini"
                :class="checkedIdList.length === 0 ? 'dashed' : ''"
             >
-               <el-option
+               <a-select-option
                   v-for="item in batchActionOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
                />
-            </el-select>
+            </a-select> -->
             <template>
-               <el-popconfirm
+               <a-popconfirm
                   v-if="selectedBatchAction && selectedBatchAction.popConfirm"
                   title="确定执行吗？"
                   @onConfirm="doBatchAction(selectedBatchAction)"
                >
-                  <el-button
+                  <a-button
                      slot="reference"
-                     size="mini"
                      :type="selectedBatchAction.buttonType || ''"
                      :icon="selectedBatchAction.buttonIcon || ''"
                   >
                      执行
-                  </el-button>
-               </el-popconfirm>
-               <el-button
+                  </a-button>
+               </a-popconfirm>
+               <a-button
                   v-else
-                  size="mini"
                   :type="(selectedBatchAction && selectedBatchAction.buttonType) || ''"
                   :icon="(selectedBatchAction && selectedBatchAction.buttonIcon) || ''"
                   :disabled="selectedBatchAction == null"
                   @click="doBatchAction(selectedBatchAction)"
                >
                   执行
-               </el-button>
+               </a-button>
             </template>
             <span
                v-if="checkedIdList"
@@ -78,8 +73,8 @@
                <thead class="table-view-thead">
                   <tr>
                      <th class="checkbox-all">
-                        <el-checkbox
-                           :value="allChecked"
+                        <a-checkbox
+                           :checked="allChecked"
                            @change="handelCheckAll"
                         />
                      </th>
@@ -99,7 +94,7 @@
                      v-for="(item, index) in listData"
                      :key="item.id || index"
                   >
-                     <td><el-checkbox v-model="listCheckedStatusArray[index]" /></td>
+                     <td><a-checkbox v-model="listCheckedStatusArray[index]" /></td>
                      <td class="index-td">
                         {{ index + 1 }}
                      </td>
@@ -110,31 +105,31 @@
                         <template
                            v-for="(actionItem, actionIndex) in rowListActions"
                         >
-                           <el-popconfirm
+                           <a-popconfirm
                               v-if="actionItem.popConfirm"
                               :key="actionIndex"
                               title="确定执行吗？"
-                              @onConfirm="doActions(actionItem, [item.id])"
+                              @confirm="doActions(actionItem, [item.id])"
                            >
-                              <el-button
+                              <a-button
                                  slot="reference"
-                                 size="mini"
+                                 size="small"
                                  :type="actionItem.buttonType || ''"
                                  :icon="actionItem.buttonIcon || ''"
                               >
                                  {{ actionItem.actionName }}
-                              </el-button>
-                           </el-popconfirm>
-                           <el-button
+                              </a-button>
+                           </a-popconfirm>
+                           <a-button
                               v-else
                               :key="actionIndex"
-                              size="mini"
+                              size="small"
                               :type="actionItem.buttonType || ''"
                               :icon="actionItem.buttonIcon || ''"
                               @click="doActions(actionItem, [item.id])"
                            >
                               {{ actionItem.actionName }}
-                           </el-button>
+                           </a-button>
                         </template>
                      </td>
                      <td
@@ -164,19 +159,19 @@
             </div>
          </div>
          <div class="table-view-footer">
-            <el-pagination
-               :current-page="pageIndex"
-               background
-               :page-sizes="[10, 20, 50, 100, 200]"
+            <a-pagination
+               :current="pageIndex"
+               :page-size-options="['10', '20', '50', '100', '200']"
                :page-size="state.pageSize"
-               layout="total, sizes, prev, pager, next, jumper"
                :total="state.total"
-               @size-change="handleSizeChange"
-               @current-change="handleCurrentChange"
+               show-size-changer
+               show-quick-jumper
+               @showSizeChange="handleSizeChange"
+               @change="handleCurrentChange"
             />
          </div>
       </div>
-   </no-ssr>
+   </a-spin>
 </template>
 
 <script>
@@ -285,7 +280,7 @@ export default {
             this.$set(this.listCheckedStatusArray, i, v);
          }
       },
-      async handleSizeChange (v) {
+      async handleSizeChange (a, v) {
          this.$store.commit('setPageIndex', 1);
          this.$store.commit('setPageSize', v);
          try {
@@ -387,14 +382,14 @@ export default {
 .table-view {
    font-size 12px
    margin 0 1.5em
-   >.top-action {
+   .top-action {
       padding 0.8em 0 0.5em
       >.top-action-row {
          font-size 0.9em
          color #000a
          padding 0.5em 0
-         >.refresh-btn {
-            border-style dashed
+         >.ant-btn {
+            margin 0 0.3em
          }
          >.action-lable {
             margin 0 0.8em 0 0
@@ -415,7 +410,7 @@ export default {
          }
       }
    }
-   >.panel-box {
+   .panel-box {
       box-shadow 0 0 3px #0001
       >.table-wrapper {
          overflow-x auto;
