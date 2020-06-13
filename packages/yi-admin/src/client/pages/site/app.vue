@@ -3,16 +3,9 @@
       <div class="ya-header">
          <span
             class="collapse-icon"
-            @click="isCollapse = !isCollapse"
+            @click="collapsed = !collapsed"
          >
-            <i
-               v-if="isCollapse"
-               class="el-icon-s-unfold"
-            />
-            <i
-               v-else
-               class="el-icon-s-fold"
-            />
+            <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
          </span>
          <span class="site-name">
             {{ siteConfig.siteName }}
@@ -21,33 +14,35 @@
       <div class="ya-main">
          <div
             class="ya-left-block"
-            :class="isCollapse ? 'collapse-style' : ''"
+            :class="collapsed ? 'collapse-style' : ''"
          >
-            <no-ssr>
-               <el-menu
-                  v-if="siteMenu && siteMenu.childrens"
-                  :collapse="isCollapse"
-               >
-                  <menu-tree
-                     v-for="(item, index) in siteMenu.childrens"
-                     :key="index"
-                     :site-menu="item"
-                     :index="`${index}`"
-                     :get-self-compnent="getSelfCompnent"
-                  />
-               </el-menu>
-            </no-ssr>
+            <menu-tree
+               :site-menu="siteMenu.children"
+               :collapsed="collapsed"
+            />
          </div>
          <div
             class="ya-right-block"
-            :class="isCollapse ? 'collapse-style' : ''"
+            :class="collapsed ? 'collapse-style' : ''"
          >
             <iframe
                ref="iframe"
                name="main_frame"
                :src="state.iframeSrc"
             />
-            <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
+            <!-- <div
+               :style="{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  overflow: 'auto',
+                  'z-index': 100,
+               }"
+            >
+               <pre v-text="JSON.stringify(state, null, '  ')" />
+            </div> -->
          </div>
       </div>
    </div>
@@ -70,7 +65,7 @@ export default {
    },
    data () {
       return {
-         isCollapse: false,
+         collapsed: false,
       };
    },
    computed: {
@@ -82,17 +77,6 @@ export default {
       },
       siteConfig () {
          return this.state.siteConfig;
-      }
-   },
-   methods: {
-      getSelfCompnent () {
-         return MenuTree;
-      },
-      handleOpen (v) {
-         console.log(v);
-      },
-      handleClose (v) {
-         console.log(v);
       },
    },
 };
@@ -100,7 +84,7 @@ export default {
 
 <style lang="stylus">
 leftWidth = 15em;
-collapseWidth = 60px
+collapseWidth = 80px
 
 html, body {
    position: relative;
@@ -161,32 +145,12 @@ html, body {
          height: 100%;
          overflow-y auto;
          overflow-x visible
-         background-color: #fff;
+         background-color: #001529
          box-shadow: 0 0 0.3em #0001;
          color: #fffb;
          z-index 10
          &.collapse-style {
             width collapseWidth
-         }
-         >.el-menu {
-            border-right: none;
-            .el-menu {
-               background-color #0000000b
-            }
-            .el-menu-item {
-               // padding-right 20px
-            }
-            .el-submenu .el-menu-item {
-               // min-width 13em
-            }
-            &.el-menu--collapse {
-               width 60px
-            }
-            a {
-               display inline-block
-               text-decoration none
-               color inherit
-            }
          }
       }
 
@@ -207,15 +171,4 @@ html, body {
       }
    }
 }
-.el-menu {
-   font-size 12px
-   .el-menu-item {
-      font-size 12px
-   }
-   .el-menu-item, .el-submenu__title {
-      height 3.2em
-      line-height 3.2em
-   }
-}
-
 </style>

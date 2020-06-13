@@ -38,8 +38,29 @@ module.exports = {
          * @param configuration webpack.Configuration
          * @param buildConfig BuildConfig
          * @param chunks client|server
+         * @returns webpack.Configuration
          */
       baseConfigProcess (configuration, buildConfig, chunks) {
+         const { rules } = configuration.module;
+         rules.forEach((ruleItem) => {
+            if (ruleItem.test && ruleItem.test.test('xxx.less')) {
+               ruleItem.use.forEach((useItem) => {
+                  if (useItem && useItem.loader === 'less-loader') {
+                     useItem.options = {
+                        ...useItem.options,
+                        lessOptions: {
+                           modifyVars: {
+                           //   'primary-color': '#1DA57A',
+                           //   'link-color': '#1DA57A',
+                           //   'border-radius-base': '2px',
+                           },
+                           javascriptEnabled: true,
+                        },
+                     };
+                  }
+               });
+            }
+         });
          return configuration;
       },
 

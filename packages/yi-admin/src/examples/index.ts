@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import mongoose from 'mongoose';
 import myadmin from './admin';
+import myadmin2 from './admin2';
 import settings from './settings';
 
 
@@ -10,8 +11,9 @@ export default async function createApp (): Promise<Koa> {
    const app = new Koa();
 
    myadmin.koaRouter.prefix('/test');
-
    app.use(myadmin.koaRouter.routes()).use(myadmin.koaRouter.allowedMethods());
+
+   app.use(myadmin2.koaRouter.routes()).use(myadmin2.koaRouter.allowedMethods());
 
    return app;
 }

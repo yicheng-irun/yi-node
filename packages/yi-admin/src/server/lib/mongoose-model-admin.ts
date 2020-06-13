@@ -154,7 +154,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
             };
          },
          buttonType: 'danger',
-         buttonIcon: 'el-icon-delete',
+         buttonIcon: 'delete',
       }));
    }
 

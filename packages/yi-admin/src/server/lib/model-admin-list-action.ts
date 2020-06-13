@@ -49,11 +49,11 @@ export class ModelAdminListAction {
 
       /**
        * 按钮上的图标
-       * 传递给前端el-button组件
+       * 传递给前端a-button组件
        * 按钮图标参考
        * 此处类型声明暂只声明一部分
-       * https://element.eleme.cn/#/zh-CN/component/icon
-       * 'el-icon-edit' | 'el-icon-share' | 'el-icon-delete' | 'el-icon-search' | 'el-icon-upload'
+       * https://www.antdv.com/components/icon-cn/
+       * 'edit' | 'share' | 'delete' | 'search' | 'upload'
        */
       buttonIcon?: string;
       /**
