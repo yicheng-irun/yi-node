@@ -1,54 +1,57 @@
 <template>
-   <div id="ya-site-page">
-      <div class="ya-header">
-         <span
-            class="collapse-icon"
-            @click="collapsed = !collapsed"
-         >
-            <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
-         </span>
-         <span class="site-name">
-            {{ siteConfig.siteName }}
-         </span>
-      </div>
-      <div class="ya-main">
-         <div
-            class="ya-left-block"
-            :class="collapsed ? 'collapse-style' : ''"
-         >
-            <menu-tree
-               :site-menu="siteMenu.children"
-               :collapsed="collapsed"
-            />
-         </div>
-         <div
-            class="ya-right-block"
-            :class="collapsed ? 'collapse-style' : ''"
-         >
-            <iframe
-               ref="iframe"
-               name="main_frame"
-               :src="state.iframeSrc"
-            />
-            <!-- <div
-               :style="{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  overflow: 'auto',
-                  'z-index': 100,
-               }"
+   <a-config-provider :locale="zhCN">
+      <div id="ya-site-page">
+         <div class="ya-header">
+            <span
+               class="collapse-icon"
+               @click="collapsed = !collapsed"
             >
-               <pre v-text="JSON.stringify(state, null, '  ')" />
-            </div> -->
+               <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
+            </span>
+            <span class="site-name">
+               {{ siteConfig.siteName }}
+            </span>
+         </div>
+         <div class="ya-main">
+            <div
+               class="ya-left-block"
+               :class="collapsed ? 'collapse-style' : ''"
+            >
+               <menu-tree
+                  :site-menu="siteMenu.children"
+                  :collapsed="collapsed"
+               />
+            </div>
+            <div
+               class="ya-right-block"
+               :class="collapsed ? 'collapse-style' : ''"
+            >
+               <iframe
+                  ref="iframe"
+                  name="main_frame"
+                  :src="state.iframeSrc"
+               />
+               <!-- <div
+                  :style="{
+                     position: 'absolute',
+                     top: 0,
+                     left: 0,
+                     width: '100%',
+                     height: '100%',
+                     overflow: 'auto',
+                     'z-index': 100,
+                  }"
+               >
+                  <pre v-text="JSON.stringify(state, null, '  ')" />
+               </div> -->
+            </div>
          </div>
       </div>
-   </div>
+   </a-config-provider>
 </template>
 
 <script>
+import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
 import createStore from './store';
 import MenuTree from './menu-tree';
 
@@ -66,6 +69,7 @@ export default {
    data () {
       return {
          collapsed: false,
+         zhCN,
       };
    },
    computed: {

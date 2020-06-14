@@ -17,6 +17,7 @@ export class ArrayImageModelClass {
             listStyleMaxHeight: '3em',
          }),
          listStyleInline: true,
+         maxLength: 2,
       }),
    })
    public images1?: string[];

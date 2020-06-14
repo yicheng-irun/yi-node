@@ -1,7 +1,7 @@
 <template>
    <div
 
-      class="form-component-jodit-editor"
+      class="form-component-string-jodit-editor"
    >
       <textarea
          ref="textarea"
@@ -35,7 +35,7 @@ export default {
          default: '',
       },
       editFormData: {
-         type: Object,
+         type: [Object, Array],
          default () {
             return {};
          },
@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.form-component-jodit-editor {
+.form-component-string-jodit-editor {
    position relative
    font-size 1em
    max-width 60em

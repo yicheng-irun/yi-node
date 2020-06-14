@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import { Antd } from 'ant-design-vue';
-// import 'ant-design-vue/dist/antd.css';
 import {
-   Button, Breadcrumb, Checkbox, Icon, LocaleProvider, Menu, Pagination, Popconfirm, Select, Spin, message, notification,
+   Button, Breadcrumb, ConfigProvider, Checkbox, DatePicker, Form, Icon, Input, InputNumber, Menu, Pagination, Popconfirm, Select, Spin, Switch, message, notification,
 } from 'ant-design-vue';
 import runtime from './lib/runtime';
 import pages from './pages';
@@ -17,14 +15,19 @@ Vue.component('NoSsr', NoSSR);
 
 Vue.use(Button);
 Vue.use(Breadcrumb);
+Vue.use(ConfigProvider);
 Vue.use(Checkbox);
+Vue.use(DatePicker);
+Vue.use(Form);
 Vue.use(Icon);
-Vue.use(LocaleProvider);
+Vue.use(Input);
+Vue.use(InputNumber);
 Vue.use(Menu);
 Vue.use(Pagination);
 Vue.use(Popconfirm);
 Vue.use(Select);
 Vue.use(Spin);
+Vue.use(Switch);
 
 Vue.prototype.$message = message;
 Vue.prototype.$notify = notification;

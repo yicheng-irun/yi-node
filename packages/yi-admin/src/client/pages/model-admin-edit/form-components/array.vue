@@ -8,9 +8,10 @@
          class="form-components-array-item"
       >
          <div class="delete-btn">
-            <el-button
+            <a-button
                type="danger"
-               icon="el-icon-minus"
+               icon="close"
+               size="small"
                circle
                @click="value.splice(index, 1)"
             />
@@ -25,9 +26,11 @@
             :field-name="fieldName"
          />
       </div>
-      <el-button
-         icon="el-icon-plus"
+      <a-button
+         v-if="value.length < maxLength"
+         icon="plus"
          type="primary"
+         size="small"
          circle
          @click="value.push(null)"
       />
@@ -59,6 +62,7 @@ export default {
                required: false,
                helpText: '',
                minLength: 0,
+               maxLength: 100,
                childrenType: {
                   componentName: 'base',
                   fieldName: '',
@@ -80,6 +84,9 @@ export default {
       componentConfig () {
          return this.config?.childrenType?.componentConfig || {};
       },
+      maxLength () {
+         return this.config?.maxLength || Infinity;
+      },
    },
    methods: {
       async getComponent () {
@@ -99,11 +106,11 @@ export default {
    color #606266
    >.form-components-array-item {
       position relative
-      margin 0 0 0.5em 2em
+      margin 0 0 0.5em 2.4em
       min-height 2em
       >.delete-btn {
          position absolute
-         left -2em
+         left -2.4em
       }
    }
 }

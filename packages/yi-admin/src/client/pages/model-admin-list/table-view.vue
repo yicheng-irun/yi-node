@@ -4,7 +4,6 @@
       class="table-view"
    >
       <div class="top-action">
-         <TableSort class="top-action-row" />
          <div class="top-action-row">
             <a-button
                icon="plus"
@@ -21,28 +20,34 @@
                刷新
             </a-button>
          </div>
+         <TableSort class="top-action-row" />
          <div class="top-action-row">
             <span class="action-lable">对选中项进行</span>
-            <!-- <a-select
+            <a-select
+               v-if="checkedIdList"
                v-model="batchActionIndex"
                placeholder="请选择操作"
+               style="min-width: 150px"
                :class="checkedIdList.length === 0 ? 'dashed' : ''"
             >
                <a-select-option
                   v-for="item in batchActionOptions"
                   :key="item.value"
-                  :label="item.label"
                   :value="item.value"
-               />
-            </a-select> -->
+               >
+                  {{ item.label }}
+               </a-select-option>
+            </a-select>
             <template>
                <a-popconfirm
                   v-if="selectedBatchAction && selectedBatchAction.popConfirm"
-                  title="确定执行吗？"
-                  @onConfirm="doBatchAction(selectedBatchAction)"
+                  title="确定执行这个操作吗？"
+                  ok-text="是"
+                  cancel-text="否"
+                  :ok-type="selectedBatchAction.buttonType || 'primary'"
+                  @confirm="doBatchAction(selectedBatchAction)"
                >
                   <a-button
-                     slot="reference"
                      :type="selectedBatchAction.buttonType || ''"
                      :icon="selectedBatchAction.buttonIcon || ''"
                   >
@@ -108,11 +113,13 @@
                            <a-popconfirm
                               v-if="actionItem.popConfirm"
                               :key="actionIndex"
-                              title="确定执行吗？"
+                              title="确定执行这个操作吗？"
+                              ok-text="是"
+                              cancel-text="否"
+                              :ok-type="actionItem.buttonType || 'primary'"
                               @confirm="doActions(actionItem, [item.id])"
                            >
                               <a-button
-                                 slot="reference"
                                  size="small"
                                  :type="actionItem.buttonType || ''"
                                  :icon="actionItem.buttonIcon || ''"
@@ -164,6 +171,7 @@
                :page-size-options="['10', '20', '50', '100', '200']"
                :page-size="state.pageSize"
                :total="state.total"
+               :show-total="total => `总共 ${total} 项记录`"
                show-size-changer
                show-quick-jumper
                @showSizeChange="handleSizeChange"
@@ -287,8 +295,8 @@ export default {
             await this.$store.dispatch('fetchListData');
          } catch (e) {
             this.$notify.error({
-               title: '出错了',
-               message: e?.message || '拉取数据出错了',
+               message: '出错了',
+               description: e?.message || '拉取数据出错了',
             });
          }
       },
@@ -301,8 +309,8 @@ export default {
                await this.$store.dispatch('fetchListData', { pageIndex: v });
             } catch (e) {
                this.$notify.error({
-                  title: '出错了',
-                  message: e?.message || '拉取数据出错了',
+                  message: '出错了',
+                  description: e?.message || '拉取数据出错了',
                });
             }
          });
@@ -317,8 +325,8 @@ export default {
             await this.$store.dispatch('fetchListData');
          } catch (e) {
             this.$notify.error({
-               title: '出错了',
-               message: e?.message || '拉取数据出错了',
+               message: '出错了',
+               description: e?.message || '拉取数据出错了',
             });
          }
       },
@@ -327,7 +335,7 @@ export default {
          const idList = this.checkedIdList;
          if (idList.length <= 0) {
             this.$notify.error({
-               title: '未勾选任何项目',
+               message: '未勾选任何项目',
             });
             return;
          }
@@ -350,16 +358,16 @@ export default {
                   failedNum = 0,
                } = result.data || {};
                this.$notify.success({
-                  title: `${actionObj.actionName} 执行完成`,
-                  message: `${successfulNum} 项执行成功，${failedNum} 项执行失败`,
+                  message: `${actionObj.actionName} 执行完成`,
+                  description: `${successfulNum} 项执行成功，${failedNum} 项执行失败`,
                });
             } else {
                throw new Error(result?.message || `执行 ${actionObj.actionName} 操作失败了`);
             }
          } catch (e) {
             this.$notify.error({
-               title: `${actionObj.actionName} 未执行完成`,
-               message: e?.message || `执行 ${actionObj.actionName} 操作失败了`,
+               message: `${actionObj.actionName} 未执行完成`,
+               description: e?.message || `执行 ${actionObj.actionName} 操作失败了`,
             });
          } finally {
             this.$store.commit('setLoading', false);
@@ -369,8 +377,8 @@ export default {
             await this.$store.dispatch('fetchListData');
          } catch (e) {
             this.$notify.error({
-               title: '出错了',
-               message: e?.message || '拉取数据出错了',
+               message: '出错了',
+               description: e?.message || '拉取数据出错了',
             });
          }
       },
@@ -394,14 +402,11 @@ export default {
          >.action-lable {
             margin 0 0.8em 0 0
          }
-         >.el-select {
+         >.ant-select {
             margin 0 0.8em 0 0
-            &.dashed>.el-input>input {
+            &.dashed>.ant-select-selection {
                border-style dashed
             }
-         }
-         >.el-button {
-
          }
          >.batch-action-helptext {
             font-size 12px
@@ -445,9 +450,8 @@ export default {
                      }
                      &.actions-td {
                         text-align center
-                        .el-button {
-                           padding 0.4em 0.8em
-                           margin 0.3em
+                        .ant-btn {
+                           margin 0.1em
                         }
                      }
                      >.fields-wrap {
@@ -471,7 +475,7 @@ export default {
          border-top 1px dashed #0003
          line-height 3em
          background #fff
-         padding 0.7em 1em 0.2em
+         padding 1em 1em
          color #000a
       }
    }

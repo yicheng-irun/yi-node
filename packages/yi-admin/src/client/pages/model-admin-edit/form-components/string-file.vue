@@ -6,20 +6,22 @@
          class="file-link"
          target="_blank"
       >{{ value }}</a>
-      <el-button
-         v-if="value"
-         type="danger"
-         icon="el-icon-delete"
-         size="mini"
-         @click="handleInput('')"
-      />
-      <el-button
-         size="mini"
-         type="primary"
-         @click="selectFile"
-      >
-         {{ value ? '重新选择' : '选择文件' }}
-      </el-button>
+      <a-button-group>
+         <a-button
+            v-if="value"
+            type="danger"
+            icon="close"
+            size="small"
+            @click="handleInput('')"
+         />
+         <a-button
+            size="small"
+            type="primary"
+            @click="selectFile"
+         >
+            {{ value ? '重新选择' : '选择文件' }}
+         </a-button>
+      </a-button-group>
    </div>
 </template>
 
@@ -125,7 +127,7 @@ export default {
       margin 0 0.5em 0 0
       font-size 12px
    }
-   >.el-button {
+   >.a-button {
       padding 0.2em 0.5em
       margin 0 0.3em
    }

@@ -2,6 +2,7 @@ import Koa from 'koa';
 import mongoose from 'mongoose';
 import myadmin from './admin';
 import myadmin2 from './admin2';
+import uploadsRouter from './uploads-router';
 import settings from './settings';
 
 
@@ -14,6 +15,8 @@ export default async function createApp (): Promise<Koa> {
    app.use(myadmin.koaRouter.routes()).use(myadmin.koaRouter.allowedMethods());
 
    app.use(myadmin2.koaRouter.routes()).use(myadmin2.koaRouter.allowedMethods());
+
+   app.use(uploadsRouter.routes());
 
    return app;
 }

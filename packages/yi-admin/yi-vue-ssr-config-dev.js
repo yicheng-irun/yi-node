@@ -50,6 +50,8 @@ module.exports = {
                         ...useItem.options,
                         lessOptions: {
                            modifyVars: {
+                              'success-color': '#52c41a',
+                              'error-color': '#f5222d',
                            //   'primary-color': '#1DA57A',
                            //   'link-color': '#1DA57A',
                            //   'border-radius-base': '2px',

@@ -1,7 +1,6 @@
 <template>
    <div
-
-      class="form-component-ueditor"
+      class="form-component-string-ueditor"
    >
       <textarea
          :id="textareaId"
@@ -36,7 +35,7 @@ export default {
          default: '',
       },
       editFormData: {
-         type: Object,
+         type: [Object, Array],
          default () {
             return {};
          },
@@ -88,7 +87,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.form-component-ueditor {
+.form-component-string-ueditor {
    position relative
    font-size 1em
    max-width 60em

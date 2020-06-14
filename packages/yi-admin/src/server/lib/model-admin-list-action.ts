@@ -12,9 +12,9 @@ export interface ListActionResult {
 
 /**
  * 按钮类型参考
- * https://element.eleme.cn/#/zh-CN/component/button
+ * https://www.antdv.com/components/button-cn/
  */
-export type ButtonType = '' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
+export type ButtonType = '' | 'primary' | 'dashed' | 'danger' | 'link';
 
 /**
  * 列表页的用户动作类

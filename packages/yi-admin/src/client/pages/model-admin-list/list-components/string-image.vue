@@ -23,8 +23,8 @@ export default {
    },
    props: {
       value: {
-         type: Boolean,
-         default: null,
+         type: String,
+         default: '',
       },
       config: {
          type: Object,

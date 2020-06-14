@@ -1,26 +1,29 @@
 <template>
-   <div
-      id="app"
-   >
-      <a-breadcrumb separator=">">
-         <a-breadcrumb-item>
-            <a
-               href="../../"
-               target="_top"
-            >
-               首页
-            </a>
-         </a-breadcrumb-item>
-         <a-breadcrumb-item>
-            {{ state.modelInfo.title || state.modelInfo.name }} 管理
-         </a-breadcrumb-item>
-      </a-breadcrumb>
-      <TableView />
-      <pre v-text="JSON.stringify(state, null, '  ')" />
-   </div>
+   <a-config-provider :locale="zhCN">
+      <div
+         id="app"
+      >
+         <a-breadcrumb separator=">">
+            <a-breadcrumb-item>
+               <a
+                  href="../../"
+                  target="_top"
+               >
+                  首页
+               </a>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>
+               {{ state.modelInfo.title || state.modelInfo.name }} 管理
+            </a-breadcrumb-item>
+         </a-breadcrumb>
+         <TableView />
+         <!-- <pre v-text="JSON.stringify(state, null, '  ')" /> -->
+      </div>
+   </a-config-provider>
 </template>
 
 <script>
+import zhCN from 'ant-design-vue/es/locale-provider/zh_CN';
 import createStore from './store';
 import TableView from './table-view';
 
@@ -38,6 +41,7 @@ export default {
    },
    data () {
       return {
+         zhCN,
       };
    },
    computed: {

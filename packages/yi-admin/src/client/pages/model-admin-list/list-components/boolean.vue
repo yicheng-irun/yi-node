@@ -3,13 +3,9 @@
       v-if="typeof value === 'boolean'"
       class="list-components-boolean"
    >
-      <i
-         v-if="value"
-         class="el-icon-success"
-      />
-      <i
-         v-else
-         class="el-icon-error"
+      <a-icon
+         :type="value ? 'check-circle' : 'close-circle'"
+         :class="value ? 'success' : 'error'"
       />
    </div>
    <div v-else>
@@ -38,14 +34,14 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .list-components-boolean {
-   font-size 1.5em
-   >.el-icon-success {
-      color #67c23a
+   font-size: 1.5em;
+   >.success {
+      color: @success-color
    }
-   >.el-icon-error {
-      color #f56c6c
+   >.error {
+      color: @error-color
    }
 }
 </style>

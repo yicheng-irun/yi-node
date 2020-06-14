@@ -1,5 +1,5 @@
 <template>
-   <span
+   <div
       class="form-components-base"
       v-text="value"
    />

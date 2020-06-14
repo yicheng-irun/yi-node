@@ -1,45 +1,49 @@
 <template>
-   <div class="form-component-boolean">
-      <el-switch
-         :value="value"
-         @change="handleChange"
+   <a-switch
+      v-model="editFormData[objectKey]"
+      class="form-component-boolean"
+   >
+      <a-icon
+         slot="checkedChildren"
+         type="check"
       />
-      <span>({{ value ? '是' : '否' }})</span>
-   </div>
+      <a-icon
+         slot="unCheckedChildren"
+         type="close"
+      />
+   </a-switch>
 </template>
 
 <script>
 export default {
-   model: {
-      prop: 'value',
-      event: 'input',
-   },
+
    props: {
-      value: {
-         type: Boolean,
-         default: false,
-      },
+
       config: {
          type: Object,
          default () {
             return {};
          },
       },
+      editFormData: {
+         type: [Object, Array],
+         default () {
+            return {};
+         },
+      },
+      objectKey: {
+         type: [String, Number],
+         default: '',
+      },
    },
    methods: {
-      handleChange (value) {
-         this.$emit('input', !!value);
-      },
+
    },
 };
 </script>
 
 <style lang="stylus">
 .form-component-boolean {
-   >span {
-      margin 0 0.8em;
-      font-size 0.8em;
-      opacity 0.7
-   }
+
 }
 </style>

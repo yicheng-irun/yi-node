@@ -1,37 +1,30 @@
 <template>
-   <el-select
-      :value="value"
+   <a-select
+      v-model="editFormData[objectKey]"
       :placeholder="config.placeholder == null ? '搜索和选择' : config.placeholder"
-      :clearable="config.required ? false : true"
-      filterable
-      remote
-      :remote-method="remoteMethod"
+      show-search
+      :allow-clear="true"
       :loading="loading"
-      class="form-component-el-string-remote-select"
-      @change="handleInput"
+      :filter-option="false"
+      class="form-component-string-remote-select"
+      @search="remoteMethod"
    >
-      <el-option
+      <a-select-option
          v-for="item in options"
          :key="item.value"
          :label="item.label"
          :value="item.value"
-      />
-   </el-select>
+      >
+         {{ item.label }}
+      </a-select-option>
+   </a-select>
 </template>
 
 <script>
 
 export default {
-   model: {
-      prop: 'value',
-      event: 'input',
-   },
    props: {
       fieldName: {
-         type: String,
-         default: '',
-      },
-      value: {
          type: String,
          default: '',
       },
@@ -40,6 +33,16 @@ export default {
          default () {
             return {};
          },
+      },
+      editFormData: {
+         type: [Object, Array],
+         default () {
+            return {};
+         },
+      },
+      objectKey: {
+         type: [String, Number],
+         default: '',
       },
    },
 
@@ -131,16 +134,12 @@ export default {
          }
          this.loading = false;
       },
-      handleInput (value) {
-         const v = String(value);
-         this.$emit('input', v);
-      },
    },
 };
 </script>
 
 <style lang="stylus">
-.form-component-el-string-remote-select {
-   // max-width 20em
+.form-component-string-remote-select.ant-select {
+   max-width 20em
 }
 </style>

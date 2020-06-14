@@ -11,20 +11,22 @@
             :alt="value"
          >
       </a>
-      <el-button
-         v-if="value"
-         type="danger"
-         icon="el-icon-delete"
-         size="mini"
-         @click="handleInput('')"
-      />
-      <el-button
-         size="mini"
-         type="primary"
-         @click="selectFile"
-      >
-         {{ value ? '重新选择' : '选择图片' }}
-      </el-button>
+      <a-button-group>
+         <a-button
+            v-if="value"
+            type="danger"
+            icon="close"
+            size="small"
+            @click="handleInput('')"
+         />
+         <a-button
+            size="small"
+            type="primary"
+            @click="selectFile"
+         >
+            {{ value ? '重新选择' : '选择图片' }}
+         </a-button>
+      </a-button-group>
    </div>
 </template>
 
@@ -141,7 +143,7 @@ export default {
          box-shadow 0 0 6px #0003
       }
    }
-   >.el-button {
+   >.a-button {
       padding 0.2em 0.5em
       margin 0 0.3em
    }

@@ -1,36 +1,39 @@
 <template>
-   <el-select
-      :value="value"
+   <a-select
+      v-model="editFormData[objectKey]"
       :placeholder="config.placeholder == null ? '请选择' : config.placeholder"
       :clearable="config.required ? false : true"
-      class="form-component-el-string-enum"
-      @change="handleInput"
+      :allow-clear="true"
+      class="form-component-string-enum"
    >
-      <el-option
+      <a-select-option
          v-for="item in options"
          :key="item.value"
-         :label="item.label"
          :value="item.value"
-      />
-   </el-select>
+      >
+         {{ item.label }}
+      </a-select-option>
+   </a-select>
 </template>
 
 <script>
 export default {
-   model: {
-      prop: 'value',
-      event: 'input',
-   },
    props: {
-      value: {
-         type: String,
-         default: '',
-      },
       config: {
          type: Object,
          default () {
             return {};
          },
+      },
+      editFormData: {
+         type: [Object, Array],
+         default () {
+            return {};
+         },
+      },
+      objectKey: {
+         type: [String, Number],
+         default: '',
       },
    },
 
@@ -59,16 +62,12 @@ export default {
       },
    },
    methods: {
-      handleInput (value) {
-         const v = String(value);
-         this.$emit('input', v);
-      },
    },
 };
 </script>
 
 <style lang="stylus">
-.form-component-el-string-enum.el-input {
-   // max-width 20em
+.form-component-string-enum.ant-select {
+   max-width 20em
 }
 </style>

@@ -1,25 +1,22 @@
 <template>
-   <no-ssr
-      v-loading="state.loading"
+   <a-spin
+      :spinning="state.loading"
       class="edit-form"
    >
-      <el-form
+      <a-form
          ref="form"
          :model="editFormData"
-         status-icon
-         size="small"
-         :rules="formRules"
-         label-width="110px"
+         layout="horizontal"
       >
-         <el-form-item
+         <a-form-item
             v-if="editId"
             label="id:"
          >
             <div class="edit-id">
                {{ editId }}
             </div>
-         </el-form-item>
-         <el-form-item
+         </a-form-item>
+         <a-form-item
             v-for="(item, index) in editFormFields"
             :key="index"
             :label="`${item.fieldNameAlias || item.fieldName}:`"
@@ -40,20 +37,27 @@
                class="ya-help-text"
                v-text="item.componentConfig.helpText"
             />
-         </el-form-item>
-         <el-form-item>
-            <el-button
-               type="primary"
-               @click="submit"
-            >
-               {{ editId ? '保存' : '提交' }}
-            </el-button>
-            <el-button @click="reset">
-               重置
-            </el-button>
-         </el-form-item>
-      </el-form>
-   </no-ssr>
+         </a-form-item>
+         <a-form-item>
+            <a-button-group>
+               <a-button
+                  type="primary"
+                  icon="check"
+                  @click="submit"
+               >
+                  {{ editId ? '保存' : '提交' }}
+               </a-button>
+               <a-button
+                  type="dashed"
+                  icon="undo"
+                  @click="reset"
+               >
+                  重置
+               </a-button>
+            </a-button-group>
+         </a-form-item>
+      </a-form>
+   </a-spin>
 </template>
 
 <script>
@@ -103,16 +107,16 @@ export default {
             const data = await this.$store.dispatch('formSubmit');
             if (data?.success) {
                this.$notify.success({
-                  title: '保存成功',
                   message: '保存成功',
+                  description: '保存成功',
                });
             } else {
                throw new Error(data?.message || '保存失败');
             }
          } catch (e) {
             this.$notify.error({
-               title: '提交出错了',
-               message: e?.message || `${e}`,
+               message: '提交出错了',
+               description: e?.message || `${e}`,
             });
          }
 
@@ -122,13 +126,13 @@ export default {
          try {
             this.$store.commit('resetEditFormData');
             this.$notify.success({
-               title: '重置好了',
                message: '重置好了',
+               description: '重置好了',
             });
          } catch (e) {
             this.$notify.error({
-               title: '重置出错了',
-               message: e?.message || `${e}`,
+               message: '重置出错了',
+               description: e?.message || `${e}`,
             });
          }
       },
@@ -140,30 +144,28 @@ export default {
 .edit-form {
    padding 2em 0em
    margin 0 1em
-   >.el-form {
-      .edit-id {
-         font-size 0.8em
-         color #606266
+   >div.ant-spin-container {
+      >.ant-form {
+         >.ant-form-item {
+            >.ant-form-item-label {
+            }
+            >.ant-form-item-control-wrapper {
+            }
+            @media (min-width: 576px) {
+               >.ant-form-item-label {
+                  position absolute
+                  width 10em
+               }
+               >.ant-form-item-control-wrapper {
+                  position relative
+                  min-height 1em
+                  margin 0 0 0 10.5em
+               }
+            }
+         }
       }
    }
 
-   >.el-loading-mask {
-      background #fffa
-   }
-
-   .el-form-item__label {
-      font-size 0.8em
-      opacity 0.9
-   }
-   .el-button--small {
-      padding 0.6em 1.5em
-      &.is-circle {
-         padding 0.2em
-      }
-   }
-   .el-form-item__content {
-
-   }
    .ya-help-text {
       margin 0.5em 0 0
       color #0007
