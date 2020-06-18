@@ -89,6 +89,7 @@
                      <th
                         v-for="(item, idx) in listFields"
                         :key="idx"
+                        class="field"
                      >
                         <span v-text="item.fieldNameAlias || item.fieldName" />
                      </th>
@@ -431,6 +432,14 @@ export default {
                >tr {
                   >th {
                      padding 1.2em 0.4em 1em
+                     text-align center
+                     &.checkbox-all {
+                        padding: 1.2em 0.8em 1em
+                        text-align left
+                     }
+                     &.field {
+                        min-width 4em
+                     }
                   }
                }
             }

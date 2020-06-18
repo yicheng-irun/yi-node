@@ -5,7 +5,7 @@ import { join, dirname } from 'path';
 import { createHash } from 'crypto';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
-import { getFileWriter, mkdirTraverse } from '../tools/file-writer';
+import { getFileWriter, mkdirTraverse } from '../../tools/file-writer';
 
 /* 前后端通信相关的配置,注释只允许使用多行方式 */
 const ueditorConfig = {

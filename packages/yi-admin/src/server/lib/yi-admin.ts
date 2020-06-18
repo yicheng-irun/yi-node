@@ -11,7 +11,7 @@ import { SiteNavMenu } from './site-nav-menu';
 import { ListBaseType } from './list-types/list-base-type';
 import { EditTypes, ListTypes } from './types';
 import { assetsRouter } from './assets-router';
-import { jsonErrorMiddleware } from './tools/json-error-middleware';
+import { jsonErrorMiddleware } from '../tools/json-error-middleware';
 
 /**
  * admin站点

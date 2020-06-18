@@ -99,15 +99,6 @@ export class YiAdminDemo {
    public textField3?: string;
 
    @prop({
-      type: String,
-      name: '颜色',
-      editType: new EditTypes.EditStringColorType({
-         required: false,
-      }),
-   })
-   public stringColor: string;
-
-   @prop({
       type: Number,
       min: 0,
       max: 100,

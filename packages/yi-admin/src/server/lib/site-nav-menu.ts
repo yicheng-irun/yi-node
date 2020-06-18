@@ -1,4 +1,6 @@
-
+/**
+ * 站点导航菜单
+ */
 export class SiteNavMenu {
    /**
     * 菜单名称
