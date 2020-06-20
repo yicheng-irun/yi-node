@@ -20,6 +20,7 @@ export class YiAdminDemo {
    @prop({
       type: String,
       required: true,
+      filterType: new MongooseModelAdmin.FilterTypes.FilterStringSearchType(),
    })
    public strField2?: string;
 

@@ -23,6 +23,7 @@
                   :object-key="fItem.fieldName"
                   :config="fItem.componentConfig"
                   :field-name="fItem.fieldName"
+                  @reloadData="reloadData"
                />
             </div>
          </a-tooltip>

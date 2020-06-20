@@ -25,7 +25,7 @@ module.exports = {
    /**
      * 开发时，请访问devServerPort
      */
-   devServerPort: Number.parseInt(process.env.DEV_SERVER_PORT || '20000', 10),
+   devServerPort: Number.parseInt(process.env.DEV_SERVER_PORT || '30000', 10),
 
    /**
      * node server 在开发模式下监听的端口，用于webpack devServer 的proxy

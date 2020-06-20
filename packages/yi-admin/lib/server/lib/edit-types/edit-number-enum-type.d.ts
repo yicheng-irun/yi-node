@@ -24,7 +24,7 @@ export declare class EditNumberEnumType extends EditBaseType {
         }[];
     };
     constructor(config: EditBaseTypeConfig & {
-        enum?: (number | {
+        enum: (number | {
             value: number;
             label: string;
         })[];

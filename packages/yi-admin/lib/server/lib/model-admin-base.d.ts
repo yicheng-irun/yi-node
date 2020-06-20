@@ -2,6 +2,7 @@ import { Context, Next } from 'koa';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
+import { FilterBaseType } from './filter-types/filter-base-type';
 export interface ModelAdminBaseParams {
     /**
      * 用来判断用户是否有权限
@@ -41,7 +42,13 @@ export interface DataListRequestBody {
     /**
      * '-id', 'name', '-field'
      */
-    sort?: string;
+    sort: string;
+    /**
+     * 过滤条件
+     */
+    conditions: {
+        [key: string]: any;
+    };
 }
 export interface DataListResponseBody {
     /**
@@ -97,7 +104,11 @@ export declare class ModelAdminBase {
      */
     getDataList(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
     /**
-     * 删除除某一项
+     * 删除除某一项，用于提供默认的删除功能
      */
     removeItem(id: string, ctx: Context): Promise<void>;
+    /**
+     * 获取列表页过滤的参数
+     */
+    getFilterFields(): FilterBaseType[];
 }

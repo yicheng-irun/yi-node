@@ -22,14 +22,20 @@ export declare class YiAdmin {
      * 站点导航菜单
      */
     siteNavMenu: SiteNavMenu;
+    siteConfig: {
+        siteName: string;
+    };
     modelNavMenu: SiteNavMenu;
-    constructor({ permission, serverOrigin }: {
+    constructor({ permission, serverOrigin, siteConfig }: {
         permission?: (ctx: Context, next: Next) => Promise<any>;
         /**
          * example: "http://127.0.0.1:80"
          * 请返回koa.lisen的端口，用于vue服务端渲染(SSR)中进行数据接口请求
          */
         serverOrigin: string;
+        siteConfig?: {
+            siteName?: string;
+        };
     });
     private createKoaRouter;
     private appendPermissionCheckRouter;
@@ -53,7 +59,6 @@ export declare class YiAdmin {
         EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").EditNumberEnumType;
         EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").EditNumberRemoteSelectType;
         EditNumberType: typeof import("./edit-types/edit-number-type").EditNumberType;
-        EditStringColorType: typeof import("./edit-types/edit-string-color-type").EditStringColorType;
         EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").EditStringEnumType;
         EditStringFileType: typeof import("./edit-types/edit-string-file").EditStringFileType;
         EditStringImageType: typeof import("./edit-types/edit-string-image").EditStringImageType;

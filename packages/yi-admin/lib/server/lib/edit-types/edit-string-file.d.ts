@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
-import { getFileWriter } from '../tools/file-writer';
+import { getFileWriter } from '../../tools/file-writer';
 export declare type EditStringFileTypeConfig = EditBaseTypeConfig & {
     minLength?: number;
     maxLength?: number;

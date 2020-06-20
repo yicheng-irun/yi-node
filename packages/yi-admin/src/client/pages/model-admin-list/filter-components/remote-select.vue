@@ -9,6 +9,7 @@
       :mode="config.multiSelect ? 'multiple' : undefined"
       class="filter-component-remote-select"
       @search="remoteMethod"
+      @change="$emit('reloadData')"
    >
       <a-select-option
          v-for="item in options"

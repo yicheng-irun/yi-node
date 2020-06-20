@@ -4,6 +4,7 @@
       :placeholder="config.placeholder || ``"
       :max-length="config.maxLength"
       class="filter-component-string"
+      @pressEnter="$emit('reloadData')"
    />
 </template>
 

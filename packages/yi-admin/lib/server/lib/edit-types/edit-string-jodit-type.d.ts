@@ -1,7 +1,7 @@
 import { Context } from 'koa';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
-import { getFileWriter } from '../tools/file-writer';
+import { getFileWriter } from '../../tools/file-writer';
 /**
  * 富文本编辑器类型  jodit
  */

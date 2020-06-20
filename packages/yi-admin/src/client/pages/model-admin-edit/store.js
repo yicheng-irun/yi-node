@@ -68,7 +68,7 @@ export default function ({
             });
             const result = rsp.data;
             if (result?.success && result?.data?.id) {
-               // this.commit('setEditId', result.data);
+               this.commit('setEditId', result.data);
                this.commit('setEditFormData', result.data);
             }
             return rsp.data;

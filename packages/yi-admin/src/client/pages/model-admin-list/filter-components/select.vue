@@ -6,6 +6,7 @@
       :allow-clear="true"
       :mode="config.multiSelect ? 'multiple' : undefined"
       class="filter-component-select"
+      @change="$emit('reloadData')"
    >
       <a-select-option
          v-for="item in options"

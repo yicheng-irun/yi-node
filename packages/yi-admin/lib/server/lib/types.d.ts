@@ -5,7 +5,6 @@ import { EditDateTimeType } from './edit-types/edit-date-time-type';
 import { EditNumberEnumType } from './edit-types/edit-number-enum-type';
 import { EditNumberRemoteSelectType } from './edit-types/edit-number-remote-select-type';
 import { EditNumberType } from './edit-types/edit-number-type';
-import { EditStringColorType } from './edit-types/edit-string-color-type';
 import { EditStringEnumType } from './edit-types/edit-string-enum-type';
 import { EditStringFileType } from './edit-types/edit-string-file';
 import { EditStringImageType } from './edit-types/edit-string-image';
@@ -30,7 +29,6 @@ export declare const EditTypes: {
     EditNumberEnumType: typeof EditNumberEnumType;
     EditNumberRemoteSelectType: typeof EditNumberRemoteSelectType;
     EditNumberType: typeof EditNumberType;
-    EditStringColorType: typeof EditStringColorType;
     EditStringEnumType: typeof EditStringEnumType;
     EditStringFileType: typeof EditStringFileType;
     EditStringImageType: typeof EditStringImageType;
