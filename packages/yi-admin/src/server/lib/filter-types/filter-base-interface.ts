@@ -6,6 +6,11 @@ export interface FilterBaseTypeConfig {
     * 气泡提示
     */
    tip?: string;
+
+   /**
+    * placeholder
+    */
+   placeholder?: string;
 }
 
 /**

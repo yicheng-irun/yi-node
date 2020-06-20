@@ -12,6 +12,7 @@ import { ListBaseType } from './list-types/list-base-type';
 import { EditTypes, ListTypes } from './types';
 import { assetsRouter } from './assets-router';
 import { jsonErrorMiddleware } from '../tools/json-error-middleware';
+import { FilterBaseType } from './filter-types/filter-base-type';
 
 /**
  * admin站点
@@ -240,10 +241,12 @@ export class YiAdmin {
          const { modelName } = ctx.params;
          const modelAdmin = this.modelAdminsMap[modelName];
          const fields = modelAdmin.getDataListFields();
+         const filterFields = modelAdmin.getFilterFields();
          ctx.body = {
             success: true,
             data: {
                fields,
+               filterFields,
                modelInfo: {
                   title: modelAdmin.title,
                   name: modelAdmin.name,
@@ -299,21 +302,73 @@ export class YiAdmin {
          };
       });
 
+      // filter组件的请求
+      modelRouter.post('/list/filter-component-action/', jsonErrorMiddleware, async (ctx: Context) => {
+         const { modelName } = ctx.params;
+         const fields = this.modelAdminsMap[modelName].getFilterFields();
+
+         const { fieldName, actionName, actionData } = {
+            ...ctx.query,
+            ...ctx.request.body,
+         } as Record<string, any>;
+         let listFilterField: FilterBaseType | null = null;
+
+         for (let i = 0; i < fields.length; i += 1) {
+            const fitem = fields[i];
+            if (fitem.fieldName === fieldName) {
+               listFilterField = fitem;
+            }
+         }
+
+         if (listFilterField) {
+            const result = await listFilterField.action(actionName, actionData, ctx, this.modelAdminsMap[modelName]);
+            if (result !== undefined) {
+               ctx.body = {
+                  success: true,
+                  data: result,
+               };
+            }
+            return;
+         }
+
+         ctx.body = {
+            success: false,
+            message: '未找到该字段对应的组件',
+         };
+      });
+
       /**
        * 拉取列表页的数据
        */
       modelRouter.get('/list/data/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
-         const { pageIndex = '1', pageSize = '10', sort = '' } = ctx.query;
+         const {
+            pageIndex = '1', pageSize = '10', sort = '', filter = '{}',
+         } = ctx.query;
          const pageIndexNumber = Number.parseInt(pageIndex, 10);
          const pageSizeNumber = Number.parseInt(pageSize, 10);
          if (typeof pageIndexNumber !== 'number' || pageIndexNumber < 1) throw new Error('pageIndex必须是>=1的整数');
          if (typeof pageSizeNumber !== 'number' || pageSizeNumber < 1) throw new Error('pageSize必须是>=1的整数');
 
+         const filterData = JSON.parse(filter);
+         let parsedFilter: {
+            [key: string]: any;
+         } = {};
+         const filterFields = this.modelAdminsMap[modelName].getFilterFields();
+         filterFields.forEach((filterItem) => {
+            if (Object.prototype.hasOwnProperty.call(filterData, filterItem.fieldName)) {
+               parsedFilter = {
+                  ...parsedFilter,
+                  ...filterItem.getConditions(filterData[filterItem.fieldName]),
+               };
+            }
+         });
+
          const datas = await this.modelAdminsMap[modelName].getDataList({
             pageIndex: pageIndexNumber,
             pageSize: pageSizeNumber,
             sort,
+            conditions: parsedFilter,
          }, ctx);
          ctx.body = {
             success: true,

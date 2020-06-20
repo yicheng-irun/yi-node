@@ -58,17 +58,7 @@ export default {
          const opts = [];
          for (let i = 0; i < this.remoteOptions.length; i += 1) {
             const e = this.remoteOptions[i];
-            if (typeof e === 'object' && e.value !== undefined) {
-               opts.push({
-                  value: e.value,
-                  label: e.label == null ? e.value : e.label,
-               });
-            } else {
-               opts.push({
-                  value: e,
-                  label: String(e),
-               });
-            }
+            if (e) opts.push(e);
          }
 
          return opts;

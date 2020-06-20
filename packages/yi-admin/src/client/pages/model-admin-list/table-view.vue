@@ -4,23 +4,16 @@
       class="table-view"
    >
       <div class="top-action">
-         <div class="top-action-row">
-            <a-button
-               icon="plus"
-               type="dashed"
-               @click="createData"
-            >
-               新增
-            </a-button>
-            <a-button
-               icon="reload"
-               type="dashed"
-               @click="reloadData"
-            >
-               刷新
-            </a-button>
-         </div>
+         <TableAction
+            class="top-action-row"
+            @createData="createData"
+            @reloadData="reloadData"
+         />
          <TableSort class="top-action-row" />
+         <TableFilter
+            class="top-action-row"
+            @reloadData="reloadData"
+         />
          <div class="top-action-row">
             <span class="action-lable">对选中项进行</span>
             <a-select
@@ -186,10 +179,14 @@
 <script>
 import ListComponents from './list-components';
 import TableSort from './table-sort';
+import TableFilter from './table-filter';
+import TableAction from './table-action';
 
 export default {
    components: {
       TableSort,
+      TableFilter,
+      TableAction,
    },
    data () {
       return {
@@ -396,7 +393,7 @@ export default {
       >.top-action-row {
          font-size 0.9em
          color #000a
-         padding 0.5em 0
+         padding 0.6em 0
          >.ant-btn {
             margin 0 0.3em
          }

@@ -39,26 +39,7 @@ export default {
 
    computed: {
       options () {
-         const enumList = this.config.enum;
-         const opts = [];
-         if (Array.isArray(enumList)) {
-            for (let i = 0; i < enumList.length; i += 1) {
-               const e = enumList[i];
-               if (typeof e === 'object' && e.value !== undefined) {
-                  opts.push({
-                     value: e.value,
-                     label: e.label == null ? e.value : e.label,
-                  });
-               } else {
-                  opts.push({
-                     value: String(e),
-                     label: String(e),
-                  });
-               }
-            }
-         }
-
-         return opts;
+         return this.config.enum || [];
       },
    },
    methods: {

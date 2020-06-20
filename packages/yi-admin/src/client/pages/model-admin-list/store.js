@@ -16,8 +16,12 @@ export default function ({
 
          sortList: ['-_id'],
 
+         filterForm: {},
+
          // 字段信息
          listFields: [],
+         // 列表的过滤字段信息
+         filterFields: [],
          // 列表的操作动作信息
          listActions: [],
 
@@ -31,6 +35,7 @@ export default function ({
          },
          setListFields (state, { data }) {
             state.listFields = data.fields;
+            state.filterFields = data.filterFields;
             state.modelInfo = data.modelInfo;
          },
          setListActions (state, { data }) {
@@ -91,6 +96,7 @@ export default function ({
                   pageIndex,
                   pageSize: state.pageSize,
                   sort: state.sortList.join(' '),
+                  filter: JSON.stringify(state.filterForm),
                });
                const result = rsp.data;
                if (result.success) {

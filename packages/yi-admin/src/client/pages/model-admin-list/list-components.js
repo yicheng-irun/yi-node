@@ -1,5 +1,5 @@
 
-const FormComponents = {
+const ListComponents = {
    array: () => import('./list-components/array.vue'),
    base: () => import('./list-components/base.vue'),
    boolean: () => import('./list-components/boolean.vue'),
@@ -9,4 +9,4 @@ const FormComponents = {
    'string-textarea': () => import('./list-components/string-textarea.vue'),
 };
 
-export default FormComponents;
+export default ListComponents;

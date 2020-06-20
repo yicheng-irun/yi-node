@@ -4,6 +4,7 @@ import { Context, Next } from 'koa';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
+import { FilterBaseType } from './filter-types/filter-base-type';
 
 export interface ModelAdminBaseParams {
    /**
@@ -50,7 +51,14 @@ export interface DataListRequestBody {
    /**
     * '-id', 'name', '-field'
     */
-   sort?: string;
+   sort: string;
+
+   /**
+    * 过滤条件
+    */
+   conditions: {
+      [key: string]: any;
+   };
 }
 
 export interface DataListResponseBody {
@@ -152,9 +160,16 @@ export class ModelAdminBase {
    }
 
    /**
-    * 删除除某一项
+    * 删除除某一项，用于提供默认的删除功能
     */
    public removeItem (id: string, ctx: Context): Promise<void> {
       throw new Error('请在子类中实现removeItem函数');
+   }
+
+   /**
+    * 获取列表页过滤的参数
+    */
+   public getFilterFields (): FilterBaseType[] {
+      throw new Error('请在子类中实现getFilterFields函数');
    }
 }

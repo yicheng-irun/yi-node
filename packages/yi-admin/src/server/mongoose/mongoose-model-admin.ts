@@ -18,6 +18,8 @@ import { ListBooleanType } from '../lib/list-types/list-boolean-type';
 import { ListActionResult, ModelAdminListAction } from '../lib/model-admin-list-action';
 import { EditArrayType } from '../lib/edit-types/edit-array-type';
 import { ListArrayType } from '../lib/list-types/list-array-type';
+import { FilterTypes } from './mongoose-filter-types';
+import { FilterBaseType } from '../lib/filter-types/filter-base-type';
 
 /**
  * 映射mongoose的默认类型的图
@@ -275,14 +277,14 @@ export class MongooseModelAdmin extends ModelAdminBase {
          if (key === '_id' || key === '__v') return;
          const { instance, path } = schemaPath;
 
-         const etitInstances = editFormFields.filter((editTypeItem) => editTypeItem.fieldName === path);
+         const editInstances = editFormFields.filter((editTypeItem) => editTypeItem.fieldName === path);
 
          let typeInstance: ListBaseType | null = null;
 
          if (schemaPath.options.listType && schemaPath.options.listType instanceof ListBaseType) {
             typeInstance = schemaPath.options.listType;
-         } else if (etitInstances.length > 0) {
-            typeInstance = etitInstances[0].getListType();
+         } else if (editInstances.length > 0) {
+            typeInstance = editInstances[0].getListType();
          } else if (INSTANCE_LIST_TYPE_MAP[instance]) {
             typeInstance = INSTANCE_LIST_TYPE_MAP[instance](schemaPath.options);
          }
@@ -303,12 +305,10 @@ export class MongooseModelAdmin extends ModelAdminBase {
     * data-list中拉取数据的函数
     */
    public async getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
-      const datasPromise = this.model.find().limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
+      const datasPromise = this.model.find(req.conditions).limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
          .sort(req.sort || '')
          .exec();
-      const count = await this.model.find({
-
-      }).countDocuments().exec();
+      const count = await this.model.find(req.conditions).countDocuments().exec();
       const datas = await datasPromise;
       const modelItems: ModelDataItem[] = datas.map((item) => ({
          id: item.id,
@@ -329,4 +329,47 @@ export class MongooseModelAdmin extends ModelAdminBase {
       if (!item) throw new Error('未找到该编辑项');
       await item.remove();
    }
+
+   /**
+    * 获取列表页过滤的参数
+    */
+   public getFilterFields (): FilterBaseType[] {
+      const fields: FilterBaseType[] = [];
+
+      const { schema } = this.model;
+      const pathsKeys = Object.keys(schema.paths);
+      pathsKeys.forEach((key) => {
+         // 卧槽，这个mongoose的这里的类型声明不正确
+         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+         // @ts-ignore
+         const schemaPath: SchemaType & {
+               instance: string;
+               path: string;
+               options: SchemaTypeOpts<{}>;
+            } = schema.paths[key];
+
+         if (key === '_id' || key === '__v') return;
+
+         let typeInstance: FilterBaseType | null = null;
+
+         if (schemaPath.options.filterType instanceof FilterBaseType) {
+            typeInstance = schemaPath.options.filterType;
+         }
+
+         if (typeInstance) {
+            typeInstance.fieldName = schemaPath.path;
+            if (!typeInstance.fieldNameAlias) {
+               typeInstance.fieldNameAlias = schemaPath.options.name || '';
+            }
+            fields.push(typeInstance);
+         }
+      });
+
+      return fields;
+   }
+
+   /**
+    * mongoose 的filter types
+    */
+   public static FilterTypes = FilterTypes;
 }

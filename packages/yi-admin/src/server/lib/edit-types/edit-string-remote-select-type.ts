@@ -11,7 +11,7 @@ export interface EditStringRemoteSelectTypeParam {
    /**
     * 获取可选项
     */
-   getOptions?: (search: string) => Promise<(string | {
+   getOptions?: (search: string) => Promise<({
       /**
        * 值
        */
