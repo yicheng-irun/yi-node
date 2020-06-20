@@ -42,5 +42,6 @@ export default {
 <style lang="stylus">
 .list-components-string-textarea {
    text-align center
+   word-break break-all
 }
 </style>

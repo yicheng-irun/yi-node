@@ -29,5 +29,6 @@ export default {
 <style lang="stylus">
 .list-components-base {
    text-align center
+   word-break break-all
 }
 </style>
