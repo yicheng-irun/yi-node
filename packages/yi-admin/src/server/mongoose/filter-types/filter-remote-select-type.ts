@@ -27,6 +27,9 @@ export interface FilterRemoteSelectTypeParam {
    })[]>;
 }
 
+/**
+ * 字符串远程选择类型，也可用于数组内的字符串的选择
+ */
 export class FilterRemoteSelectType extends FilterBaseType implements FilterRemoteSelectInterface {
    public componentName: 'remote-select' = 'remote-select'
 

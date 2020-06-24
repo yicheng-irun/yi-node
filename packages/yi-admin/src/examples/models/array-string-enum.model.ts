@@ -1,7 +1,7 @@
 import {
    modelOptions, getModelForClass, arrayProp,
 } from '@typegoose/typegoose';
-import { EditTypes } from '../../server';
+import { EditTypes, MongooseModelAdmin } from '../../server';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'array-string-enum' } })
 export class ArrayStringEnumModelClass {
@@ -37,6 +37,7 @@ export class ArrayStringEnumModelClass {
             },
          }),
       }),
+      filterType: new MongooseModelAdmin.FilterTypes.FilterStringSearchType({}),
    })
    public remoteSelect?: string[];
 
@@ -72,6 +73,9 @@ export class ArrayStringEnumModelClass {
             },
          }),
          listStyleInline: true,
+      }),
+      filterType: new MongooseModelAdmin.FilterTypes.FilterRemoteSelectType({
+         multiSelect: true,
       }),
    })
    public remoteSelect2?: string[];
