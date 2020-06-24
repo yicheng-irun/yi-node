@@ -157,6 +157,10 @@
                class="no-data"
             >
                暂时没有数据呦~
+               <span v-if="state.total > 0">可能是您选择的页码太大，您可以前往 <a
+                  href="javascript:void(0)"
+                  @click="handleCurrentChange(1)"
+               >第1页</a> </span>
             </div>
          </div>
          <div class="table-view-footer">

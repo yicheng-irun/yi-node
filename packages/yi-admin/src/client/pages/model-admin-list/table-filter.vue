@@ -74,7 +74,7 @@ export default {
    >.filter-item {
       display inline-block
       vertical-align top
-      margin 0 1em 0 0em
+      margin 0 1em 1em 0em
       >.tooltip {
          >.filter-item-label {
             color: #000

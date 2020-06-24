@@ -24,13 +24,18 @@ export class YiAdminDemo {
    })
    public strField2?: string;
 
-   @prop()
+   @prop({
+      filterType: new MongooseModelAdmin.FilterTypes.FilterStringSearchType(),
+   })
    public strField3?: string;
 
 
    @prop({
       type: String,
       enum: ['哈哈哈', '嘿嘿嘿', '额额额', 'jjj'],
+      filterType: new MongooseModelAdmin.FilterTypes.FilterSelectType({
+         options: ['哈哈哈', '嘿嘿嘿', '额额额', 'jjj'].map((item) => ({ label: item, value: item })),
+      }),
    })
    public strEnumField?: string;
 
@@ -49,6 +54,9 @@ export class YiAdminDemo {
             label: '啊啊3',
             value: '3',
          }],
+      }),
+      filterType: new MongooseModelAdmin.FilterTypes.FilterSelectType({
+         options: ['1', '2', '3', '4'].map((item) => ({ label: item, value: item })),
       }),
    })
    public strEnumField2?: string;
