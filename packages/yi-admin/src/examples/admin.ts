@@ -38,6 +38,8 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'yi-admin-demo',
    model: YiAdminDemoModel,
+   formFieldsExclude: ['createdAt'],
+   listFieldsExclude: ['createdAt'],
    listActions: [
       new ModelAdminListAction({
          actionName: '某某操作',

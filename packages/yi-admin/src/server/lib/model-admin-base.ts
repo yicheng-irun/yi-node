@@ -23,6 +23,26 @@ export interface ModelAdminBaseParams {
    title?: string;
 
    /**
+    * 用于出现在表单中的字段，默认是全部，主要通过这个list可控制表单字段的出现顺序
+    */
+   formFields?: string[];
+
+   /**
+    * 优先级比 formFields 高，用于排除在表单中显示的字段
+    */
+   formFieldsExclude?: string[];
+
+   /**
+    * 显示在列表中的字段，默认是全部，可通过这个list可控制列表字段左右顺序
+    */
+   listFields?: string[];
+
+   /**
+    * 优先级比 listFields 高，用于排除在列表页中显示的字段
+    */
+   listFieldsExclude?: string[];
+
+   /**
     * 列表动作
     */
    listActions?: ModelAdminListAction[];
@@ -91,10 +111,40 @@ export class ModelAdminBase {
     */
    public title = '';
 
+   /**
+    * 列表页中的用户按钮或者批量操作项
+    */
    public listActions: ModelAdminListAction[] = [];
 
+   /**
+    * 用于出现在表单中的字段，默认是全部，主要通过这个list可控制表单字段的出现顺序
+    */
+   public formFields?: string[];
+
+   /**
+    * 优先级比 formFields 高，用于排除在表单中显示的字段
+    */
+   public formFieldsExclude?: string[];
+
+   /**
+    * 显示在列表中的字段，默认是全部，可通过这个list可控制列表字段左右顺序
+    */
+   public listFields?: string[];
+
+   /**
+    * 优先级比 listFields 高，用于排除在列表页中显示的字段
+    */
+   public listFieldsExclude?: string[];
+
    constructor ({
-      permission, name, listActions, title = '',
+      permission,
+      name,
+      listActions,
+      title = '',
+      formFields,
+      formFieldsExclude,
+      listFields,
+      listFieldsExclude,
    }: ModelAdminBaseParams) {
       if (permission) {
          this.permission = permission;
@@ -111,6 +161,10 @@ export class ModelAdminBase {
       if (Array.isArray(listActions)) {
          this.listActions = listActions;
       }
+      this.formFields = formFields;
+      this.formFieldsExclude = formFieldsExclude;
+      this.listFields = listFields;
+      this.listFieldsExclude = listFieldsExclude;
    }
 
    /**
@@ -121,10 +175,31 @@ export class ModelAdminBase {
    }
 
    /**
-    * 获取表单编辑页的字段列表
+    * 获取表单编辑页的字段列表 [未过滤的]
     */
    public getEditFormFields (): EditBaseType[] {
       throw new Error('请在子类中实现getEditFormFields函数');
+   }
+
+   public getEditFormFieldsAfterFilter (): EditBaseType[] {
+      let fields = this.getEditFormFields();
+      if (this.formFields) {
+         const temp = fields;
+         fields = [];
+         for (let i = 0; i < this.formFields.length; i += 1) {
+            const name = this.formFields[i];
+            const filterResults = temp.filter((item) => (item.fieldName === name));
+            if (filterResults.length) {
+               fields.push(filterResults[1]);
+            }
+         }
+      }
+      if (this.formFieldsExclude) {
+         fields = fields.filter((item) => (
+            !(this.formFieldsExclude?.includes(item.fieldName))
+         ));
+      }
+      return fields;
    }
 
    /**
@@ -150,6 +225,27 @@ export class ModelAdminBase {
     */
    public getDataListFields (): ListBaseType[] {
       throw new Error('请在子类中实现getDataListFields函数');
+   }
+
+   public getDataListFieldsAfterFilter (): ListBaseType[] {
+      let fields = this.getDataListFields();
+      if (this.listFields) {
+         const temp = fields;
+         fields = [];
+         for (let i = 0; i < this.listFields.length; i += 1) {
+            const name = this.listFields[i];
+            const filterResults = temp.filter((item) => (item.fieldName === name));
+            if (filterResults.length) {
+               fields.push(filterResults[1]);
+            }
+         }
+      }
+      if (this.listFieldsExclude) {
+         fields = fields.filter((item) => (
+            !(this.listFieldsExclude?.includes(item.fieldName))
+         ));
+      }
+      return fields;
    }
 
    /**

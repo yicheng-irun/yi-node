@@ -163,10 +163,11 @@ export class YiAdmin {
          }
       });
 
+      // 获取表单编辑页的字段
       modelRouter.get('/edit/fields/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const modelAdmin = this.modelAdminsMap[modelName];
-         const fields = modelAdmin.getEditFormFields();
+         const fields = modelAdmin.getEditFormFieldsAfterFilter();
          ctx.body = {
             success: true,
             data: {
@@ -240,7 +241,7 @@ export class YiAdmin {
       modelRouter.get('/list/fields/', jsonErrorMiddleware, async (ctx: Context) => {
          const { modelName } = ctx.params;
          const modelAdmin = this.modelAdminsMap[modelName];
-         const fields = modelAdmin.getDataListFields();
+         const fields = modelAdmin.getDataListFieldsAfterFilter();
          const filterFields = modelAdmin.getFilterFields();
          ctx.body = {
             success: true,
@@ -353,7 +354,9 @@ export class YiAdmin {
          const filterData = JSON.parse(filter);
          let parsedFilter: {
             [key: string]: any;
-         } = {};
+         } = {
+            ...filterData,
+         };
          const filterFields = this.modelAdminsMap[modelName].getFilterFields();
          filterFields.forEach((filterItem) => {
             if (Object.prototype.hasOwnProperty.call(filterData, filterItem.fieldName)) {

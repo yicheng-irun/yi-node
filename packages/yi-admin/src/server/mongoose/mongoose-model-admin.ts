@@ -160,6 +160,9 @@ export class MongooseModelAdmin extends ModelAdminBase {
       }));
    }
 
+   /**
+    * 全量的表单字段
+    */
    public getEditFormFields (): EditBaseType[] {
       const fields: EditBaseType[] = [];
 
