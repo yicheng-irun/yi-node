@@ -10,6 +10,9 @@ export declare class MongooseModelAdmin extends ModelAdminBase {
         model: Model<Document, {}>;
     });
     private appendDeleteListAction;
+    /**
+     * 全量的表单字段
+     */
     getEditFormFields(): EditBaseType[];
     /**
      * edit-form中拉取数据的函数

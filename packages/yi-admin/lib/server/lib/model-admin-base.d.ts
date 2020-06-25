@@ -17,6 +17,22 @@ export interface ModelAdminBaseParams {
      */
     title?: string;
     /**
+     * 用于出现在表单中的字段，默认是全部，主要通过这个list可控制表单字段的出现顺序
+     */
+    formFields?: string[];
+    /**
+     * 优先级比 formFields 高，用于排除在表单中显示的字段
+     */
+    formFieldsExclude?: string[];
+    /**
+     * 显示在列表中的字段，默认是全部，可通过这个list可控制列表字段左右顺序
+     */
+    listFields?: string[];
+    /**
+     * 优先级比 listFields 高，用于排除在列表页中显示的字段
+     */
+    listFieldsExclude?: string[];
+    /**
      * 列表动作
      */
     listActions?: ModelAdminListAction[];
@@ -74,16 +90,36 @@ export declare class ModelAdminBase {
      * 通常用于菜单中
      */
     title: string;
+    /**
+     * 列表页中的用户按钮或者批量操作项
+     */
     listActions: ModelAdminListAction[];
-    constructor({ permission, name, listActions, title, }: ModelAdminBaseParams);
+    /**
+     * 用于出现在表单中的字段，默认是全部，主要通过这个list可控制表单字段的出现顺序
+     */
+    formFields?: string[];
+    /**
+     * 优先级比 formFields 高，用于排除在表单中显示的字段
+     */
+    formFieldsExclude?: string[];
+    /**
+     * 显示在列表中的字段，默认是全部，可通过这个list可控制列表字段左右顺序
+     */
+    listFields?: string[];
+    /**
+     * 优先级比 listFields 高，用于排除在列表页中显示的字段
+     */
+    listFieldsExclude?: string[];
+    constructor({ permission, name, listActions, title, formFields, formFieldsExclude, listFields, listFieldsExclude, }: ModelAdminBaseParams);
     /**
      * model的name，用户路径中，不能重复，不能更改
      */
     get name(): string;
     /**
-     * 获取表单编辑页的字段列表
+     * 获取表单编辑页的字段列表 [未过滤的]
      */
     getEditFormFields(): EditBaseType[];
+    getEditFormFieldsAfterFilter(): EditBaseType[];
     /**
      * edit-form中拉取数据的函数
      */
@@ -99,10 +135,13 @@ export declare class ModelAdminBase {
      * 获取列表页字段列表
      */
     getDataListFields(): ListBaseType[];
+    getDataListFieldsAfterFilter(): ListBaseType[];
+    private getExtraDataListFileds;
     /**
      * data-list中拉取数据的函数
      */
     getDataList(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
+    getDataListAfterFilter(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
     /**
      * 删除除某一项，用于提供默认的删除功能
      */

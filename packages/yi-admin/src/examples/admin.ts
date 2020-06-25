@@ -23,6 +23,7 @@ const myadmin = new YiAdmin({
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'array-image',
    model: ArrayImageModel,
+   listFields: ['imgsInfo', 'images1', 'images2', 'createdAt'],
 }));
 
 myadmin.addModelAdmin(new MongooseModelAdmin({

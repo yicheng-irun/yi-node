@@ -35,6 +35,11 @@ export class ArrayImageModelClass {
       }),
    })
    public images2?: string[];
+
+   public get imgsInfo (): Promise<string> {
+      const rst = `<div>size: ${(this.images1?.length || 0) + (this.images2?.length || 0)}</div>`;
+      return Promise.resolve(rst);
+   }
 }
 
 const ArrayImageModel = getModelForClass(ArrayImageModelClass);

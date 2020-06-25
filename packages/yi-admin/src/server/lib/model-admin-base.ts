@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { Context, Next } from 'koa';
+import { type } from 'os';
+import { isPrimitive } from 'util';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
 import { FilterBaseType } from './filter-types/filter-base-type';
+import { ListStringHtmlType } from './list-types/list-string-html-type';
 
 export interface ModelAdminBaseParams {
    /**
@@ -190,7 +193,7 @@ export class ModelAdminBase {
             const name = this.formFields[i];
             const filterResults = temp.filter((item) => (item.fieldName === name));
             if (filterResults.length) {
-               fields.push(filterResults[1]);
+               fields.push(filterResults[0]);
             }
          }
       }
@@ -236,7 +239,12 @@ export class ModelAdminBase {
             const name = this.listFields[i];
             const filterResults = temp.filter((item) => (item.fieldName === name));
             if (filterResults.length) {
-               fields.push(filterResults[1]);
+               fields.push(filterResults[0]);
+            } else {
+               const tempType = new ListStringHtmlType({
+               });
+               tempType.fieldName = name;
+               fields.push(tempType);
             }
          }
       }
@@ -248,11 +256,63 @@ export class ModelAdminBase {
       return fields;
    }
 
+   private getExtraDataListFileds (): string[] {
+      const dbFields = this.getDataListFields().map((t) => (t.fieldName));
+      const extraFields: string[] = [];
+      if (this.listFields) {
+         this.listFields.forEach((key) => {
+            if (!dbFields.includes(key)) {
+               extraFields.push(key);
+            }
+         });
+      }
+      return extraFields;
+   }
+
    /**
     * data-list中拉取数据的函数
     */
    public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
       throw new Error('请在子类中实现getDataList函数');
+   }
+
+   public async getDataListAfterFilter (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+      const dataResult = await this.getDataList(req, ctx);
+      if (this.listFields) {
+         const extraFields = this.getExtraDataListFileds();
+         const promises = dataResult.dataList.map(async (item): Promise<void> => {
+            const values = {
+               ...(item.values.toObject ? item.values.toObject() : item.values),
+            };
+            const promises2 = extraFields.map(async (addKey) => {
+               if (item.values[addKey]) {
+                  let value = item.values[addKey];
+
+                  if (typeof item.values[addKey] === 'function') {
+                     value = item.values[addKey]();
+                  }
+                  if (value instanceof Promise) {
+                     values[addKey] = await value;
+                  } else {
+                     value[addKey] = value;
+                  }
+               }
+            });
+            await Promise.all(promises2);
+            item.values = values;
+         });
+         await Promise.all(promises);
+      }
+      if (this.listFieldsExclude) {
+         dataResult.dataList.forEach((item) => {
+            Object.keys(item.values).forEach((key) => {
+               if (this.listFieldsExclude?.includes(key)) {
+                  delete item.values[key];
+               }
+            });
+         });
+      }
+      return dataResult;
    }
 
    /**

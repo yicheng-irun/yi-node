@@ -315,11 +315,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       const datas = await datasPromise;
       const modelItems: ModelDataItem[] = datas.map((item) => ({
          id: item.id,
-         values: {
-            ...item.toObject(),
-            _id: undefined,
-            __v: undefined,
-         },
+         values: item,
       }));
       return {
          total: count,

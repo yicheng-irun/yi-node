@@ -12,8 +12,18 @@
                   首页
                </a>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>
+            <a-breadcrumb-item v-if="!state.hasFilterQuery">
                {{ state.modelInfo.title || state.modelInfo.name }} 管理
+            </a-breadcrumb-item>
+            <a-breadcrumb-item v-if="state.hasFilterQuery">
+               <a
+                  href="./"
+               >
+                  {{ state.modelInfo.title || state.modelInfo.name }} 管理
+               </a>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item v-if="state.hasFilterQuery">
+               带条件:{{ state.filterQueryStr }} 的数据管理
             </a-breadcrumb-item>
          </a-breadcrumb>
          <TableView />

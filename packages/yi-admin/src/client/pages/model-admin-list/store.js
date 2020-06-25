@@ -2,7 +2,21 @@ import Vuex from 'vuex';
 
 export default function ({
    ajax: { get },
+   runtime,
 }) {
+   let filterForm = {
+   };
+   if (runtime.query.filter) {
+      try {
+         const filterTemp = JSON.parse(runtime.query.filter);
+         filterForm = {
+            ...filterTemp,
+         };
+      } catch (e) {
+         //
+      }
+   }
+
    const store = new Vuex.Store({
       state: {
          modelInfo: {
@@ -16,7 +30,9 @@ export default function ({
 
          sortList: ['-_id'],
 
-         filterForm: {},
+         hasFilterQuery: Object.keys(filterForm).length > 0,
+         filterQueryStr: JSON.stringify(filterForm),
+         filterForm,
 
          // 字段信息
          listFields: [],

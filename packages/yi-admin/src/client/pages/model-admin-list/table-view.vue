@@ -84,7 +84,10 @@
                         :key="idx"
                         class="field"
                      >
-                        <span v-text="item.fieldNameAlias || item.fieldName" />
+                        <span
+                           :field-name="item.fieldName"
+                           v-text="item.fieldNameAlias || item.fieldName"
+                        />
                      </th>
                   </tr>
                </thead>

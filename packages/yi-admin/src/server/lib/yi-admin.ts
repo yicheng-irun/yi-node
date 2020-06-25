@@ -352,7 +352,7 @@ export class YiAdmin {
          if (typeof pageSizeNumber !== 'number' || pageSizeNumber < 1) throw new Error('pageSize必须是>=1的整数');
 
          const filterData = JSON.parse(filter);
-         let parsedFilter: {
+         const parsedFilter: {
             [key: string]: any;
          } = {
             ...filterData,
@@ -360,14 +360,13 @@ export class YiAdmin {
          const filterFields = this.modelAdminsMap[modelName].getFilterFields();
          filterFields.forEach((filterItem) => {
             if (Object.prototype.hasOwnProperty.call(filterData, filterItem.fieldName)) {
-               parsedFilter = {
-                  ...parsedFilter,
-                  ...filterItem.getConditions(filterData[filterItem.fieldName]),
-               };
+               const codition = filterItem.getConditions(filterData[filterItem.fieldName]);
+               delete parsedFilter[filterItem.fieldName];
+               Object.assign(parsedFilter, codition);
             }
          });
 
-         const datas = await this.modelAdminsMap[modelName].getDataList({
+         const datas = await this.modelAdminsMap[modelName].getDataListAfterFilter({
             pageIndex: pageIndexNumber,
             pageSize: pageSizeNumber,
             sort,
