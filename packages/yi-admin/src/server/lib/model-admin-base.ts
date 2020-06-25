@@ -13,7 +13,7 @@ export interface ModelAdminBaseParams {
    /**
     * 用来判断用户是否有权限
     */
-   permission?: (ctx: Context, next: Next) => Promise<any>;
+   permission?: (ctx: Context, next: Next) => Promise<void>;
 
    /**
     * model的name
@@ -100,7 +100,7 @@ export class ModelAdminBase {
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常或者返回false
     */
-   public permission?: (ctx: Context, next: Next) => Promise<any> = async (ctx, next) => {
+   public permission?: (ctx: Context, next: Next) => Promise<void> = async (ctx, next) => {
       await next();
    }
 
@@ -281,7 +281,9 @@ export class ModelAdminBase {
       if (this.listFields) {
          const extraFields = this.getExtraDataListFileds();
          const promises = dataResult.dataList.map(async (item): Promise<void> => {
-            const values = {
+            const values: {
+               [key: string]: any;
+            } = {
                ...(item.values.toObject ? item.values.toObject() : item.values),
             };
             const promises2 = extraFields.map(async (addKey) => {
@@ -294,7 +296,7 @@ export class ModelAdminBase {
                   if (value instanceof Promise) {
                      values[addKey] = await value;
                   } else {
-                     value[addKey] = value;
+                     values[addKey] = value;
                   }
                }
             });

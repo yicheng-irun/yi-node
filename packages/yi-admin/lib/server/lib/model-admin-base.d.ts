@@ -7,7 +7,7 @@ export interface ModelAdminBaseParams {
     /**
      * 用来判断用户是否有权限
      */
-    permission?: (ctx: Context, next: Next) => Promise<any>;
+    permission?: (ctx: Context, next: Next) => Promise<void>;
     /**
      * model的name
      */
@@ -81,7 +81,7 @@ export declare class ModelAdminBase {
      * 判断用户是否有权限
      * 如果没有权限，直接在里侧抛出异常或者返回false
      */
-    permission?: (ctx: Context, next: Next) => Promise<any>;
+    permission?: (ctx: Context, next: Next) => Promise<void>;
     /**
      * model的name，用户路径中，不能重复，且不能更改
      */
