@@ -1,5 +1,6 @@
 
 const ListComponents = {
+   'array-string-tag': () => import('./list-components/array-string-tag.vue'),
    array: () => import('./list-components/array.vue'),
    base: () => import('./list-components/base.vue'),
    boolean: () => import('./list-components/boolean.vue'),

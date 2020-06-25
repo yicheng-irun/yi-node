@@ -2,6 +2,7 @@ import {
    modelOptions, getModelForClass, arrayProp,
 } from '@typegoose/typegoose';
 import { EditTypes, MongooseModelAdmin } from '../../server';
+import { EditArrayStringTagType } from '../../server/lib/edit-types/edit-array-string-tag-type';
 
 @modelOptions({ schemaOptions: { timestamps: true, collection: 'array-string-enum' } })
 export class ArrayStringEnumModelClass {
@@ -79,6 +80,20 @@ export class ArrayStringEnumModelClass {
       }),
    })
    public remoteSelect2?: string[];
+
+   @arrayProp({
+      type: String,
+      editType: new EditArrayStringTagType({
+         async getTags (q: string): Promise<string[]> {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            const distinctData = await ArrayStringEnumModel.distinct('arrTag').exec();
+            if (distinctData.includes(q)) return distinctData;
+            return [String(q).trim(), ...distinctData];
+         },
+         maxLength: 5,
+      }),
+   })
+   public arrTag?: string[];
 }
 
 const ArrayStringEnumModel = getModelForClass(ArrayStringEnumModelClass);

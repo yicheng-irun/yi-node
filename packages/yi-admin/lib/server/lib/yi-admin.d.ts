@@ -52,6 +52,7 @@ export declare class YiAdmin {
         addToSiteNavMenu?: boolean;
     }): void;
     static EditTypes: {
+        EditArrayStringTagType: typeof import("./edit-types/edit-array-string-tag-type").EditArrayStringTagType;
         EditArrayType: typeof import("./edit-types/edit-array-type").EditArrayType;
         EditBaseType: typeof EditBaseType;
         EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;

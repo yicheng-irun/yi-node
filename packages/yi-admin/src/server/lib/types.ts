@@ -1,3 +1,4 @@
+import { EditArrayStringTagType } from './edit-types/edit-array-string-tag-type';
 import { EditArrayType } from './edit-types/edit-array-type';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { EditBooleanType } from './edit-types/edit-boolean-type';
@@ -25,6 +26,7 @@ import { ListStringRemoteSelectType } from './list-types/list-string-remote-sele
 
 
 export const EditTypes = {
+   EditArrayStringTagType,
    EditArrayType,
    EditBaseType,
    EditBooleanType,

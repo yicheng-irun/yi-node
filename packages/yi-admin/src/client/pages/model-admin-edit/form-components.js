@@ -1,5 +1,6 @@
 
 const FormComponents = {
+   'array-string-tag': () => import('./form-components/array-string-tag.vue'),
    array: () => import('./form-components/array.vue'),
    base: () => import('./form-components/base.vue'),
    boolean: () => import('./form-components/boolean.vue'),
