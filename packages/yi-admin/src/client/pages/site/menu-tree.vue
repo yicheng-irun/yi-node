@@ -14,7 +14,7 @@
             >
                <a
                   :href="item1.link"
-                  target="main_frame"
+                  :target="item1.target || 'main_frame'"
                ><a-icon
                   v-if="item1.icon"
                   :type="item1.icon"
@@ -35,7 +35,7 @@
                   >
                      <a
                         :href="item2.link"
-                        target="main_frame"
+                        :target="item2.target || 'main_frame'"
                      >
                         <a-icon
                            v-if="item2.icon"
@@ -56,7 +56,7 @@
                         >
                            <a
                               :href="item3.link"
-                              target="main_frame"
+                              :target="item3.target || 'main_frame'"
                            >
                               <a-icon
                                  v-if="item3.icon"

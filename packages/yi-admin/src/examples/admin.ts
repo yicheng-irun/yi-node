@@ -1,3 +1,4 @@
+import { Context } from 'koa';
 import YiAdmin, {
    MongooseModelAdmin, SiteNavMenu, ModelAdminListAction, ListActionResult,
 } from '../server/index';
@@ -18,6 +19,13 @@ import settings from './settings';
 
 const myadmin = new YiAdmin({
    serverOrigin: `http://127.0.0.1:${settings.port}`,
+   csrfParam (ctx: Context): {} {
+      return {
+         query: {
+            _csrf: ctx.csrf || 'test_csrf',
+         },
+      };
+   },
 });
 
 myadmin.addModelAdmin(new MongooseModelAdmin({

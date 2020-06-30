@@ -43,11 +43,24 @@ export class YiAdmin {
       siteName: string;
    };
 
+   public options: {
+      csrfParam?: (ctx: Context) => {
+         query?: {
+            [key: string]: string;
+         };
+         body?: {
+            [key: string]: string;
+         };
+      };
+   }
+
    public modelNavMenu: SiteNavMenu = new SiteNavMenu({
       title: '数据模型管理',
    });
 
-   constructor ({ permission, serverOrigin, siteConfig = {} }: {
+   constructor ({
+      permission, serverOrigin, siteConfig = {}, csrfParam,
+   }: {
       permission?: (ctx: Context, next: Next) => Promise<any>;
       /**
        * example: "http://127.0.0.1:80"
@@ -57,6 +70,19 @@ export class YiAdmin {
 
       siteConfig?: {
          siteName?: string;
+      };
+
+      /**
+       * 获取csrf参数的回调函数
+       * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+       */
+      csrfParam?: (ctx: Context) => {
+         query?: {
+            [key: string]: string;
+         };
+         body?: {
+            [key: string]: string;
+         };
       };
    }) {
       this.createKoaRouter({
@@ -69,7 +95,10 @@ export class YiAdmin {
       this.siteNavMenu.add(this.modelNavMenu);
 
       this.siteConfig = {
-         siteName: siteConfig?.siteName || 'yi-admin',
+         siteName: siteConfig.siteName ?? 'yi-admin',
+      };
+      this.options = {
+         csrfParam,
       };
 
       this.appendPermissionCheckRouter();
@@ -106,6 +135,16 @@ export class YiAdmin {
       }));
    }
 
+   private getBaseRenderSSRParams (ctx: Context): {
+      assetsPath: string;
+      csrfParam: string;
+   } {
+      return {
+         assetsPath: url.resolve(ctx.path, '__yi-admin-assets__/'),
+         csrfParam: this.options.csrfParam ? JSON.stringify(this.options.csrfParam(ctx)) : '{}',
+      };
+   }
+
    private appendPermissionCheckRouter (): void {
       // check permissionResult
       this.koaRouter.use(async (ctx, next) => {
@@ -120,9 +159,7 @@ export class YiAdmin {
    private appendSiteHomeRouter (): void {
       this.koaRouter.get('/', async (ctx) => {
          if (ctx.render) {
-            await ctx.render('yi-admin/site', {
-               assetsPath: url.resolve(ctx.path, '__yi-admin-assets__/'),
-            });
+            await ctx.render('yi-admin/site', this.getBaseRenderSSRParams(ctx));
          }
       });
       this.koaRouter.get('/site-menu/', async (ctx: Context) => {
@@ -149,17 +186,13 @@ export class YiAdmin {
 
       modelRouter.get('/', async (ctx) => {
          if (ctx.render) {
-            await ctx.render('yi-admin/model-admin-list', {
-               assetsPath: url.resolve(ctx.path, '../../__yi-admin-assets__/'),
-            });
+            await ctx.render('yi-admin/model-admin-list', this.getBaseRenderSSRParams(ctx));
          }
       });
 
       modelRouter.get('/edit/', async (ctx: Context) => {
          if (ctx.render) {
-            await ctx.render('yi-admin/model-admin-edit', {
-               assetsPath: url.resolve(ctx.path, '../../../__yi-admin-assets__/'),
-            });
+            await ctx.render('yi-admin/model-admin-edit', this.getBaseRenderSSRParams(ctx));
          }
       });
 

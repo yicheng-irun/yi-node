@@ -14,6 +14,7 @@
     {% endblock %}
     <script>var _SSR_PAGE_="{% raw %}{{pagePath}}{% endraw %}";</script>
     <script>var _ASSETS_PATH_="{% raw %}{{ ssrParams.assetsPath }}{% endraw %}";</script>
+    <script>var _CSRF_PARAM_="{% raw %}{{ ssrParams.csrfParam }}{% endraw %}"</script>
     {% if htmlWebpackPlugin.options.isProd %}<script src="{% raw %}{{ ssrParams.assetsPath }}{% endraw %}assets/main.js"></script>{% endif %}
     {% block footer %}{% endblock %}
 </body>
