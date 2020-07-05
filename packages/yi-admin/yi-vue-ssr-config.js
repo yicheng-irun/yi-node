@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // / 感谢使用yi-vue-ssr-build工具
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line import/no-extraneous-dependencies
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const devConfig = require('./yi-vue-ssr-config-dev');
 
 module.exports = {
@@ -16,6 +17,7 @@ module.exports = {
       clientConfigProcess (configuration, buildConfig) {
          delete configuration.output.publicPath;
          configuration.plugins[4].options.inject = false;
+         // configuration.plugins.push(new BundleAnalyzerPlugin());
          return configuration;
       },
 
