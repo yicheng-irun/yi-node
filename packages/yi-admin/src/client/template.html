@@ -6,7 +6,6 @@
     <meta name="format-detection" content="telephone=no,email=no">
     <title>{% block title %}{% raw %}{{ ssrParams.title }}{% endraw %}{% endblock %} yi-admin</title>
     {% block header %}{% endblock %}
-    <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
 </head>
 <body>
     {% block body %}
@@ -14,7 +13,7 @@
     {% endblock %}
     <script>var _SSR_PAGE_="{% raw %}{{pagePath}}{% endraw %}";</script>
     <script>var _ASSETS_PATH_="{% raw %}{{ ssrParams.assetsPath }}{% endraw %}";</script>
-    <script>var _CSRF_PARAM_="{% raw %}{{ ssrParams.csrfParam }}{% endraw %}"</script>
+    <script>var _CSRF_PARAM_={% raw %}{{{ JSON.stringify(ssrParams.csrfParam || {}) }}}{% endraw %};</script>
     {% if htmlWebpackPlugin.options.isProd %}<script src="{% raw %}{{ ssrParams.assetsPath }}{% endraw %}assets/main.js"></script>{% endif %}
     {% block footer %}{% endblock %}
 </body>

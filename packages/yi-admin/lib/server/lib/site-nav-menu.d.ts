@@ -11,6 +11,10 @@ export declare class SiteNavMenu {
      */
     link: string;
     /**
+     * a标签的target属性
+     */
+    target: 'main_frame' | '_blank' | string;
+    /**
      * 图标
      */
     icon: string;
@@ -22,6 +26,7 @@ export declare class SiteNavMenu {
         title: string;
         link?: string;
         icon?: string;
+        target?: 'main_frame' | '_blank' | string;
         children?: SiteNavMenu[];
     });
     add(menu: SiteNavMenu): SiteNavMenu;

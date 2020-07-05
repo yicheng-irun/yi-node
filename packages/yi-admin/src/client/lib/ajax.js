@@ -53,20 +53,14 @@ export function get (url, params, axiosConfig = {}) {
    });
 }
 
-// eslint-disable-next-line no-underscore-dangle
-const csrfPramStr = runtime.isClient ? window._CSRF_PARAM_ : runtime.action.ssrParams?.csrfParam;
-let csrfQuery;
-let csrfBody;
-try {
-   const csrf = JSON.parse(csrfPramStr);
-   csrfQuery = csrf.query || {};
-   csrfBody = csrf.body || {};
-} catch (e) {
-   console.error(e);
-}
-
 
 export function post (url, data, params, axiosConfig = {}) {
+   // eslint-disable-next-line no-underscore-dangle
+   const csrfPram = runtime.isClient ? window._CSRF_PARAM_ : runtime.action.ssrParams?.csrfParam;
+   const csrfQuery = csrfPram.query || {};
+   const csrfBody = csrfPram.body || {};
+
+
    return createAxios().post(url, {
       ...data,
       ...csrfBody,

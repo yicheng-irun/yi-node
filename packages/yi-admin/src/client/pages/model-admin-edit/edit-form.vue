@@ -23,15 +23,17 @@
             :prop="item.fieldName"
             :required="item.componentConfig.required"
          >
-            <component
-               :is="getComponent(item.componentName)"
-               v-model="editFormData[item.fieldName]"
-               :edit-form-data="editFormData"
-               :object-key="item.fieldName"
-               :name="item.fieldName"
-               :config="item.componentConfig"
-               :field-name="item.fieldName"
-            />
+            <div class="form-item-wrap">
+               <component
+                  :is="getComponent(item.componentName)"
+                  v-model="editFormData[item.fieldName]"
+                  :edit-form-data="editFormData"
+                  :object-key="item.fieldName"
+                  :name="item.fieldName"
+                  :config="item.componentConfig"
+                  :field-name="item.fieldName"
+               />
+            </div>
             <p
                v-if="item.componentConfig.helpText"
                class="ya-help-text"
@@ -64,6 +66,10 @@
 import FormComponents from './form-components';
 
 export default {
+   components: {
+      // ...FormComponents,
+   },
+
    props: {
       editId: {
          type: String,
@@ -97,7 +103,7 @@ export default {
          if (Object.prototype.hasOwnProperty.call(FormComponents, componentName)) {
             return FormComponents[componentName];
          }
-         return FormComponents.string;
+         return FormComponents.base;
       },
       async submit () {
          if (this.state.loading) return;

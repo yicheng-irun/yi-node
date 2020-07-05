@@ -25,19 +25,42 @@ export declare class YiAdmin {
     siteConfig: {
         siteName: string;
     };
+    options: {
+        csrfParam?: (ctx: Context) => {
+            query?: {
+                [key: string]: string;
+            };
+            body?: {
+                [key: string]: string;
+            };
+        };
+    };
     modelNavMenu: SiteNavMenu;
-    constructor({ permission, serverOrigin, siteConfig }: {
+    constructor({ permission, serverOrigin, siteConfig, csrfParam, }: {
         permission?: (ctx: Context, next: Next) => Promise<any>;
         /**
          * example: "http://127.0.0.1:80"
-         * 请返回koa.lisen的端口，用于vue服务端渲染(SSR)中进行数据接口请求
+         * 请返回koa.listen(SSR)中进行数据接口请求
          */
         serverOrigin: string;
         siteConfig?: {
             siteName?: string;
         };
+        /**
+         * 获取csrf参数的回调函数
+         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+         */
+        csrfParam?: (ctx: Context) => {
+            query?: {
+                [key: string]: string;
+            };
+            body?: {
+                [key: string]: string;
+            };
+        };
     });
     private createKoaRouter;
+    private getBaseRenderSSRParams;
     private appendPermissionCheckRouter;
     private appendSiteHomeRouter;
     modelAdminsMap: {
@@ -53,6 +76,10 @@ export declare class YiAdmin {
     }): void;
     static EditTypes: {
         EditArrayStringTagType: typeof import("./edit-types/edit-array-string-tag-type").EditArrayStringTagType;
+        /**
+         * 获取csrf参数的回调函数
+         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+         */
         EditArrayType: typeof import("./edit-types/edit-array-type").EditArrayType;
         EditBaseType: typeof EditBaseType;
         EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;

@@ -64,7 +64,7 @@ export class YiAdmin {
       permission?: (ctx: Context, next: Next) => Promise<any>;
       /**
        * example: "http://127.0.0.1:80"
-       * 请返回koa.lisen的端口，用于vue服务端渲染(SSR)中进行数据接口请求
+       * 请返回koa.listen(SSR)中进行数据接口请求
        */
       serverOrigin: string;
 
@@ -137,11 +137,18 @@ export class YiAdmin {
 
    private getBaseRenderSSRParams (ctx: Context): {
       assetsPath: string;
-      csrfParam: string;
+      csrfParam: {
+         query?: {
+            [key: string]: string;
+         };
+         body?: {
+            [key: string]: string;
+         };
+      };
    } {
       return {
          assetsPath: url.resolve(ctx.path, '__yi-admin-assets__/'),
-         csrfParam: this.options.csrfParam ? JSON.stringify(this.options.csrfParam(ctx)) : '{}',
+         csrfParam: this.options.csrfParam ? this.options.csrfParam(ctx) : {},
       };
    }
 
@@ -235,9 +242,9 @@ export class YiAdmin {
          let editField: EditBaseType | null = null;
 
          for (let i = 0; i < fields.length; i += 1) {
-            const fitem = fields[i];
-            if (fitem.fieldName === fieldName) {
-               editField = fitem;
+            const f = fields[i];
+            if (f.fieldName === fieldName) {
+               editField = f;
             }
          }
 
@@ -313,9 +320,9 @@ export class YiAdmin {
          let listField: ListBaseType | null = null;
 
          for (let i = 0; i < fields.length; i += 1) {
-            const fitem = fields[i];
-            if (fitem.fieldName === fieldName) {
-               listField = fitem;
+            const f = fields[i];
+            if (f.fieldName === fieldName) {
+               listField = f;
             }
          }
 
@@ -348,9 +355,9 @@ export class YiAdmin {
          let listFilterField: FilterBaseType | null = null;
 
          for (let i = 0; i < fields.length; i += 1) {
-            const fitem = fields[i];
-            if (fitem.fieldName === fieldName) {
-               listFilterField = fitem;
+            const f = fields[i];
+            if (f.fieldName === fieldName) {
+               listFilterField = f;
             }
          }
 
@@ -393,13 +400,13 @@ export class YiAdmin {
          const filterFields = this.modelAdminsMap[modelName].getFilterFields();
          filterFields.forEach((filterItem) => {
             if (Object.prototype.hasOwnProperty.call(filterData, filterItem.fieldName)) {
-               const codition = filterItem.getConditions(filterData[filterItem.fieldName]);
+               const condition = filterItem.getConditions(filterData[filterItem.fieldName]);
                delete parsedFilter[filterItem.fieldName];
-               Object.assign(parsedFilter, codition);
+               Object.assign(parsedFilter, condition);
             }
          });
 
-         const datas = await this.modelAdminsMap[modelName].getDataListAfterFilter({
+         const afterFilterData = await this.modelAdminsMap[modelName].getDataListAfterFilter({
             pageIndex: pageIndexNumber,
             pageSize: pageSizeNumber,
             sort,
@@ -407,7 +414,7 @@ export class YiAdmin {
          }, ctx);
          ctx.body = {
             success: true,
-            data: datas,
+            data: afterFilterData,
          };
       });
 

@@ -308,12 +308,12 @@ export class MongooseModelAdmin extends ModelAdminBase {
     * data-list中拉取数据的函数
     */
    public async getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
-      const datasPromise = this.model.find(req.conditions).limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
+      const dataPromise = this.model.find(req.conditions).limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
          .sort(req.sort || '')
          .exec();
       const count = await this.model.find(req.conditions).countDocuments().exec();
-      const datas = await datasPromise;
-      const modelItems: ModelDataItem[] = datas.map((item) => ({
+      const data = await dataPromise;
+      const modelItems: ModelDataItem[] = data.map((item) => ({
          id: item.id,
          values: item,
       }));

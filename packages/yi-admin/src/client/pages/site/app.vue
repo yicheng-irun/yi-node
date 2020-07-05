@@ -1,31 +1,31 @@
 <template>
    <a-config-provider :locale="zhCN">
-      <div id="ya-site-page">
-         <div class="ya-header">
-            <span
-               class="collapse-icon"
-               @click="collapsed = !collapsed"
-            >
-               <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
-            </span>
-            <span class="site-name">
-               {{ siteConfig.siteName }}
-            </span>
+      <div id="admin-site-page">
+         <div
+            class="admin-left-block"
+            :class="collapsed ? 'collapse-style' : ''"
+         >
+            <menu-tree
+               :site-menu="siteMenu.children"
+               :collapsed="collapsed"
+            />
          </div>
-         <div class="ya-main">
-            <div
-               class="ya-left-block"
-               :class="collapsed ? 'collapse-style' : ''"
-            >
-               <menu-tree
-                  :site-menu="siteMenu.children"
-                  :collapsed="collapsed"
-               />
+         <div
+            class="admin-right-block"
+            :class="collapsed ? 'collapse-style' : ''"
+         >
+            <div class="admin-header">
+               <span
+                  class="collapse-icon"
+                  @click="collapsed = !collapsed"
+               >
+                  <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
+               </span>
+               <span class="site-name">
+                  {{ siteConfig.siteName }}
+               </span>
             </div>
-            <div
-               class="ya-right-block"
-               :class="collapsed ? 'collapse-style' : ''"
-            >
+            <div class="admin-main">
                <iframe
                   ref="iframe"
                   name="main_frame"
@@ -97,7 +97,7 @@ html, body {
    overflow hidden
 }
 
-#ya-site-page {
+#admin-site-page {
    position: relative;
    width: 100%;
    height: 100%;
@@ -105,68 +105,71 @@ html, body {
    color: #000a;
    overflow hidden
 
-   >.ya-header {
-      position: relative;
-      top: 0;
-      width: 100%;
-      height: 3em;
-      line-height: 3em;
-      z-index: 10;
-      background: #fff;
-      box-shadow: 0 0 0.4em #0001;
-      border-bottom dotted 1px #0002
-      >.collapse-icon {
-         display inline-block
-         padding 0 1em
-         border-right dotted 1px #0002
-         cursor pointer
-         &:hover {
-            background #0001
-         }
-         >i {
-            font-size 1.2em
-         }
-      }
-      >.site-name {
-         display: inline-block;
-         vertical-align: top;
-         font-size: 1.1em;
-         padding: 0 1em;
-         margin: 0 0.2em;
+   >.admin-left-block {
+      position: absolute;
+      width: leftWidth;
+      height: 100%;
+      overflow-y auto;
+      overflow-x visible
+      background-color: #001529
+      box-shadow: 0 0 0.3em #0001;
+      color: #fffb;
+      z-index 10
+      &.collapse-style {
+         width collapseWidth
       }
    }
 
-   >.ya-main {
-      position: absolute;
-      top: 3em;
-      bottom: 0;
-      width: 100%;
-      z-index: 5;
+   >.admin-right-block {
+      position: relative;
+      height: 100%;
+      margin: 0 0 0 leftWidth;
+      transition margin-left 0.3s
+      overflow-x auto
 
-      >.ya-left-block {
-         position: absolute;
-         width: leftWidth;
-         height: 100%;
-         overflow-y auto;
-         overflow-x visible
-         background-color: #001529
-         box-shadow: 0 0 0.3em #0001;
-         color: #fffb;
-         z-index 10
-         &.collapse-style {
-            width collapseWidth
+      &.collapse-style {
+         margin-left collapseWidth
+      }
+
+      >.admin-header {
+         position: relative;
+         top: 0;
+         width: 100%;
+         min-width 1100px
+         height: 3em;
+         line-height: 3em;
+         z-index: 10;
+         background: #fff;
+         box-shadow: 0 0 0.4em #0001;
+         border-bottom dotted 1px #0002
+         >.collapse-icon {
+            display inline-block
+            padding 0 1em
+            border-right dotted 1px #0002
+            cursor pointer
+            &:hover {
+               background #0001
+            }
+            >i {
+               font-size 1.2em
+            }
+         }
+         >.site-name {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 1.1em;
+            padding: 0 1em;
+            margin: 0 0.2em;
          }
       }
 
-      >.ya-right-block {
-         position: relative;
-         height: 100%;
-         margin: 0 0 0 leftWidth;
-         transition margin-left 0.3s
-         &.collapse-style {
-            margin-left collapseWidth
-         }
-
+      >.admin-main {
+         position: absolute;
+         top: 3em;
+         bottom: 0;
+         width: 100%;
+         min-width 1100px
+         z-index: 5;
          >iframe {
             width 100%
             height 100%
