@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // 感谢使用yi-vue-ssr-build工具
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
