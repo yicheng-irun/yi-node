@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 // / 感谢使用yi-vue-ssr-build工具
+// eslint-disable-next-line import/no-extraneous-dependencies
+// 统计包大小插件
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const devConfig = require('./yi-vue-ssr-config-dev');
 
 module.exports = {

@@ -76,10 +76,6 @@ export declare class YiAdmin {
     }): void;
     static EditTypes: {
         EditArrayStringTagType: typeof import("./edit-types/edit-array-string-tag-type").EditArrayStringTagType;
-        /**
-         * 获取csrf参数的回调函数
-         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
-         */
         EditArrayType: typeof import("./edit-types/edit-array-type").EditArrayType;
         EditBaseType: typeof EditBaseType;
         EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;
