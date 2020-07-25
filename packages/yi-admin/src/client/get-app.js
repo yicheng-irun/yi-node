@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {
-   Button, Breadcrumb, ConfigProvider, Checkbox, DatePicker, Form, Icon, Input, InputNumber, Menu, Pagination, Popconfirm, Select, Spin, Switch, Tooltip, message, notification,
+   Button, Breadcrumb, ConfigProvider, Checkbox, DatePicker, Form, Icon, Input, InputNumber, Menu,
+   Pagination, Popconfirm, Select, Spin, Switch, Tooltip, message, notification,
 } from 'ant-design-vue';
 import runtime from './lib/runtime';
 import pages from './pages';

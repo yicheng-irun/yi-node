@@ -14,9 +14,9 @@ declare module 'koa' {
  * @param options 参数
  */
 function ssrHandler ({
-    bundlePath,
-    isCacheRenderer,
-    serverOrigin = 'http://127.0.0.1:80',
+   bundlePath,
+   isCacheRenderer,
+   serverOrigin = 'http://127.0.0.1:80',
 }: {
     /**
      * bundlePath  vue ssr bundle 的路径
@@ -36,85 +36,85 @@ function ssrHandler ({
      */
     serverOrigin: string;
 }): Middleware {
-    if (!bundlePath) {
-        throw new Error(`bundlePath "${bundlePath}" is not available`);
-    }
+   if (!bundlePath) {
+      throw new Error(`bundlePath "${bundlePath}" is not available`);
+   }
 
-    const cachedRenderers: {
+   const cachedRenderers: {
         [key: string]: vueServerRender.BundleRenderer;
     } = {};
 
-    let cachedBundle: {} = null;
+   let cachedBundle: {} = null;
 
-    /**
+   /**
      * 获取bundle
      */
-    function getBundle (): Record<string, any> {
-        if (cachedBundle) {
-            return cachedBundle;
-        }
+   function getBundle (): Record<string, any> {
+      if (cachedBundle) {
+         return cachedBundle;
+      }
 
-        const jsonPath = path.join(bundlePath, 'vue-ssr-server-bundle.json');
-        if (!fs.existsSync(jsonPath)) {
-            throw new Error(`file: '${jsonPath}' is not exists`);
-        }
-        const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
-        if (isCacheRenderer) {
-            cachedBundle = serverBundle;
-        }
-        return serverBundle;
-    }
+      const jsonPath = path.join(bundlePath, 'vue-ssr-server-bundle.json');
+      if (!fs.existsSync(jsonPath)) {
+         throw new Error(`file: '${jsonPath}' is not exists`);
+      }
+      const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
+      if (isCacheRenderer) {
+         cachedBundle = serverBundle;
+      }
+      return serverBundle;
+   }
 
-    function getRenderer (pagePathArg: string): vueServerRender.BundleRenderer {
-        const pagePath = pagePathArg.replace(/^\/+/, '');
+   function getRenderer (pagePathArg: string): vueServerRender.BundleRenderer {
+      const pagePath = pagePathArg.replace(/^\/+/, '');
 
-        if (cachedRenderers[pagePath]) {
-            return cachedRenderers[pagePath];
-        }
+      if (cachedRenderers[pagePath]) {
+         return cachedRenderers[pagePath];
+      }
 
-        let templatePath = path.join(bundlePath, 'template.html');
+      let templatePath = path.join(bundlePath, 'template.html');
 
-        const custTemplatePath = path.join(bundlePath, 'templates', `${pagePath}.html`);
-        if (fs.existsSync(custTemplatePath)) {
-            templatePath = custTemplatePath;
-        } else if (!fs.existsSync(templatePath)) {
-            throw new Error(`file: '${templatePath}' is not exists`);
-        }
+      const custTemplatePath = path.join(bundlePath, 'templates', `${pagePath}.html`);
+      if (fs.existsSync(custTemplatePath)) {
+         templatePath = custTemplatePath;
+      } else if (!fs.existsSync(templatePath)) {
+         throw new Error(`file: '${templatePath}' is not exists`);
+      }
 
-        const serverBundle = getBundle();
-        const template = fs.readFileSync(templatePath).toString();
+      const serverBundle = getBundle();
+      const template = fs.readFileSync(templatePath).toString();
 
-        const renderer = vueServerRender.createBundleRenderer(serverBundle, {
-            runInNewContext: true, // 推荐
-            template, // （可选）页面模板
-            // clientManifest // （可选）客户端构建 manifest
-        });
+      const renderer = vueServerRender.createBundleRenderer(serverBundle, {
+         runInNewContext: true, // 推荐
+         template, // （可选）页面模板
+         // clientManifest // （可选）客户端构建 manifest
+      });
 
-        if (isCacheRenderer) {
-            cachedRenderers[pagePath] = renderer;
-        }
+      if (isCacheRenderer) {
+         cachedRenderers[pagePath] = renderer;
+      }
 
-        return renderer;
-    }
+      return renderer;
+   }
 
 
-    async function middleWare (ctx: Context, next: Next): Promise<void> {
-        ctx.render = async (pagePath: string, ssrParams: Record<string, any> = {}): Promise<void> => {
-            const renderer = getRenderer(pagePath || '');
-            const context = {
-                ssrParams,
-                serverOrigin,
-                pagePath,
-                query: ctx.query,
-                ctx,
-            };
-            const html = await renderer.renderToString(context);
-            ctx.body = html;
-        };
-        await next();
-    }
+   async function middleWare (ctx: Context, next: Next): Promise<void> {
+      ctx.render = async (pagePath: string, ssrParams: Record<string, any> = {}): Promise<void> => {
+         const renderer = getRenderer(pagePath || '');
+         const context = {
+            ssrParams,
+            serverOrigin,
+            pagePath,
+            query: ctx.query,
+            ctx,
+         };
+         const html = await renderer.renderToString(context);
+         ctx.body = html;
+      };
+      await next();
+   }
 
-    return middleWare;
+   return middleWare;
 }
 
 export default ssrHandler;

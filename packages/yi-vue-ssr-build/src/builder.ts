@@ -13,26 +13,26 @@ export class Builder {
     public config: BuildConfig = null;
 
     constructor ({
-        isProduction = true,
-        ssrBuildConfigFile = path.join(process.cwd(), 'yi-vue-ssr-config.js'),
+       isProduction = true,
+       ssrBuildConfigFile = path.join(process.cwd(), 'yi-vue-ssr-config.js'),
     }: {
         isProduction?: boolean;
         ssrBuildConfigFile?: string;
     } = {}) {
-        this.isProduction = isProduction;
-        this.ssrBuildConfigFile = ssrBuildConfigFile;
-        console.log(`build for production: ${this.isProduction}`);
+       this.isProduction = isProduction;
+       this.ssrBuildConfigFile = ssrBuildConfigFile;
+       console.log(`build for production: ${this.isProduction}`);
     }
 
     public async loadConfig (): Promise<void> {
-        this.config = await createBuildConfig({
-            isProduction: this.isProduction,
-            ssrBuildConfigFile: this.ssrBuildConfigFile,
-        });
+       this.config = await createBuildConfig({
+          isProduction: this.isProduction,
+          ssrBuildConfigFile: this.ssrBuildConfigFile,
+       });
     }
 
     public startBuild (): void {
-        build(this.config);
+       build(this.config);
     }
 }
 
