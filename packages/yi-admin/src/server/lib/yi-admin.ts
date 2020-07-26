@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
+import compose from 'koa-compose';
 import koaBody from 'koa-body';
 import { vueSSRKoaMiddleware } from 'yi-vue-ssr-middleware';
 import { resolve } from 'path';
@@ -110,7 +111,7 @@ export class YiAdmin {
       serverOrigin: string;
    }): void {
       this.koaRouter = new Router();
-      this.koaRouter.use(assetsRouter.middleware(), assetsRouter.allowedMethods());
+      this.koaRouter.use(compose([assetsRouter.middleware(), assetsRouter.allowedMethods()]));
 
       const koaBodyMiddleware = koaBody({
          jsonLimit: '10mb',

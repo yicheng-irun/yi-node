@@ -80,6 +80,10 @@ export declare class YiAdmin {
         EditBaseType: typeof EditBaseType;
         EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;
         EditDateTimeType: typeof import("./edit-types/edit-date-time-type").EditDateTimeType;
+        /**
+         * 获取csrf参数的回调函数
+         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+         */
         EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").EditNumberEnumType;
         EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").EditNumberRemoteSelectType;
         EditNumberType: typeof import("./edit-types/edit-number-type").EditNumberType;
