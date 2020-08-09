@@ -1,10 +1,8 @@
-import { Middleware } from 'koa';
-export declare type koaRenderFunction = (pagePath: string, ssrParams?: any) => Promise<void>;
-declare module 'koa' {
-    interface Context {
-        render?: koaRenderFunction;
-    }
-}
+import { Handler } from 'express';
+export declare type expressRenderFunction = (pagePath: string, ssrParams?: any, cacheOptions?: {
+    key: string;
+    time: number;
+}) => Promise<void>;
 /**
  * 获取中间件
  * @param options 参数
@@ -26,5 +24,5 @@ declare function ssrHandler({ renderFunctionName, bundlePath, isCacheRenderer, s
      * 此值用于传给vue ssr context, 用于服务端渲染时访问本服务器接口
      */
     serverOrigin: string;
-}): Middleware;
+}): Handler;
 export default ssrHandler;

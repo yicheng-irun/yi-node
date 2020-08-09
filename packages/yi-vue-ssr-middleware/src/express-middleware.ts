@@ -2,15 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import * as vueServerRender from 'vue-server-renderer';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Middleware, Context, Next } from 'koa';
+import {
+   Request, Response, Handler, NextFunction,
+} from 'express';
 
-export type koaRenderFunction = (pagePath: string, ssrParams?: any) => Promise<void>;
-
-declare module 'koa' {
-    interface Context {
-        render?: koaRenderFunction;
-    }
-}
+export type expressRenderFunction = (pagePath: string, ssrParams?: any, cacheOptions?: {
+   key: string;
+   time: number;
+}) => Promise<void>;
 
 /**
  * 获取中间件
@@ -41,10 +40,30 @@ function ssrHandler ({
      * 此值用于传给vue ssr context, 用于服务端渲染时访问本服务器接口
      */
     serverOrigin: string;
-}): Middleware {
+}): Handler {
    if (!bundlePath) {
       throw new Error(`bundlePath "${bundlePath}" is not available`);
    }
+
+   const CACHE = {
+      map: {},
+      timeMap: {},
+      set (key: string, value: string, time: number): void {
+         this.map[key] = value;
+         const t = time;
+         this.timeMap[key] = Date.now() + t;
+      },
+      get (key: string): string | null {
+         const now = Date.now();
+         if (this.map[key]) {
+            const t = parseFloat(this.timeMap[key]);
+            if (t > now) {
+               return this.map[key];
+            }
+         }
+         return null;
+      },
+   };
 
    const cachedRenderers: {
         [key: string]: vueServerRender.BundleRenderer;
@@ -104,20 +123,66 @@ function ssrHandler ({
    }
 
 
-   async function middleWare (ctx: Context, next: Next): Promise<void> {
-      ctx[renderFunctionName] = async (pagePath: string, ssrParams: Record<string, any> = {}): Promise<void> => {
-         const renderer = getRenderer(pagePath || '');
-         const context = {
-            ssrParams,
-            serverOrigin,
-            pagePath,
-            query: ctx.query,
-            ctx,
-         };
-         const html = await renderer.renderToString(context);
-         ctx.body = html;
+   async function middleWare (req: Request, res: Response, next: NextFunction): Promise<void> {
+      res[renderFunctionName] = async (pagePath: string, ssrParams: Record<string, any> = {}, cacheOptions?: {
+         key: string;
+         time: number;
+      }): Promise<void> => {
+         let useCache = false;
+         let cacheKey = '';
+         let cacheTime = 0;
+         if (cacheOptions) {
+            useCache = true;
+            cacheKey = cacheOptions.key || '';
+            cacheTime = cacheOptions.time || 1000 * 60; // 默认缓存1分钟
+         }
+         const key = `${pagePath}::${cacheKey}`;
+
+         function render (): void {
+            const renderer = getRenderer(pagePath || '');
+            let ignoreByNext = false;
+            const context = {
+               ssrParams,
+               serverOrigin,
+               pagePath,
+               query: req.query,
+               next (...args): void {
+                  ignoreByNext = true;
+                  req.next(...args);
+               },
+               req,
+               res,
+               ctx: {
+                  req,
+                  res,
+               },
+            };
+            renderer.renderToString(context, (err, html) => {
+               if (ignoreByNext) {
+                  return;
+               }
+               if (err) {
+                  req.next(err);
+                  return;
+               }
+               res.end(html);
+               if (useCache) {
+                  CACHE.set(key, html, cacheTime);
+               }
+            });
+         }
+         if (useCache) {
+            const result = CACHE.get(key);
+            if (result) {
+               res.end(result);
+               return;
+            }
+            render();
+         } else {
+            render();
+         }
       };
-      await next();
+      next();
    }
 
    return middleWare;
