@@ -1,10 +1,14 @@
 import Koa from 'koa';
 import mongoose from 'mongoose';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { config } from 'dotenv';
 import myadmin from './admin';
 import myadmin2 from './admin2';
 import uploadsRouter from './uploads-router';
 import settings from './settings';
 
+
+config();
 
 export default async function createApp (): Promise<Koa> {
    await mongoose.connect(settings.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });

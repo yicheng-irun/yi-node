@@ -88,7 +88,8 @@ export default {
 
          const rsp = await this.$ajax.post(
             'component-action/',
-            formData, {
+            formData,
+            {
                fieldName: this.fieldName,
                actionName: 'upload',
             }, {

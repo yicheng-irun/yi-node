@@ -60,11 +60,18 @@ export function post (url, data, params, axiosConfig = {}) {
    const csrfQuery = csrfPram.query || {};
    const csrfBody = csrfPram.body || {};
 
-
-   return createAxios().post(url, {
+   let fData = {
       ...data,
       ...csrfBody,
-   }, {
+   };
+   if (data instanceof FormData) {
+      fData = data;
+      Object.keys(csrfBody).forEach((key) => {
+         fData.append(key, csrfBody[key]);
+      });
+   }
+
+   return createAxios().post(url, fData, {
       params: {
          ...params,
          ...csrfQuery,
