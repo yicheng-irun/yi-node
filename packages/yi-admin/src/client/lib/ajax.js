@@ -7,7 +7,7 @@ export function createAxios () {
       const instance = axios.create({
          // add headers to server side requests
          headers: {
-            ...runtime.action.ctx.request.header,
+            ...(runtime.action.isKoa ? runtime.action.ctx.request.header : runtime.action.ctx.req.headers),
             accept: '*/*',
          },
 
@@ -27,7 +27,7 @@ export function createAxios () {
           * throw the 'set-cookie' of the ajax response header to action response header
           */
          let newSetCookie = response.headers && response.headers['set-cookie'];
-         if (newSetCookie) {
+         if (newSetCookie && runtime.action.isKoa) {
             const oldSetCookie = runtime.action.ctx.response.header['set-cookie'] || [];
             if (!Array.isArray(newSetCookie)) {
                newSetCookie = [newSetCookie];

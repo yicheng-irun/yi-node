@@ -27,7 +27,7 @@ function getBaseRenderSSRParams (yiAdmin: YiAdmin, ctx: Context): {
  } {
    return {
       assetsPath: url.resolve(ctx.path, '__yi-admin-assets__/'),
-      csrfParam: yiAdmin.options.csrfParam ? yiAdmin.options.csrfParam(ctx) : {},
+      csrfParam: yiAdmin.options.csrfParamKoa ? yiAdmin.options.csrfParamKoa(ctx) : {},
    };
 }
 
@@ -326,7 +326,6 @@ export function createKoaRouter ({
    });
    // 允许用户自定义koaBody
    koaRouter.use(async (ctx, next) => {
-      console.log(ctx.request.body);
       if (ctx.request.body) {
          await next();
       } else {

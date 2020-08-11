@@ -10,8 +10,10 @@ const runtime = {
    baseUrl: '', // 用于屏蔽服务端和客户端的ajax请求的baseUrl
 
    action: {
-      ctx: null, // koa的ctx
+      ctx: null, // koa的ctx, express下为 { req, res }
       ssrParams: null,
+      isExpress: false,
+      isKoa: false,
    },
    pagePath: '',
    query: {},
@@ -27,8 +29,13 @@ const runtime = {
       } = context;
 
       runtime.serverOrigin = serverOrigin;
-      runtime.baseUrl = `${serverOrigin}${ctx.originalUrl}`;
+      runtime.baseUrl = `${serverOrigin}${ctx.originalUrl || ctx.req.originalUrl}`;
       runtime.action.ctx = ctx;
+      if (ctx.request) {
+         runtime.action.isKoa = true;
+      } else {
+         runtime.action.isExpress = true;
+      }
       runtime.query = query;
       runtime.action.ssrParams = ssrParams;
       runtime.pagePath = pagePath;

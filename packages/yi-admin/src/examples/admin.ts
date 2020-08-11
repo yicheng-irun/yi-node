@@ -20,7 +20,7 @@ import settings from './settings';
 const myadmin = new YiAdmin({
    serverOrigin: `http://127.0.0.1:${settings.port}`,
 
-   csrfParam (ctx: Context): {} {
+   csrfParamKoa (ctx: Context): {} {
       return {
          query: {
             _csrf: ctx.csrf || 'test_csrf',

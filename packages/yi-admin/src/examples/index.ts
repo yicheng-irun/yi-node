@@ -1,3 +1,4 @@
+import express from 'express';
 import Koa from 'koa';
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -25,8 +26,20 @@ export default async function createApp (): Promise<Koa> {
    return app;
 }
 
+export async function createApp2 (): Promise<express.Application> {
+   await mongoose.connect(settings.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+   const app = express();
+
+   app.use('/test', myadmin.expressRouter);
+
+   app.use(myadmin2.expressRouter);
+
+   return app;
+}
+
 async function start (): Promise<void> {
-   const app = await createApp();
+   const app = await createApp2();
    const { host, port } = settings;
 
    app.listen(port, host, () => {
