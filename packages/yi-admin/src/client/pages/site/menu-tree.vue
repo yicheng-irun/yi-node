@@ -1,6 +1,7 @@
 <template>
    <div class="menu-tree">
       <a-menu
+         ref="mainMenu"
          mode="inline"
          :inline-collapsed="collapsed"
          theme="dark"
@@ -11,6 +12,8 @@
                v-if="item1.children.length === 0"
                :key="`${index1}`"
                :disabled="!item1.link"
+               :title="item1.title"
+               :value="item1.link"
             >
                <a
                   :href="item1.link"
@@ -32,6 +35,8 @@
                      v-if="item2.children.length === 0"
                      :key="`${index1}_${index2}`"
                      :disabled="!item2.link"
+                     :value="item2.link"
+                     :title="item2.title"
                   >
                      <a
                         :href="item2.link"
@@ -53,6 +58,8 @@
                         <a-menu-item
                            :key="`${index1}_${index2}_${index3}`"
                            :disabled="!item3.link"
+                           :value="item3.link"
+                           :title="item3.title"
                         >
                            <a
                               :href="item3.link"
@@ -91,14 +98,34 @@ export default {
          },
       },
    },
+   mounted () {
+      const navHash = decodeURIComponent(window.location.hash.replace(/^#/, ''));
+      if (navHash) {
+         try {
+            console.log(navHash);
+            const value = JSON.parse(navHash);
+            const link = value?.link;
+            if (link) window.open(link, 'main_frame');
+            const menuPath = value?.menuPath ?? [];
+            if (menuPath && Array.isArray(menuPath)) {
+               this.$refs.mainMenu.setOpenKeys(menuPath);
+            }
+         } catch (e) {
+            console.error(e);
+         }
+      }
+   },
    methods: {
-      clickItem () {
-         // if (this.siteMenu.link) {
-         //    this.$store.state.iframeSrc = this.siteMenu.link;
-         // }
-      },
-      clickMenu (a, b, c) {
-         console.log(a, b, c);
+      clickMenu (a) {
+         const { keyPath } = a;
+         const link = a.item.value;
+         if (link) {
+            const hashData = JSON.stringify({
+               link,
+               menuPath: keyPath,
+            });
+            window.history.replaceState(null, '', `#${hashData}`);
+         }
       },
    },
 };
