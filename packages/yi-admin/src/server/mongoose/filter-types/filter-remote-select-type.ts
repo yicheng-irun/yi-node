@@ -5,6 +5,7 @@ import { FilterRemoteSelectInterface } from '../../lib/filter-types/filter-remot
 import { ModelAdminBase } from '../../lib/model-admin-base';
 import { FilterBaseTypeConfig } from '../../lib/filter-types/filter-base-interface';
 import { MongooseModelAdmin } from '../mongoose-model-admin';
+import { ReqData, JsonReturnType } from '../../lib/common-types';
 
 export interface FilterRemoteSelectTypeParam {
    /**
@@ -15,7 +16,7 @@ export interface FilterRemoteSelectTypeParam {
    /**
     * 获取可选项
     */
-   getOptions?: (search: string, ctx: Context, modelAdmin: MongooseModelAdmin) => Promise<({
+   getOptions?: (search: string, reqData: ReqData, modelAdmin: MongooseModelAdmin) => Promise<({
       /**
        * 值
        */
@@ -53,7 +54,7 @@ export class FilterRemoteSelectType extends FilterBaseType implements FilterRemo
 
    public getLabelByValue: (value: string | number | boolean) => Promise<string> = (value: string | number | boolean) => Promise.resolve(`${value}`);
 
-   public getOptions: (search: string, ctx: Context, modelAdmin: MongooseModelAdmin) => Promise<({
+   public getOptions: (search: string, reqData: ReqData, modelAdmin: MongooseModelAdmin) => Promise<({
       /**
        * 值
        */
@@ -62,7 +63,7 @@ export class FilterRemoteSelectType extends FilterBaseType implements FilterRemo
        * 显示的标签
        */
       label: string;
-   })[]> = async (search: string, ctx: Context, modelAdmin: MongooseModelAdmin) => {
+   })[]> = async (search: string, reqData: ReqData, modelAdmin: MongooseModelAdmin) => {
       const options: ({
          value: string | number | boolean;
          label: string;
@@ -82,17 +83,29 @@ export class FilterRemoteSelectType extends FilterBaseType implements FilterRemo
     * @param actionName
     * @param actionData
     */
-   public async action (actionName: string, actionData: any, ctx: Context, modelAdmin: ModelAdminBase): Promise<({
+   public async action (actionName: string, actionData: any, reqData: ReqData, modelAdmin: ModelAdminBase): Promise<JsonReturnType<({
       label: string;
       value: string | number | boolean;
-   }[]) | string> {
+   }[]) | string>> {
       if (actionName === 'getOptions') {
-         const options = await this.getOptions(actionData, ctx, modelAdmin as MongooseModelAdmin);
-         return options;
+         const options = await this.getOptions(actionData, reqData, modelAdmin as MongooseModelAdmin);
+         return {
+            success: true,
+            data: options,
+         };
       }
       if (actionName === 'getLabelByValue') {
-         if (this.getLabelByValue) { return this.getLabelByValue(actionData); }
-         return actionData;
+         if (this.getLabelByValue) {
+            const data = await this.getLabelByValue(actionData);
+            return {
+               success: true,
+               data,
+            };
+         }
+         return {
+            success: true,
+            data: actionData,
+         };
       }
       throw new Error(`接收到非法actionName ${actionName}`);
    }

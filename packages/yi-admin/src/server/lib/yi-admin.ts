@@ -24,7 +24,7 @@ export class YiAdmin {
     * 判断用户是否有权限
     * 如果没有权限，直接在里侧抛出异常
     */
-   public permissionKoa: (ctx: Context, next: Next) => Promise<any> = async (ctx, next) => {
+   public permissionKoa: (ctx: Context, next: Next) => any = async (ctx, next) => {
       await next();
    }
 

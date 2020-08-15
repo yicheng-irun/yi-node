@@ -12,7 +12,6 @@ const allowFile = ['.js', '.css', '.html', '.tff', '.woff', '.png', '.jpg', '.gi
 
 const clientAssetsPath = resolve(__dirname, '../../../lib/client/assets');
 assetsRouter.get(/__yi-admin-assets__\/assets\/(.*)/, async (ctx) => {
-   console.log(111222);
    const file = ctx.params['0'];
    const filePath = join(clientAssetsPath, file);
    if (filePath.startsWith(clientAssetsPath) && existsSync(filePath)) {

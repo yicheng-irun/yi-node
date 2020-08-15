@@ -1,4 +1,5 @@
 import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
+import { JsonReturnType } from '../common-types';
 
 export class ListNumberRemoteSelectType extends ListBaseType {
    /**
@@ -21,11 +22,20 @@ export class ListNumberRemoteSelectType extends ListBaseType {
 
    public getLabelByValue?: (value: number) => Promise<string>;
 
-   public action (actionName: string, actionData: any): Promise<string> {
+   public async action (actionName: string, actionData: any): Promise<JsonReturnType<string>> {
       if (actionName === 'getLabelByValue') {
          const t = Number(actionData);
-         if (this.getLabelByValue) { return this.getLabelByValue(t); }
-         return actionData;
+         if (this.getLabelByValue) {
+            const data = await this.getLabelByValue(t);
+            return {
+               success: true,
+               data,
+            };
+         }
+         return {
+            success: true,
+            data: actionData,
+         };
       }
       throw new Error(`接收到非法actionName ${actionName}`);
    }

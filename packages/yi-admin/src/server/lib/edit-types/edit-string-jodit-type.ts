@@ -4,6 +4,7 @@ import mime from 'mime';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
+import { ReqData, JsonReturnType } from '../common-types';
 
 /**
  * 富文本编辑器类型  jodit
@@ -92,9 +93,15 @@ export class EditStringJoditEditorType extends EditStringTextareaType {
   }>;
 
    // eslint-disable-next-line class-methods-use-this
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType<{
+      files: string[];
+      path: string;
+      baseurl: '';
+      isImages: boolean[];
+   }
+   >> {
       if (actionName === 'uploader') {
-         const { files } = ctx.request;
+         const { files } = reqData;
          const results = [];
          for (let i = 0; ; i += 1) {
             const fname = `files[${i}]`;
@@ -118,16 +125,19 @@ export class EditStringJoditEditorType extends EditStringTextareaType {
             }
          }
          return {
-            files: results,
-            path: '',
-            baseurl: '',
-            isImages: results.map((t) => {
-               const a = mime.getType(t);
-               if (a && /^image\//.test(a)) {
-                  return true;
-               }
-               return false;
-            }),
+            success: true,
+            data: {
+               files: results,
+               path: '',
+               baseurl: '',
+               isImages: results.map((t) => {
+                  const a = mime.getType(t);
+                  if (a && /^image\//.test(a)) {
+                     return true;
+                  }
+                  return false;
+               }),
+            },
          };
       }
       throw new Error(`接收到非法actionName ${actionName}`);

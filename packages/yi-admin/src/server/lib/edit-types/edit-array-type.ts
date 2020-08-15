@@ -1,7 +1,7 @@
-import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
 import { ListArrayType } from '../list-types/list-array-type';
+import { ReqData, JsonReturnType } from '../common-types';
 
 export class EditArrayType extends EditBaseType {
    /**
@@ -73,11 +73,10 @@ export class EditArrayType extends EditBaseType {
     * @param actionName
     * @param actionData
     * @param ctx
+    * @override
     */
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<{
-      url: string;
-   }> {
-      const result = await this.componentConfig.childrenType.action(actionName, actionData, ctx);
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType> {
+      const result = await this.componentConfig.childrenType.action(actionName, actionData, reqData);
       return result;
    }
 

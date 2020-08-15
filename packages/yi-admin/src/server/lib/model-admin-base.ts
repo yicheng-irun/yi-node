@@ -3,17 +3,30 @@
 import { Context, Next } from 'koa';
 import { type } from 'os';
 import { isPrimitive } from 'util';
+import Express, { NextFunction } from 'express';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
 import { FilterBaseType } from './filter-types/filter-base-type';
 import { ListStringHtmlType } from './list-types/list-string-html-type';
 
+export type RequestInfo = Context | {
+   req: Express.Request;
+   res: Express.Response;
+}
+
 export interface ModelAdminBaseParams {
    /**
-    * 用来判断用户是否有权限
+    * 判断用户是否有权限
+    * 如果没有权限，直接在里侧抛出异常
     */
-   permission?: (ctx: Context, next: Next) => Promise<void>;
+   permissionKoa?: (ctx: Context, next: Next) => any;
+
+   /**
+    * 判断用户是否有权限
+    * 如果没有权限，直接在里侧抛出异常
+    */
+   permissionExpress?: (req: Express.Request, res: Express.Response, next: NextFunction) => any;
 
    /**
     * model的name
@@ -98,10 +111,18 @@ export interface DataListResponseBody {
 export class ModelAdminBase {
    /**
     * 判断用户是否有权限
-    * 如果没有权限，直接在里侧抛出异常或者返回false
+    * 如果没有权限，直接在里侧抛出异常
     */
-   public permission?: (ctx: Context, next: Next) => Promise<void> = async (ctx, next) => {
+   public permissionKoa: (ctx: Context, next: Next) => any = async (ctx, next) => {
       await next();
+   }
+
+   /**
+    * 判断用户是否有权限
+    * 如果没有权限，直接在里侧抛出异常
+    */
+   public permissionExpress: (req: Express.Request, res: Express.Response, next: NextFunction) => any = (req, res, next) => {
+      next();
    }
 
    /**
@@ -140,7 +161,8 @@ export class ModelAdminBase {
    public listFieldsExclude?: string[];
 
    constructor ({
-      permission,
+      permissionKoa,
+      permissionExpress,
       name,
       listActions,
       title = '',
@@ -149,14 +171,18 @@ export class ModelAdminBase {
       listFields,
       listFieldsExclude,
    }: ModelAdminBaseParams) {
-      if (permission) {
-         this.permission = permission;
-      }
       // 因为要在url的路径中，所以要做这个限制
       if (/^[0-9a-z_-]+$/.test(name)) {
          this.$name = name;
       } else {
          throw new Error('name的规则必须满足/^[0-9a-z_-]+$/');
+      }
+
+      if (permissionKoa) {
+         this.permissionKoa = permissionKoa;
+      }
+      if (permissionExpress) {
+         this.permissionExpress = permissionExpress;
       }
 
       this.title = title;
@@ -208,7 +234,7 @@ export class ModelAdminBase {
    /**
     * edit-form中拉取数据的函数
     */
-   public getEditData (id: string, ctx: Context): Promise<ModelDataItem> {
+   public getEditData (id: string, ctx: RequestInfo): Promise<ModelDataItem> {
       throw new Error('请在子类中实现getEditData函数');
    }
 
@@ -218,7 +244,7 @@ export class ModelAdminBase {
     * @param forData
     * @param ctx
     */
-   public formSubmit (id: string, forData: object, ctx: Context): Promise<ModelDataItem> {
+   public formSubmit (id: string, forData: object, ctx: RequestInfo): Promise<ModelDataItem> {
       throw new Error('请在子类中实现removeItem函数');
    }
 
@@ -272,11 +298,11 @@ export class ModelAdminBase {
    /**
     * data-list中拉取数据的函数
     */
-   public getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+   public getDataList (req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody> {
       throw new Error('请在子类中实现getDataList函数');
    }
 
-   public async getDataListAfterFilter (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+   public async getDataListAfterFilter (req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody> {
       const dataResult = await this.getDataList(req, ctx);
       if (this.listFields) {
          const extraFields = this.getExtraDataListFileds();
@@ -320,7 +346,7 @@ export class ModelAdminBase {
    /**
     * 删除除某一项，用于提供默认的删除功能
     */
-   public removeItem (id: string, ctx: Context): Promise<void> {
+   public removeItem (id: string, ctx: RequestInfo): Promise<void> {
       throw new Error('请在子类中实现removeItem函数');
    }
 

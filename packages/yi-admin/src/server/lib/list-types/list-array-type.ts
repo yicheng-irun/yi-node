@@ -1,5 +1,7 @@
 import { Context } from 'koa';
+import Express from 'express';
 import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
+import { ReqData, JsonReturnType } from '../common-types';
 
 export class ListArrayType extends ListBaseType {
    /**
@@ -56,10 +58,8 @@ export class ListArrayType extends ListBaseType {
     * @param actionData
     * @param ctx
     */
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<{
-      url: string;
-   }> {
-      const result = await this.componentConfig.childrenType.action(actionName, actionData, ctx);
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType> {
+      const result = await this.componentConfig.childrenType.action(actionName, actionData, reqData);
       return result;
    }
 }

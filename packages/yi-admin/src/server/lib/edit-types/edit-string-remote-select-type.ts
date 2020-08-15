@@ -1,6 +1,7 @@
 import { EditBaseType, EditBaseTypeConfig } from './edit-base-type';
 import { ListStringRemoteSelectType } from '../list-types/list-string-remote-select-type';
 import { ListBaseType } from '../list-types/list-base-type';
+import { JsonReturnType } from '../common-types';
 
 export interface EditStringRemoteSelectTypeParam {
    /**
@@ -56,13 +57,13 @@ export class EditStringRemoteSelectType extends EditBaseType {
       label: string;
    })[]>;
 
-   public async action (actionName: string, actionData: any): Promise<((string | {
+   public async action (actionName: string, actionData: any): Promise<JsonReturnType<((string | {
       value: string;
       label: string;
-   })[]) | string> {
+   })[]) | string>> {
       if (actionName === 'getOptions') {
          const options = await this.getOptions(actionData);
-         return options.map((item) => {
+         const data = options.map((item) => {
             if (typeof item === 'string') {
                return {
                   value: item,
@@ -71,9 +72,19 @@ export class EditStringRemoteSelectType extends EditBaseType {
             }
             return item;
          });
+         return {
+            success: true,
+            data,
+         };
       }
       if (actionName === 'getLabelByValue') {
-         if (this.getLabelByValue) { return this.getLabelByValue(actionData); }
+         if (this.getLabelByValue) {
+            const data = await this.getLabelByValue(actionData);
+            return {
+               success: true,
+               data,
+            };
+         }
          return actionData;
       }
       throw new Error(`接收到非法actionName ${actionName}`);

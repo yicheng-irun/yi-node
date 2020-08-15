@@ -88,18 +88,21 @@ function appendModelAdminRouter (yiAdmin: YiAdmin, koaRouter: Router<{}, Context
          const f = fields[i];
          if (f.fieldName === fieldName) {
             editField = f;
+            break;
          }
       }
 
       if (editField) {
-         const result = await editField.action(actionName, actionData, ctx);
+         const result = await editField.action(actionName, actionData, {
+            method: ctx.method,
+            query: ctx.query,
+            body: ctx.request.body,
+            files: ctx.request.files,
+         });
          if (result !== undefined) {
-            ctx.body = {
-               success: true,
-               data: result,
-            };
+            ctx.body = result;
+            return;
          }
-         return;
       }
 
       ctx.body = {
@@ -166,16 +169,19 @@ function appendModelAdminRouter (yiAdmin: YiAdmin, koaRouter: Router<{}, Context
          const f = fields[i];
          if (f.fieldName === fieldName) {
             listField = f;
+            break;
          }
       }
 
       if (listField) {
-         const result = await listField.action(actionName, actionData, ctx);
+         const result = await listField.action(actionName, actionData, {
+            method: ctx.method,
+            query: ctx.query,
+            body: ctx.request.body,
+            files: ctx.request.files,
+         });
          if (result !== undefined) {
-            ctx.body = {
-               success: true,
-               data: result,
-            };
+            ctx.body = result;
          }
          return;
       }
@@ -201,16 +207,19 @@ function appendModelAdminRouter (yiAdmin: YiAdmin, koaRouter: Router<{}, Context
          const f = fields[i];
          if (f.fieldName === fieldName) {
             listFilterField = f;
+            break;
          }
       }
 
       if (listFilterField) {
-         const result = await listFilterField.action(actionName, actionData, ctx, yiAdmin.modelAdminsMap[modelName]);
+         const result = await listFilterField.action(actionName, actionData, {
+            method: ctx.method,
+            query: ctx.query,
+            body: ctx.request.body,
+            files: ctx.request.files,
+         }, yiAdmin.modelAdminsMap[modelName]);
          if (result !== undefined) {
-            ctx.body = {
-               success: true,
-               data: result,
-            };
+            ctx.body = result;
          }
          return;
       }

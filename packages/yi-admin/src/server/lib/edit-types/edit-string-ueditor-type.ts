@@ -6,6 +6,7 @@ import { createHash } from 'crypto';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter, mkdirTraverse } from '../../tools/file-writer';
+import { ReqData } from '../common-types';
 
 /* 前后端通信相关的配置,注释只允许使用多行方式 */
 const ueditorConfig = {
@@ -187,39 +188,36 @@ export class EditStringUEditorType extends EditStringTextareaType {
   }>;
 
    // eslint-disable-next-line class-methods-use-this
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<any> {
       try {
-         if (ctx.method === 'GET') {
+         if (reqData.method === 'GET') {
             if (actionName === 'config') {
-               ctx.body = ueditorConfig;
-               return;
+               return ueditorConfig;
             } if (actionName === 'listimage') {
-               ctx.body = {
+               return {
                   state: 'SUCCESS',
                   list: [],
                   start: 0,
                   total: 0,
                };
-               return;
             } if (actionName === 'listfile') {
-               ctx.body = {
+               return {
                   state: 'SUCCESS',
                   list: [],
                   start: 0,
                   total: 0,
                };
-               return;
             }
-         } else if (ctx.method === 'POST') {
+         } else if (reqData.method === 'POST') {
             if (actionName === 'uploadimage' || actionName === 'uploadfile') {
-               const { files } = ctx.request;
+               const { files } = reqData;
                if (!files) throw new Error('未识别到上传的文件');
                const file = files?.upfile;
                try {
                   console.log(file);
                   const result = await this.writeFile(file);
                   if (!result?.url) throw new Error('上传文件失败');
-                  ctx.body = {
+                  return {
                      state: 'SUCCESS',
                      url: result.url,
                      title: result.url,
@@ -233,9 +231,8 @@ export class EditStringUEditorType extends EditStringTextareaType {
                      console.error(e);
                   }
                }
-               return;
             } if (actionName === 'uploadscrawl') {
-               if (ctx.request.body?.upfile) {
+               if (reqData.body?.upfile) {
                   let file: {
                      size: number;
                      path: string;
@@ -245,7 +242,7 @@ export class EditStringUEditorType extends EditStringTextareaType {
                      hash?: string;
                   } | null = null;
                   try {
-                     const bf = Buffer.from(ctx.request.body.upfile, 'base64');
+                     const bf = Buffer.from(reqData.body.upfile, 'base64');
                      const hash = createHash('md5').update(bf).digest('hex');
                      const name = `${hash}.jpg`;
                      const path = join(process.cwd(), 'temp', name);
@@ -262,7 +259,7 @@ export class EditStringUEditorType extends EditStringTextareaType {
                      console.log(file);
                      const result = await this.writeFile(file);
                      if (!result?.url) throw new Error('上传文件失败');
-                     ctx.body = {
+                     return {
                         state: 'SUCCESS',
                         url: result.url,
                         title: result.url,
@@ -276,13 +273,12 @@ export class EditStringUEditorType extends EditStringTextareaType {
                         console.error(e);
                      }
                   }
-                  return;
                }
             }
          }
          throw new Error('未知操作');
       } catch (e) {
-         ctx.body = {
+         return {
             state: e?.message || e || '出错了',
          };
       }

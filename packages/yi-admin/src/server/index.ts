@@ -14,4 +14,9 @@ export {
    ListTypes,
 } from './lib/types';
 
+export {
+   ReqData,
+   JsonReturnType,
+} from './lib/common-types';
+
 export default YiAdmin;

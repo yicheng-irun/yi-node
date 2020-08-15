@@ -2,6 +2,7 @@ import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
 import { ListArrayStringTagType } from '../list-types/list-array-string-tag-type';
+import { ReqData, JsonReturnType } from '../common-types';
 
 export class EditArrayStringTagType extends EditBaseType {
    /**
@@ -61,9 +62,12 @@ export class EditArrayStringTagType extends EditBaseType {
     * @param actionData
     * @param ctx
     */
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<string[]> {
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType> {
       if (actionName === 'getTags') {
-         return this.getTags(actionData);
+         return {
+            success: true,
+            data: this.getTags(actionData),
+         };
       }
       throw new Error(`接收到非法actionName ${actionName}`);
    }

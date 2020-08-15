@@ -2,6 +2,7 @@ import { Context } from 'koa';
 import { unlinkSync, existsSync } from 'fs';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
+import { ReqData, JsonReturnType } from '../common-types';
 
 
 export type EditStringFileTypeConfig = EditBaseTypeConfig & {
@@ -80,18 +81,21 @@ export class EditStringFileType extends EditBaseType {
      url: string;
   }>;
 
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<{
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType<{
       url: string;
-   }> {
+   }>> {
       if (actionName === 'upload') {
-         const { files } = ctx.request;
+         const { files } = reqData;
          if (!files) throw new Error('未识别到上传的文件');
          const file = files?.file;
          try {
             const result = await this.writeFile(file);
             if (!result?.url) throw new Error('上传文件失败');
             return {
-               url: result.url,
+               success: true,
+               data: {
+                  url: result.url,
+               },
             };
          } finally {
             try {

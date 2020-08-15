@@ -1,5 +1,8 @@
-import { Context } from 'koa';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Files } from 'formidable';
 import { ListBaseType } from '../list-types/list-base-type';
+import { ReqData, JsonReturnType } from '../common-types';
+
 
 export interface EditBaseTypeConfig {
    required?: boolean;
@@ -58,7 +61,7 @@ export class EditBaseType {
    }
 
    // eslint-disable-next-line class-methods-use-this
-   public async action (actionName: string, actionData: any, ctx: Context): Promise<any> {
+   public async action (actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType> {
       throw new Error(`接收到非法actionName ${actionName}`);
    }
 

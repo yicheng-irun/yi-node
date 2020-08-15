@@ -4,7 +4,7 @@ import {
 import { Context } from 'koa';
 import {
    ModelAdminBase,
-   ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody,
+   ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody, RequestInfo,
 } from '../lib/model-admin-base';
 import { EditBaseType } from '../lib/edit-types/edit-base-type';
 import { EditStringType } from '../lib/edit-types/edit-string-type';
@@ -207,7 +207,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
    /**
     * edit-form中拉取数据的函数
     */
-   public async getEditData (id: string, ctx: Context): Promise<ModelDataItem> {
+   public async getEditData (id: string, ctx: RequestInfo): Promise<ModelDataItem> {
       let item: Document | null = null;
 
       if (id) {
@@ -228,7 +228,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       };
    }
 
-   public async formSubmit (id: string, formData: {[key: string]: any}, ctx: Context): Promise<ModelDataItem> {
+   public async formSubmit (id: string, formData: {[key: string]: any}, ctx: RequestInfo): Promise<ModelDataItem> {
       let item: Document;
       if (id) {
          const fItem = await this.model.findById(id);
@@ -307,7 +307,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
    /**
     * data-list中拉取数据的函数
     */
-   public async getDataList (req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody> {
+   public async getDataList (req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody> {
       const dataPromise = this.model.find(req.conditions).limit(req.pageSize).skip((req.pageIndex - 1) * req.pageSize)
          .sort(req.sort || '')
          .exec();
@@ -323,7 +323,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       };
    }
 
-   public async removeItem (id: string, ctx: Context): Promise<void> {
+   public async removeItem (id: string, ctx: RequestInfo): Promise<void> {
       const item = await this.model.findById(id);
       if (!item) throw new Error('未找到该编辑项');
       await item.remove();

@@ -3,6 +3,7 @@ import Koa from 'koa';
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { config } from 'dotenv';
+import { resolve } from 'path';
 import myadmin from './admin';
 import myadmin2 from './admin2';
 import uploadsRouter from './uploads-router';
@@ -30,6 +31,8 @@ export async function createApp2 (): Promise<express.Application> {
    await mongoose.connect(settings.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
    const app = express();
+
+   app.use('/uploads', express.static(resolve(__dirname, '../../uploads')));
 
    app.use('/test', myadmin.expressRouter);
 

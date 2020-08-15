@@ -1,7 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import { Context } from 'koa';
+import Express from 'express';
 import { FilterBaseInterface, FilterBaseTypeConfig } from './filter-base-interface';
 import { ModelAdminBase } from '../model-admin-base';
+import { ReqData, JsonReturnType } from '../common-types';
 
 
 export class FilterBaseType implements FilterBaseInterface {
@@ -28,7 +30,7 @@ export class FilterBaseType implements FilterBaseInterface {
     * @param actionData 动作数据
     * @param ctx koa Context
     */
-   public async action (actionName: string, actionData: any, ctx: Context, modelAdmin: ModelAdminBase): Promise<any> {
+   public async action (actionName: string, actionData: any, reqData: ReqData, modelAdmin: ModelAdminBase): Promise<JsonReturnType> {
       throw new Error(`接收到非法actionName ${actionName}`);
    }
 
