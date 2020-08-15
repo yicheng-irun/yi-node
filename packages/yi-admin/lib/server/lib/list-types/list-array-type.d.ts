@@ -1,5 +1,5 @@
-import { Context } from 'koa';
 import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
+import { ReqData, JsonReturnType } from '../common-types';
 export declare class ListArrayType extends ListBaseType {
     /**
      * 前端的组件名称
@@ -34,7 +34,5 @@ export declare class ListArrayType extends ListBaseType {
      * @param actionData
      * @param ctx
      */
-    action(actionName: string, actionData: any, ctx: Context): Promise<{
-        url: string;
-    }>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType>;
 }

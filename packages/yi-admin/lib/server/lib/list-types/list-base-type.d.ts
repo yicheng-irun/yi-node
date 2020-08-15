@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { JsonReturnType, ReqData } from '../common-types';
 export interface ListBaseTypeConfig {
     /**
      * 字段显示名称，对应表单中的label中的名称
@@ -23,5 +23,5 @@ export declare class ListBaseType {
      */
     componentConfig: {};
     constructor(config: ListBaseTypeConfig);
-    action(actionName: string, actionData: any, ctx: Context): Promise<any>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType>;
 }

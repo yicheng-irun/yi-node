@@ -214,7 +214,6 @@ export class EditStringUEditorType extends EditStringTextareaType {
                if (!files) throw new Error('未识别到上传的文件');
                const file = files?.upfile;
                try {
-                  console.log(file);
                   const result = await this.writeFile(file);
                   if (!result?.url) throw new Error('上传文件失败');
                   return {
@@ -256,7 +255,6 @@ export class EditStringUEditorType extends EditStringTextareaType {
                         lastModifiedDate: new Date(),
                         hash,
                      };
-                     console.log(file);
                      const result = await this.writeFile(file);
                      if (!result?.url) throw new Error('上传文件失败');
                      return {

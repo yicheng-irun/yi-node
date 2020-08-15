@@ -1,5 +1,5 @@
-import { Context } from 'koa';
 import { ListBaseType } from '../list-types/list-base-type';
+import { ReqData, JsonReturnType } from '../common-types';
 export interface EditBaseTypeConfig {
     required?: boolean;
     /**
@@ -36,7 +36,7 @@ export declare class EditBaseType {
      */
     componentConfig: EditBaseComponentConfig;
     constructor(config: EditBaseTypeConfig);
-    action(actionName: string, actionData: any, ctx: Context): Promise<any>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType>;
     /**
      * 实现 edit-type 生成对应的 list-type
      */

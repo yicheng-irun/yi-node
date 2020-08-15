@@ -1,5 +1,6 @@
 import { EditBaseType, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
+import { JsonReturnType } from '../common-types';
 export declare class EditNumberRemoteSelectType extends EditBaseType {
     /**
      * 前端的组件名称
@@ -35,9 +36,9 @@ export declare class EditNumberRemoteSelectType extends EditBaseType {
          */
         label: string;
     })[]>;
-    action(actionName: string, actionData: any): Promise<((number | {
+    action(actionName: string, actionData: any): Promise<JsonReturnType<((number | {
         value: number;
         label: string;
-    })[]) | string>;
+    })[]) | string>>;
     getListType(): ListBaseType;
 }

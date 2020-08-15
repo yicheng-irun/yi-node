@@ -1,6 +1,6 @@
-import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
+import { ReqData, JsonReturnType } from '../common-types';
 export declare class EditArrayStringTagType extends EditBaseType {
     /**
      * 前端的组件名称
@@ -40,6 +40,6 @@ export declare class EditArrayStringTagType extends EditBaseType {
      * @param actionData
      * @param ctx
      */
-    action(actionName: string, actionData: any, ctx: Context): Promise<string[]>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType>;
     getListType(): ListBaseType;
 }

@@ -1,5 +1,6 @@
 import { EditBaseType, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
+import { JsonReturnType } from '../common-types';
 export interface EditStringRemoteSelectTypeParam {
     /**
      * 通过value获取label，用户表单初始化时，传了value给组件但是其实应该显示一个对应的名称
@@ -36,9 +37,9 @@ export declare class EditStringRemoteSelectType extends EditBaseType {
          */
         label: string;
     })[]>;
-    action(actionName: string, actionData: any): Promise<((string | {
+    action(actionName: string, actionData: any): Promise<JsonReturnType<((string | {
         value: string;
         label: string;
-    })[]) | string>;
+    })[]) | string>>;
     getListType(): ListBaseType;
 }

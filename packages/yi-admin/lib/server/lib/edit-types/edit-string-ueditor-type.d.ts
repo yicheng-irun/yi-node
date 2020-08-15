@@ -1,7 +1,7 @@
-import { Context } from 'koa';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
+import { ReqData } from '../common-types';
 /**
  * 富文本编辑器类型  UEditor
  */
@@ -62,6 +62,6 @@ export declare class EditStringUEditorType extends EditStringTextareaType {
     }) => Promise<{
         url: string;
     }>;
-    action(actionName: string, actionData: any, ctx: Context): Promise<any>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<any>;
     static getFileWriter: typeof getFileWriter;
 }

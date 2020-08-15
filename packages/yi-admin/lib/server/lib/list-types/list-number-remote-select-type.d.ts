@@ -1,4 +1,5 @@
 import { ListBaseType, ListBaseTypeConfig } from './list-base-type';
+import { JsonReturnType } from '../common-types';
 export declare class ListNumberRemoteSelectType extends ListBaseType {
     /**
      * 前端的组件名称
@@ -11,5 +12,5 @@ export declare class ListNumberRemoteSelectType extends ListBaseType {
         getLabelByValue?: (value: number) => Promise<string>;
     });
     getLabelByValue?: (value: number) => Promise<string>;
-    action(actionName: string, actionData: any): Promise<string>;
+    action(actionName: string, actionData: any): Promise<JsonReturnType<string>>;
 }

@@ -1,6 +1,6 @@
-import { Context } from 'koa';
 import { FilterBaseInterface, FilterBaseTypeConfig } from './filter-base-interface';
 import { ModelAdminBase } from '../model-admin-base';
+import { ReqData, JsonReturnType } from '../common-types';
 export declare class FilterBaseType implements FilterBaseInterface {
     componentName: string;
     fieldName: string;
@@ -13,7 +13,7 @@ export declare class FilterBaseType implements FilterBaseInterface {
      * @param actionData 动作数据
      * @param ctx koa Context
      */
-    action(actionName: string, actionData: any, ctx: Context, modelAdmin: ModelAdminBase): Promise<any>;
+    action(actionName: string, actionData: any, reqData: ReqData, modelAdmin: ModelAdminBase): Promise<JsonReturnType>;
     /**
      * 获取orm框架的查询条件
      * @param fieldParam 前端组件传上来的参数

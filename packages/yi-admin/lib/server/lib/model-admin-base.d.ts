@@ -1,13 +1,24 @@
 import { Context, Next } from 'koa';
+import Express, { NextFunction } from 'express';
 import { EditBaseType } from './edit-types/edit-base-type';
 import { ListBaseType } from './list-types/list-base-type';
 import { ModelAdminListAction } from './model-admin-list-action';
 import { FilterBaseType } from './filter-types/filter-base-type';
+export declare type RequestInfo = Context | {
+    req: Express.Request;
+    res: Express.Response;
+};
 export interface ModelAdminBaseParams {
     /**
-     * 用来判断用户是否有权限
+     * 判断用户是否有权限
+     * 如果没有权限，直接在里侧抛出异常
      */
-    permission?: (ctx: Context, next: Next) => Promise<void>;
+    permissionKoa?: (ctx: Context, next: Next) => any;
+    /**
+     * 判断用户是否有权限
+     * 如果没有权限，直接在里侧抛出异常
+     */
+    permissionExpress?: (req: Express.Request, res: Express.Response, next: NextFunction) => any;
     /**
      * model的name
      */
@@ -79,9 +90,14 @@ export interface DataListResponseBody {
 export declare class ModelAdminBase {
     /**
      * 判断用户是否有权限
-     * 如果没有权限，直接在里侧抛出异常或者返回false
+     * 如果没有权限，直接在里侧抛出异常
      */
-    permission?: (ctx: Context, next: Next) => Promise<void>;
+    permissionKoa: (ctx: Context, next: Next) => any;
+    /**
+     * 判断用户是否有权限
+     * 如果没有权限，直接在里侧抛出异常
+     */
+    permissionExpress: (req: Express.Request, res: Express.Response, next: NextFunction) => any;
     /**
      * model的name，用户路径中，不能重复，且不能更改
      */
@@ -110,7 +126,7 @@ export declare class ModelAdminBase {
      * 优先级比 listFields 高，用于排除在列表页中显示的字段
      */
     listFieldsExclude?: string[];
-    constructor({ permission, name, listActions, title, formFields, formFieldsExclude, listFields, listFieldsExclude, }: ModelAdminBaseParams);
+    constructor({ permissionKoa, permissionExpress, name, listActions, title, formFields, formFieldsExclude, listFields, listFieldsExclude, }: ModelAdminBaseParams);
     /**
      * model的name，用户路径中，不能重复，不能更改
      */
@@ -123,14 +139,14 @@ export declare class ModelAdminBase {
     /**
      * edit-form中拉取数据的函数
      */
-    getEditData(id: string, ctx: Context): Promise<ModelDataItem>;
+    getEditData(id: string, ctx: RequestInfo): Promise<ModelDataItem>;
     /**
      * 用户提交数据时，编辑时id是非空，新建时id是空的
      * @param id
      * @param forData
      * @param ctx
      */
-    formSubmit(id: string, forData: object, ctx: Context): Promise<ModelDataItem>;
+    formSubmit(id: string, forData: object, ctx: RequestInfo): Promise<ModelDataItem>;
     /**
      * 获取列表页字段列表
      */
@@ -140,12 +156,12 @@ export declare class ModelAdminBase {
     /**
      * data-list中拉取数据的函数
      */
-    getDataList(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
-    getDataListAfterFilter(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
+    getDataList(req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody>;
+    getDataListAfterFilter(req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody>;
     /**
      * 删除除某一项，用于提供默认的删除功能
      */
-    removeItem(id: string, ctx: Context): Promise<void>;
+    removeItem(id: string, ctx: RequestInfo): Promise<void>;
     /**
      * 获取列表页过滤的参数
      */

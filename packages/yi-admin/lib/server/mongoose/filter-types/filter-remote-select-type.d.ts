@@ -1,9 +1,9 @@
-import { Context } from 'koa';
 import { FilterBaseType } from '../../lib/filter-types/filter-base-type';
 import { FilterRemoteSelectInterface } from '../../lib/filter-types/filter-remote-select-interface';
 import { ModelAdminBase } from '../../lib/model-admin-base';
 import { FilterBaseTypeConfig } from '../../lib/filter-types/filter-base-interface';
 import { MongooseModelAdmin } from '../mongoose-model-admin';
+import { ReqData, JsonReturnType } from '../../lib/common-types';
 export interface FilterRemoteSelectTypeParam {
     /**
      * 通过value获取label，用户表单初始化时，传了value给组件但是其实应该显示一个对应的名称
@@ -12,7 +12,7 @@ export interface FilterRemoteSelectTypeParam {
     /**
      * 获取可选项
      */
-    getOptions?: (search: string, ctx: Context, modelAdmin: MongooseModelAdmin) => Promise<({
+    getOptions?: (search: string, reqData: ReqData, modelAdmin: MongooseModelAdmin) => Promise<({
         /**
          * 值
          */
@@ -35,7 +35,7 @@ export declare class FilterRemoteSelectType extends FilterBaseType implements Fi
         multiSelect?: boolean;
     });
     getLabelByValue: (value: string | number | boolean) => Promise<string>;
-    getOptions: (search: string, ctx: Context, modelAdmin: MongooseModelAdmin) => Promise<({
+    getOptions: (search: string, reqData: ReqData, modelAdmin: MongooseModelAdmin) => Promise<({
         /**
          * 值
          */
@@ -50,10 +50,10 @@ export declare class FilterRemoteSelectType extends FilterBaseType implements Fi
      * @param actionName
      * @param actionData
      */
-    action(actionName: string, actionData: any, ctx: Context, modelAdmin: ModelAdminBase): Promise<({
+    action(actionName: string, actionData: any, reqData: ReqData, modelAdmin: ModelAdminBase): Promise<JsonReturnType<({
         label: string;
         value: string | number | boolean;
-    }[]) | string>;
+    }[]) | string>>;
     getConditions(fieldParam: (string | number | boolean) | (string | number | boolean)[]): {
         [key: string]: any;
     };

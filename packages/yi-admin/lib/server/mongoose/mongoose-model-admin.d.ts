@@ -1,6 +1,5 @@
 import { Model, Document } from 'mongoose';
-import { Context } from 'koa';
-import { ModelAdminBase, ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody } from '../lib/model-admin-base';
+import { ModelAdminBase, ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody, RequestInfo } from '../lib/model-admin-base';
 import { EditBaseType } from '../lib/edit-types/edit-base-type';
 import { ListBaseType } from '../lib/list-types/list-base-type';
 import { FilterBaseType } from '../lib/filter-types/filter-base-type';
@@ -17,10 +16,10 @@ export declare class MongooseModelAdmin extends ModelAdminBase {
     /**
      * edit-form中拉取数据的函数
      */
-    getEditData(id: string, ctx: Context): Promise<ModelDataItem>;
+    getEditData(id: string, ctx: RequestInfo): Promise<ModelDataItem>;
     formSubmit(id: string, formData: {
         [key: string]: any;
-    }, ctx: Context): Promise<ModelDataItem>;
+    }, ctx: RequestInfo): Promise<ModelDataItem>;
     /**
      * 获取列表页字段列表
      */
@@ -28,8 +27,8 @@ export declare class MongooseModelAdmin extends ModelAdminBase {
     /**
      * data-list中拉取数据的函数
      */
-    getDataList(req: DataListRequestBody, ctx: Context): Promise<DataListResponseBody>;
-    removeItem(id: string, ctx: Context): Promise<void>;
+    getDataList(req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody>;
+    removeItem(id: string, ctx: RequestInfo): Promise<void>;
     /**
      * 获取列表页过滤的参数
      */

@@ -1,7 +1,7 @@
-import { Context } from 'koa';
 import { EditStringTextareaType } from './edit-string-textarea-type';
 import { EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
+import { ReqData, JsonReturnType } from '../common-types';
 /**
  * 富文本编辑器类型  jodit
  */
@@ -62,6 +62,11 @@ export declare class EditStringJoditEditorType extends EditStringTextareaType {
     }) => Promise<{
         url: string;
     }>;
-    action(actionName: string, actionData: any, ctx: Context): Promise<any>;
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType<{
+        files: string[];
+        path: string;
+        baseurl: '';
+        isImages: boolean[];
+    }>>;
     static getFileWriter: typeof getFileWriter;
 }

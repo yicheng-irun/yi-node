@@ -1,23 +1,39 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
+import express, { NextFunction } from 'express';
 import { ModelAdminBase } from './model-admin-base';
-import { EditBaseType } from './edit-types/edit-base-type';
 import { SiteNavMenu } from './site-nav-menu';
-import { ListBaseType } from './list-types/list-base-type';
+interface CsrfParamResult {
+    query?: {
+        [key: string]: string;
+    };
+    body?: {
+        [key: string]: string;
+    };
+}
 /**
  * admin站点
  */
 export declare class YiAdmin {
     /**
      * 判断用户是否有权限
-     * 如果没有权限，直接在里侧抛出异常或者返回false
+     * 如果没有权限，直接在里侧抛出异常
      */
-    private permission;
+    permissionKoa: (ctx: Context, next: Next) => any;
+    /**
+     * 判断用户是否有权限
+     * 如果没有权限，直接在里侧抛出异常
+     */
+    permissionExpress: (req: Express.Request, res: Express.Response, next: NextFunction) => any;
     /**
      * 对应的koa的路由
      */
     koaRouter: Router<any, Context>;
+    /**
+     * 对应的express路由
+     */
+    expressRouter: express.Router;
     /**
      * 站点导航菜单
      */
@@ -26,18 +42,13 @@ export declare class YiAdmin {
         siteName: string;
     };
     options: {
-        csrfParam?: (ctx: Context) => {
-            query?: {
-                [key: string]: string;
-            };
-            body?: {
-                [key: string]: string;
-            };
-        };
+        csrfParamKoa?: (ctx: Context) => CsrfParamResult;
+        csrfParamExpress?: (req: express.Request, res: express.Response) => CsrfParamResult;
     };
     modelNavMenu: SiteNavMenu;
-    constructor({ permission, serverOrigin, siteConfig, csrfParam, }: {
-        permission?: (ctx: Context, next: Next) => Promise<any>;
+    constructor({ permissionKoa, permissionExpress, serverOrigin, siteConfig, csrfParamKoa, csrfParamExpress, }: {
+        permissionKoa?: (ctx: Context, next: Next) => Promise<any>;
+        permissionExpress?: (req: Express.Request, res: Express.Response, next: NextFunction) => any;
         /**
          * example: "http://127.0.0.1:80"
          * 请返回koa.listen(SSR)中进行数据接口请求
@@ -50,23 +61,16 @@ export declare class YiAdmin {
          * 获取csrf参数的回调函数
          * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
          */
-        csrfParam?: (ctx: Context) => {
-            query?: {
-                [key: string]: string;
-            };
-            body?: {
-                [key: string]: string;
-            };
-        };
+        csrfParamKoa?: (ctx: Context) => CsrfParamResult;
+        /**
+         * 获取csrf参数的回调函数
+         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+         */
+        csrfParamExpress?: (req: express.Request, res: express.Response) => CsrfParamResult;
     });
-    private createKoaRouter;
-    private getBaseRenderSSRParams;
-    private appendPermissionCheckRouter;
-    private appendSiteHomeRouter;
     modelAdminsMap: {
         [name: string]: ModelAdminBase;
     };
-    private appendModelAdminRouter;
     /**
      * 添加一个modelAdmin到yi-admin实例中
      * @param modelAdmin
@@ -77,19 +81,19 @@ export declare class YiAdmin {
     static EditTypes: {
         EditArrayStringTagType: typeof import("./edit-types/edit-array-string-tag-type").EditArrayStringTagType;
         EditArrayType: typeof import("./edit-types/edit-array-type").EditArrayType;
-        EditBaseType: typeof EditBaseType;
+        EditBaseType: typeof import("./edit-types/edit-base-type").EditBaseType;
         EditBooleanType: typeof import("./edit-types/edit-boolean-type").EditBooleanType;
         EditDateTimeType: typeof import("./edit-types/edit-date-time-type").EditDateTimeType;
-        /**
-         * 获取csrf参数的回调函数
-         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
-         */
         EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").EditNumberEnumType;
         EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").EditNumberRemoteSelectType;
         EditNumberType: typeof import("./edit-types/edit-number-type").EditNumberType;
         EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").EditStringEnumType;
         EditStringFileType: typeof import("./edit-types/edit-string-file").EditStringFileType;
         EditStringImageType: typeof import("./edit-types/edit-string-image").EditStringImageType;
+        /**
+         * 获取csrf参数的回调函数
+         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
+         */
         EditStringJoditEditorType: typeof import("./edit-types/edit-string-jodit-type").EditStringJoditEditorType;
         EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").EditStringRemoteSelectType;
         EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").EditStringTextareaType;
@@ -98,7 +102,7 @@ export declare class YiAdmin {
     };
     static ListTypes: {
         ListArrayType: typeof import("./list-types/list-array-type").ListArrayType;
-        ListBaseType: typeof ListBaseType;
+        ListBaseType: typeof import("./list-types/list-base-type").ListBaseType;
         ListBooleanType: typeof import("./list-types/list-boolean-type").ListBooleanType;
         ListNumberEnumType: typeof import("./list-types/list-number-enum-type").ListNumberEnumType;
         ListNumberRemoteSelectType: typeof import("./list-types/list-number-remote-select-type").ListNumberRemoteSelectType;
@@ -107,3 +111,4 @@ export declare class YiAdmin {
         ListStringRemoteSelectType: typeof import("./list-types/list-string-remote-select-type").ListStringRemoteSelectType;
     };
 }
+export {};

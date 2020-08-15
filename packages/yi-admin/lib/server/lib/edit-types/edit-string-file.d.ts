@@ -1,6 +1,6 @@
-import { Context } from 'koa';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
+import { ReqData, JsonReturnType } from '../common-types';
 export declare type EditStringFileTypeConfig = EditBaseTypeConfig & {
     minLength?: number;
     maxLength?: number;
@@ -51,8 +51,8 @@ export declare class EditStringFileType extends EditBaseType {
     }) => Promise<{
         url: string;
     }>;
-    action(actionName: string, actionData: any, ctx: Context): Promise<{
+    action(actionName: string, actionData: any, reqData: ReqData): Promise<JsonReturnType<{
         url: string;
-    }>;
+    }>>;
     static getFileWriter: typeof getFileWriter;
 }
