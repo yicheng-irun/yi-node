@@ -43,9 +43,12 @@ export class SiteNavMenu {
       }
    }
 
-   public add (menu: SiteNavMenu): SiteNavMenu {
-      if (!(menu instanceof SiteNavMenu)) throw new Error('请添加一个SiteNavMenu对象');
-      this.children.push(menu);
+   public add (...menus: SiteNavMenu[]): SiteNavMenu {
+      for (let i = 0; i < menus.length; i += 1) {
+         const menu = menus[i];
+         if (!(menu instanceof SiteNavMenu)) throw new Error('请添加一个SiteNavMenu对象');
+         this.children.push(menu);
+      }
       return this;
    }
 }

@@ -11,7 +11,7 @@ import { FilterBaseType } from './filter-types/filter-base-type';
 import { ModelAdminListAction } from '..';
 
 type Response = express.Response & {
-   ssrRender?: expressRenderFunction;
+   yiAdminSSRRender?: expressRenderFunction;
 }
 
 type Request = express.Request & {
@@ -60,7 +60,7 @@ function safeJson (func: (req: express.Request, res: express.Response) => any): 
    };
 }
 
-function getBaseRenderSSRParams (yiAdmin: YiAdmin, req: express.Request, res: express.Response): {
+function getBaseRenderSSRParams (yiAdmin: YiAdmin, req: express.Request, res: express.Response, rootPath = '../'): {
    assetsPath: string;
    csrfParam: {
       query?: {
@@ -72,7 +72,7 @@ function getBaseRenderSSRParams (yiAdmin: YiAdmin, req: express.Request, res: ex
    };
 } {
    return {
-      assetsPath: url.resolve(req.baseUrl, '../__yi-admin-assets__/'),
+      assetsPath: rootPath ? url.resolve(req.baseUrl, `${rootPath}__yi-admin-assets__/`) : `${req.baseUrl}/__yi-admin-assets__/`,
       csrfParam: yiAdmin.options.csrfParamExpress ? yiAdmin.options.csrfParamExpress(
          req,
          res,
@@ -86,14 +86,14 @@ function appendModelAdminRouter (yiAdmin: YiAdmin, router: express.Router): void
    });
 
    modelRouter.get('/', async (req, res: Response) => {
-      if (res.ssrRender) {
-         await res.ssrRender('yi-admin/model-admin-list', getBaseRenderSSRParams(yiAdmin, req, res));
+      if (res.yiAdminSSRRender) {
+         await res.yiAdminSSRRender('yi-admin/model-admin-list', getBaseRenderSSRParams(yiAdmin, req, res));
       }
    });
 
    modelRouter.get('/edit/', async (req, res: Response) => {
-      if (res.ssrRender) {
-         await res.ssrRender('yi-admin/model-admin-edit', getBaseRenderSSRParams(yiAdmin, req, res));
+      if (res.yiAdminSSRRender) {
+         await res.yiAdminSSRRender('yi-admin/model-admin-edit', getBaseRenderSSRParams(yiAdmin, req, res));
       }
    });
 
@@ -412,7 +412,7 @@ export function createExpressRouter ({
 
 
    router.use(vueSSRExpressMiddleware({
-      renderFunctionName: 'ssrRender',
+      renderFunctionName: 'yiAdminSSRRender',
       bundlePath: resolve(__dirname, '../../../lib/server-bundle'),
       serverOrigin,
       isCacheRenderer: process.env.NODE_ENV !== 'development',
@@ -427,8 +427,8 @@ export function createExpressRouter ({
    });
 
    router.get('/', async (req: express.Request, res: Response) => {
-      if (res.ssrRender) {
-         await res.ssrRender('yi-admin/site', getBaseRenderSSRParams(yiAdmin, req, res));
+      if (res.yiAdminSSRRender) {
+         await res.yiAdminSSRRender('yi-admin/site', getBaseRenderSSRParams(yiAdmin, req, res, ''));
       }
    });
    router.get('/site-menu/', safeJson(async (req, res) => {

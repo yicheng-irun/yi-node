@@ -29,5 +29,5 @@ export declare class SiteNavMenu {
         target?: 'main_frame' | '_blank' | string;
         children?: SiteNavMenu[];
     });
-    add(menu: SiteNavMenu): SiteNavMenu;
+    add(...menus: SiteNavMenu[]): SiteNavMenu;
 }

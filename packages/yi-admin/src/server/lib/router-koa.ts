@@ -35,14 +35,14 @@ function appendModelAdminRouter (yiAdmin: YiAdmin, koaRouter: Router<{}, Context
    const modelRouter = new Router<any, Context>();
 
    modelRouter.get('/', async (ctx) => {
-      if (ctx.render) {
-         await ctx.render('yi-admin/model-admin-list', getBaseRenderSSRParams(yiAdmin, ctx));
+      if (ctx.yiAdminSSRRender) {
+         await ctx.yiAdminSSRRender('yi-admin/model-admin-list', getBaseRenderSSRParams(yiAdmin, ctx));
       }
    });
 
    modelRouter.get('/edit/', async (ctx: Context) => {
-      if (ctx.render) {
-         await ctx.render('yi-admin/model-admin-edit', getBaseRenderSSRParams(yiAdmin, ctx));
+      if (ctx.yiAdminSSRRender) {
+         await ctx.yiAdminSSRRender('yi-admin/model-admin-edit', getBaseRenderSSRParams(yiAdmin, ctx));
       }
    });
 
@@ -343,6 +343,7 @@ export function createKoaRouter ({
    });
 
    koaRouter.use(vueSSRKoaMiddleware({
+      renderFunctionName: 'yiAdminSSRRender',
       bundlePath: resolve(__dirname, '../../../lib/server-bundle'),
       serverOrigin,
       isCacheRenderer: process.env.NODE_ENV !== 'development',
@@ -360,8 +361,8 @@ export function createKoaRouter ({
 
 
    koaRouter.get('/', async (ctx) => {
-      if (ctx.render) {
-         await ctx.render('yi-admin/site', getBaseRenderSSRParams(yiAdmin, ctx));
+      if (ctx.yiAdminSSRRender) {
+         await ctx.yiAdminSSRRender('yi-admin/site', getBaseRenderSSRParams(yiAdmin, ctx));
       }
    });
    koaRouter.get('/site-menu/', async (ctx: Context) => {

@@ -36,7 +36,7 @@ export async function createApp2 (): Promise<express.Application> {
 
    app.use('/test', myadmin.expressRouter);
 
-   app.use(myadmin2.expressRouter);
+   // app.use(myadmin2.expressRouter);
 
    return app;
 }
