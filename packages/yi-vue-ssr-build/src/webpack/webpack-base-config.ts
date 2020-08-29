@@ -128,6 +128,7 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
                   options: {
                      limit: 10000,
                      name: 'assets/img/[name].[hash:7].[ext]',
+                     esModule: false,
                   },
                }],
             },
