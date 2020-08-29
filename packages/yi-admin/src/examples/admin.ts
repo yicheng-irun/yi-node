@@ -16,6 +16,7 @@ import ArrayTestModel from './models/array-test.model';
 import ArrayImageModel from './models/array-image.model';
 import ArrayStringEnumModel from './models/array-string-enum.model';
 import settings from './settings';
+import ObjModel from './models/obj-type.model';
 
 const myadmin = new YiAdmin({
    serverOrigin: `http://127.0.0.1:${settings.port}`,
@@ -140,6 +141,11 @@ myadmin.addModelAdmin(new MongooseModelAdmin({
 myadmin.addModelAdmin(new MongooseModelAdmin({
    name: 'string-ueditor',
    model: StringUEditorModel,
+}));
+
+myadmin.addModelAdmin(new MongooseModelAdmin({
+   name: 'obj-type',
+   model: ObjModel,
 }));
 
 

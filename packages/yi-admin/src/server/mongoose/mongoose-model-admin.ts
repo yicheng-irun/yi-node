@@ -1,7 +1,6 @@
 import {
-   Model, Document, SchemaTypeOpts, SchemaType,
+   Model, Document, SchemaTypeOpts, SchemaType, Schema,
 } from 'mongoose';
-import { Context } from 'koa';
 import {
    ModelAdminBase,
    ModelAdminBaseParams, ModelDataItem, DataListRequestBody, DataListResponseBody, RequestInfo,
@@ -20,12 +19,14 @@ import { EditArrayType } from '../lib/edit-types/edit-array-type';
 import { ListArrayType } from '../lib/list-types/list-array-type';
 import { FilterTypes } from './mongoose-filter-types';
 import { FilterBaseType } from '../lib/filter-types/filter-base-type';
+import { tileResult } from './mongoose-util';
+import { EditObjectType } from '../lib/edit-types/edit-object-type';
 
 /**
  * 映射mongoose的默认类型的图
  */
 const INSTANCE_EDIT_TYPE_MAP: {
-   [type: string]: (schemaTypeOpts: SchemaTypeOpts<{}>) => EditBaseType;
+   [type: string]: (schemaTypeOpts: SchemaTypeOpts<{}>, schema?: Schema) => EditBaseType;
 } = {
    ObjectID (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
       return new EditBaseType({
@@ -77,13 +78,69 @@ const INSTANCE_EDIT_TYPE_MAP: {
          fieldNameAlias: schemaTypeOpts.name,
       });
    },
-   Array (schemaTypeOpts: SchemaTypeOpts<{}>): EditBaseType {
+   Array (schemaTypeOpts: SchemaTypeOpts<{}>, schema?: Schema): EditBaseType {
+      if (schema) {
+         console.log(111111, schema);
+         return new EditArrayType({
+            required: schemaTypeOpts.required,
+            fieldNameAlias: schemaTypeOpts.name,
+            maxLength: schemaTypeOpts.maxlength,
+            minLength: schemaTypeOpts.minlength,
+            childrenType: INSTANCE_EDIT_TYPE_MAP.Object(schemaTypeOpts, schema),
+         });
+      }
       return new EditArrayType({
          required: schemaTypeOpts.required,
          fieldNameAlias: schemaTypeOpts.name,
          maxLength: schemaTypeOpts.maxlength,
          minLength: schemaTypeOpts.minlength,
          childrenType: new EditBaseType({}),
+      });
+   },
+
+   Object (schemaTypeOpts: SchemaTypeOpts<{}>, schema?: Schema): EditBaseType {
+      if (!schema) throw new Error('Object type schema 不能为空');
+      const fields: EditBaseType[] = [];
+
+      const pathsKeys = Object.keys(schema.paths);
+      pathsKeys.forEach((key) => {
+         // 这个mongoose的这里的类型声明不正确
+         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+         // @ts-ignore
+         const schemaPath: SchemaType & {
+            instance: string;
+            path: string;
+            options: SchemaTypeOpts<{}>;
+            schema?: Schema;
+         } = schema.paths[key];
+
+         console.log(schemaPath);
+
+         if (key === '_id' || key === '__v') return;
+         const { instance } = schemaPath;
+
+         let typeInstance: EditBaseType | null = null;
+
+         if (schemaPath.options.editType && schemaPath.options.editType instanceof EditBaseType) {
+            typeInstance = schemaPath.options.editType;
+         } else if (INSTANCE_EDIT_TYPE_MAP[instance]) {
+            typeInstance = INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.options, schemaPath.schema);
+         }
+
+         if (typeInstance) {
+            typeInstance.fieldName = schemaPath.path;
+            if (!typeInstance.fieldNameAlias) {
+               typeInstance.fieldNameAlias = schemaPath.options.name || '';
+            }
+            if (typeInstance.componentConfig.helpText === null && schemaPath.options.helpText) {
+               typeInstance.componentConfig.helpText = `${schemaPath.options.helpText}`;
+            }
+            fields.push(typeInstance);
+         }
+      });
+
+      return new EditObjectType({
+         editFields: fields,
       });
    },
 };
@@ -164,43 +221,9 @@ export class MongooseModelAdmin extends ModelAdminBase {
     * 全量的表单字段
     */
    public getEditFormFields (): EditBaseType[] {
-      const fields: EditBaseType[] = [];
-
       const { schema } = this.model;
-      const pathsKeys = Object.keys(schema.paths);
-      pathsKeys.forEach((key) => {
-         // 卧槽，这个mongoose的这里的类型声明不正确
-         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-         // @ts-ignore
-         const schemaPath: SchemaType & {
-            instance: string;
-            path: string;
-            options: SchemaTypeOpts<{}>;
-         } = schema.paths[key];
-
-         if (key === '_id' || key === '__v') return;
-         const { instance } = schemaPath;
-
-         let typeInstance: EditBaseType | null = null;
-
-         if (schemaPath.options.editType && schemaPath.options.editType instanceof EditBaseType) {
-            typeInstance = schemaPath.options.editType;
-         } else if (INSTANCE_EDIT_TYPE_MAP[instance]) {
-            typeInstance = INSTANCE_EDIT_TYPE_MAP[instance](schemaPath.options);
-         }
-
-         if (typeInstance) {
-            typeInstance.fieldName = schemaPath.path;
-            if (!typeInstance.fieldNameAlias) {
-               typeInstance.fieldNameAlias = schemaPath.options.name || '';
-            }
-            if (typeInstance.componentConfig.helpText === null && schemaPath.options.helpText) {
-               typeInstance.componentConfig.helpText = `${schemaPath.options.helpText}`;
-            }
-            fields.push(typeInstance);
-         }
-      });
-
+      const objType = INSTANCE_EDIT_TYPE_MAP.Object({}, schema) as EditObjectType;
+      const fields: EditBaseType[] = objType.componentConfig.editFields;
       return fields;
    }
 
@@ -221,7 +244,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       return {
          id: item.id,
          values: {
-            ...item.toObject(),
+            ...tileResult(item.toObject()),
             _id: undefined,
             __v: undefined,
          },
@@ -250,7 +273,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       return {
          id: item.id,
          values: {
-            ...item.toObject(),
+            ...tileResult(item.toObject()),
             _id: undefined,
             __v: undefined,
          },
@@ -315,7 +338,11 @@ export class MongooseModelAdmin extends ModelAdminBase {
       const data = await dataPromise;
       const modelItems: ModelDataItem[] = data.map((item) => ({
          id: item.id,
-         values: item,
+         values: {
+            ...tileResult(item.toObject()),
+            _id: undefined,
+            __v: undefined,
+         },
       }));
       return {
          total: count,

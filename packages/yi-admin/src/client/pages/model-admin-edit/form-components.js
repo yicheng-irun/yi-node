@@ -1,13 +1,14 @@
 
-const FormComponents = {
+export const FormComponents = {
    'array-string-tag': () => import('./form-components/array-string-tag.vue'),
    array: () => import('./form-components/array.vue'),
    base: () => import('./form-components/base.vue'),
    boolean: () => import('./form-components/boolean.vue'),
    'date-time': () => import('./form-components/date-time.vue'),
+   number: () => import('./form-components/number.vue'),
    'number-enum': () => import('./form-components/number-enum.vue'),
    'number-remote-select': () => import('./form-components/number-remote-select.vue'),
-   number: () => import('./form-components/number.vue'),
+   object: () => import('./form-components/object.vue'),
    'string-enum': () => import('./form-components/string-enum.vue'),
    'string-file': () => import('./form-components/string-file.vue'),
    'string-image': () => import('./form-components/string-image.vue'),

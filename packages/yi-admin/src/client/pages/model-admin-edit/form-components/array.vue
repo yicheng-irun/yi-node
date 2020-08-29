@@ -32,7 +32,7 @@
          type="primary"
          size="small"
          circle
-         @click="value.push(null)"
+         @click="pushItem"
       />
       <p
          v-if="componentConfig.helpText"
@@ -91,11 +91,18 @@ export default {
    methods: {
       async getComponent () {
          const componentName = this.config?.childrenType?.componentName;
-         const { default: FormComponents } = await import('../form-components');
+         const { FormComponents } = await import('../form-components');
          if (Object.prototype.hasOwnProperty.call(FormComponents, componentName)) {
             return FormComponents[componentName]();
          }
          return FormComponents.base();
+      },
+      pushItem () {
+         if (this.config?.childrenType?.componentName === 'object') {
+            this.value.push({});
+            return;
+         }
+         this.value.push(null);
       },
    },
 };

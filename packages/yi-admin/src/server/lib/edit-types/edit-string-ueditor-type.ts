@@ -1,5 +1,4 @@
 import { existsSync, unlinkSync, writeFileSync } from 'fs';
-import { Context } from 'koa';
 import mime from 'mime';
 import { join, dirname } from 'path';
 import { createHash } from 'crypto';

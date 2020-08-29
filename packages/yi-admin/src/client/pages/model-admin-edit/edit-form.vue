@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import FormComponents from './form-components';
+import { FormComponents } from './form-components';
 
 export default {
    components: {

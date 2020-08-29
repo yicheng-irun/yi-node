@@ -47,8 +47,6 @@
     "twig-loader": "^0.5.3",
     "typescript": "^3.8.3",
     "url-loader": "^4.1.0",
-    "vue": "^2.6.11",
-    "vue-loader": "^15.9.2",
     "vue-server-renderer": "^2.6.11",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
