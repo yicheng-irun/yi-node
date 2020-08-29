@@ -1,3 +1,4 @@
+/// <reference types="express-serve-static-core" />
 /// <reference types="koa__router" />
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
@@ -87,13 +88,10 @@ export declare class YiAdmin {
         EditNumberEnumType: typeof import("./edit-types/edit-number-enum-type").EditNumberEnumType;
         EditNumberRemoteSelectType: typeof import("./edit-types/edit-number-remote-select-type").EditNumberRemoteSelectType;
         EditNumberType: typeof import("./edit-types/edit-number-type").EditNumberType;
+        EditObjectType: typeof import("./edit-types/edit-object-type").EditObjectType;
         EditStringEnumType: typeof import("./edit-types/edit-string-enum-type").EditStringEnumType;
         EditStringFileType: typeof import("./edit-types/edit-string-file").EditStringFileType;
         EditStringImageType: typeof import("./edit-types/edit-string-image").EditStringImageType;
-        /**
-         * 获取csrf参数的回调函数
-         * 返回的数据会在post请求发起的时候拼入post请求的body或者query中
-         */
         EditStringJoditEditorType: typeof import("./edit-types/edit-string-jodit-type").EditStringJoditEditorType;
         EditStringRemoteSelectType: typeof import("./edit-types/edit-string-remote-select-type").EditStringRemoteSelectType;
         EditStringTextareaType: typeof import("./edit-types/edit-string-textarea-type").EditStringTextareaType;
