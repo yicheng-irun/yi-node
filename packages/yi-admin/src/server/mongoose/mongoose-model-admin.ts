@@ -80,7 +80,6 @@ const INSTANCE_EDIT_TYPE_MAP: {
    },
    Array (schemaTypeOpts: SchemaTypeOpts<{}>, schema?: Schema): EditBaseType {
       if (schema) {
-         console.log(111111, schema);
          return new EditArrayType({
             required: schemaTypeOpts.required,
             fieldNameAlias: schemaTypeOpts.name,
@@ -113,8 +112,6 @@ const INSTANCE_EDIT_TYPE_MAP: {
             options: SchemaTypeOpts<{}>;
             schema?: Schema;
          } = schema.paths[key];
-
-         console.log(schemaPath);
 
          if (key === '_id' || key === '__v') return;
          const { instance } = schemaPath;
@@ -338,6 +335,7 @@ export class MongooseModelAdmin extends ModelAdminBase {
       const data = await dataPromise;
       const modelItems: ModelDataItem[] = data.map((item) => ({
          id: item.id,
+         item,
          values: {
             ...tileResult(item.toObject()),
             _id: undefined,

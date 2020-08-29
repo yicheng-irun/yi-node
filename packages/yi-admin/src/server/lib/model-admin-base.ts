@@ -54,6 +54,16 @@ export interface ModelAdminBaseParams {
    listFields?: string[];
 
    /**
+    * 通常用于自定义列
+    * 优先级 listFieldsExclude > listFieldsInclude > listFields
+    */
+   listFieldsInclude?: (string | {
+      fieldName: string;
+      title?: string;
+      index?: number;
+   })[];
+
+   /**
     * 优先级比 listFields 高，用于排除在列表页中显示的字段
     */
    listFieldsExclude?: string[];
@@ -69,6 +79,15 @@ export interface ModelDataItem {
     * id 是必须项
     */
    id: string;
+
+   /**
+    * 不传个前端的，用于方便values补充数据
+    */
+   item?: any;
+
+   /**
+    * 用于传给前端的值
+    */
    values: {
       [key: string]: any;
    };
@@ -160,6 +179,12 @@ export class ModelAdminBase {
     */
    public listFieldsExclude?: string[];
 
+   public listFieldsInclude?: (string | {
+      fieldName: string;
+      title?: string;
+      index?: number;
+   })[];
+
    constructor ({
       permissionKoa,
       permissionExpress,
@@ -170,6 +195,7 @@ export class ModelAdminBase {
       formFieldsExclude,
       listFields,
       listFieldsExclude,
+      listFieldsInclude,
    }: ModelAdminBaseParams) {
       // 因为要在url的路径中，所以要做这个限制
       if (/^[0-9a-z_-]+$/.test(name)) {
@@ -193,6 +219,7 @@ export class ModelAdminBase {
       this.formFields = formFields;
       this.formFieldsExclude = formFieldsExclude;
       this.listFields = listFields;
+      this.listFieldsInclude = listFieldsInclude;
       this.listFieldsExclude = listFieldsExclude;
    }
 
@@ -274,6 +301,35 @@ export class ModelAdminBase {
             }
          }
       }
+      if (this.listFieldsInclude) {
+         for (let i = 0; i < this.listFieldsInclude.length; i += 1) {
+            const item = this.listFieldsInclude[i];
+            let index = -1;
+            let fieldName = '';
+            let title = '';
+            if (typeof item === 'string') {
+               fieldName = item;
+               title = item;
+            } else {
+               fieldName = item.fieldName;
+               title = item.title ?? fieldName;
+               index = item.index ?? -1;
+            }
+
+            fields = fields.filter((t) => t.fieldName !== fieldName);
+            const tempType = new ListStringHtmlType({
+               fieldNameAlias: title,
+            });
+            tempType.fieldName = fieldName;
+            if (index < 0) {
+               fields.push(tempType);
+            } else if (fields.length > index) {
+               fields.splice(index, 0, tempType);
+            } else {
+               fields.push(tempType);
+            }
+         }
+      }
       if (this.listFieldsExclude) {
          fields = fields.filter((item) => (
             !(this.listFieldsExclude?.includes(item.fieldName))
@@ -292,6 +348,14 @@ export class ModelAdminBase {
             }
          });
       }
+      if (this.listFieldsInclude) {
+         this.listFieldsInclude.forEach((key) => {
+            const fieldName = typeof key === 'string' ? key : key.fieldName;
+            if (!dbFields.includes(fieldName)) {
+               extraFields.push(fieldName);
+            }
+         });
+      }
       return extraFields;
    }
 
@@ -304,8 +368,8 @@ export class ModelAdminBase {
 
    public async getDataListAfterFilter (req: DataListRequestBody, ctx: RequestInfo): Promise<DataListResponseBody> {
       const dataResult = await this.getDataList(req, ctx);
-      if (this.listFields) {
-         const extraFields = this.getExtraDataListFileds();
+      const extraFields = this.getExtraDataListFileds();
+      if (extraFields.length) {
          const promises = dataResult.dataList.map(async (item): Promise<void> => {
             const values: {
                [key: string]: any;
@@ -324,10 +388,21 @@ export class ModelAdminBase {
                   } else {
                      values[addKey] = value;
                   }
+               } else if (item.item && item.item[addKey]) {
+                  let value = item.item[addKey];
+                  if (typeof item.item[addKey] === 'function') {
+                     value = item.item[addKey]();
+                  }
+                  if (value instanceof Promise) {
+                     values[addKey] = await value;
+                  } else {
+                     values[addKey] = value;
+                  }
                }
             });
             await Promise.all(promises2);
             item.values = values;
+            delete item.item;
          });
          await Promise.all(promises);
       }

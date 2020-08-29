@@ -6,6 +6,7 @@
     "inlineSourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "declaration": true,
     "sourceRoot": "src",
     "outDir": "lib"

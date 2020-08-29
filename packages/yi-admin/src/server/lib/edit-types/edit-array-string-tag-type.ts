@@ -1,4 +1,3 @@
-import { Context } from 'koa';
 import { EditBaseType, EditBaseComponentConfig, EditBaseTypeConfig } from './edit-base-type';
 import { ListBaseType } from '../list-types/list-base-type';
 import { ListArrayStringTagType } from '../list-types/list-array-string-tag-type';
@@ -66,7 +65,7 @@ export class EditArrayStringTagType extends EditBaseType {
       if (actionName === 'getTags') {
          return {
             success: true,
-            data: this.getTags(actionData),
+            data: await this.getTags(actionData),
          };
       }
       throw new Error(`接收到非法actionName ${actionName}`);

@@ -40,6 +40,15 @@ export interface ModelAdminBaseParams {
      */
     listFields?: string[];
     /**
+     * 通常用于自定义列
+     * 优先级 listFieldsExclude > listFieldsInclude > listFields
+     */
+    listFieldsInclude?: (string | {
+        fieldName: string;
+        title?: string;
+        index?: number;
+    })[];
+    /**
      * 优先级比 listFields 高，用于排除在列表页中显示的字段
      */
     listFieldsExclude?: string[];
@@ -53,6 +62,13 @@ export interface ModelDataItem {
      * id 是必须项
      */
     id: string;
+    /**
+     * 不传个前端的，用于方便values补充数据
+     */
+    item?: any;
+    /**
+     * 用于传给前端的值
+     */
     values: {
         [key: string]: any;
     };
@@ -126,7 +142,12 @@ export declare class ModelAdminBase {
      * 优先级比 listFields 高，用于排除在列表页中显示的字段
      */
     listFieldsExclude?: string[];
-    constructor({ permissionKoa, permissionExpress, name, listActions, title, formFields, formFieldsExclude, listFields, listFieldsExclude, }: ModelAdminBaseParams);
+    listFieldsInclude?: (string | {
+        fieldName: string;
+        title?: string;
+        index?: number;
+    })[];
+    constructor({ permissionKoa, permissionExpress, name, listActions, title, formFields, formFieldsExclude, listFields, listFieldsExclude, listFieldsInclude, }: ModelAdminBaseParams);
     /**
      * model的name，用户路径中，不能重复，不能更改
      */

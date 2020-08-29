@@ -2,7 +2,7 @@
 export function tileResult (data: any): {
     [key: string]: any;
 } {
-   if (typeof data === 'object') {
+   if (data && typeof data === 'object') {
       if (Array.isArray(data)) {
          const t = [];
          for (let i = 0; i < data.length; i += 1) {
@@ -10,7 +10,7 @@ export function tileResult (data: any): {
          }
          return t;
       }
-
+      if (data.constructor !== Object) return data;
 
       const result: {
          [key: string]: any;
@@ -20,10 +20,10 @@ export function tileResult (data: any): {
       for (let i = 0; i < keys.length; i += 1) {
          const key = keys[i];
          // eslint-disable-next-line no-continue
-         if (key === '_id') continue;
+         // if (key === '_id') continue;
          const item = data[key];
-         if (typeof item === 'object') {
-            if (Array.isArray(item)) {
+         if (item && typeof item === 'object') {
+            if (Array.isArray(item) || item.constructor !== Object) {
                result[key] = tileResult(item);
             } else {
                const temp = tileResult(item);

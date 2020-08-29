@@ -44,17 +44,11 @@ function safeJson (func: (req: express.Request, res: express.Response) => any): 
       try {
          await func(req, res);
       } catch (e) {
+         console.error(e);
          res.json({
             success: false,
             data: null,
-            msg: e?.message ?? '',
-         });
-      }
-      if (!res.finished) {
-         res.json({
-            success: false,
-            data: null,
-            msg: 'not found',
+            message: e?.message ?? '',
          });
       }
    };
