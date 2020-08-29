@@ -1,4 +1,3 @@
-import { Context } from 'koa';
 import { unlinkSync, existsSync } from 'fs';
 import { EditBaseType, EditBaseTypeConfig, EditBaseComponentConfig } from './edit-base-type';
 import { getFileWriter } from '../../tools/file-writer';
