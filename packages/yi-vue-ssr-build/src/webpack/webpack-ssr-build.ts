@@ -57,15 +57,18 @@ function build (config: BuildConfig): void {
       });
    }
 
-
-   const startTime = Date.now();
-   webpack(serverConfig, (err, stats) => {
-      printInfo(err, stats, config.isProduction);
-      if (config.isProduction) {
-         const endTime = Date.now();
-         console.log('服务端构建时间', endTime - startTime);
-      }
-   });
+   if (serverConfig) {
+      const startTime = Date.now();
+      webpack(serverConfig, (err, stats) => {
+         printInfo(err, stats, config.isProduction);
+         if (config.isProduction) {
+            const endTime = Date.now();
+            console.log('服务端构建时间', endTime - startTime);
+         }
+      });
+   } else {
+      console.info('返回空服务端构建配置，跳过服务端构建');
+   }
 }
 
 export default build;

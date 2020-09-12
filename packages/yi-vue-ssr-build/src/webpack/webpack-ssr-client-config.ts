@@ -26,7 +26,10 @@ export default function getConfig (buildConfig: BuildConfig): webpack.Configurat
             ),
          }),
          new HtmlWebpackPlugin({
-            filename: 'template.html',
+            filename: path.relative(
+               buildConfig.distPath,
+               path.resolve(buildConfig.distBundlePath, './template.html'),
+            ),
             template: `${buildConfig.srcPath}/template.html`,
             chunks: ['main'],
 

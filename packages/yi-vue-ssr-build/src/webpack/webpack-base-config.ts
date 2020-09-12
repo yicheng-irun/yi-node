@@ -166,7 +166,11 @@ export function getChildPluginInstances (options = {}, buildConfig: BuildConfig)
    const templatesChunks = buildConfig.getAllPageTemplates();
    templatesChunks.forEach((chunk) => {
       plugins.push(new HtmlWebpackPlugin({
-         filename: `templates/${chunk}.html`,
+         // filename: `templates/${chunk}.html`,
+         filename: path.relative(
+            buildConfig.distPath,
+            path.resolve(buildConfig.distBundlePath, `templates/${chunk}.html`),
+         ),
          template: `${buildConfig.srcPath}/pages/${chunk}/template.html`,
          // chunks: ['main'],
 

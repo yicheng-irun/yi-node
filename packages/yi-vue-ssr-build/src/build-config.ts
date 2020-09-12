@@ -4,52 +4,52 @@ import glob from 'glob';
 import webpack from 'webpack';
 
 export interface UserConfig {
-    projectPath?: string;
+   projectPath?: string;
 
-    srcPath?: string;
+   srcPath?: string;
 
-    distPath?: string;
+   distPath?: string;
 
-    distBundlePath?: string;
+   distBundlePath?: string;
 
-    devServerPort?: number;
+   devServerPort?: number;
 
-    devNodeServerPort?: number;
+   devNodeServerPort?: number;
 
-    webpack?: {
-        baseConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig, chunks: string): webpack.Configuration;
+   webpack?: {
+      baseConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig, chunks: string): webpack.Configuration;
 
-        clientConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
+      clientConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
 
-        serverConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
-    };
+      serverConfigProcess? (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
+   };
 }
 
 export interface BuildConfig {
-    isProduction: boolean;
-    projectPath: string;
-    srcPath: string;
-    distPath: string;
-    distBundlePath: string;
-    /**
-     * web开发服务监听的端口
-     */
-    devServerPort: number;
+   isProduction: boolean;
+   projectPath: string;
+   srcPath: string;
+   distPath: string;
+   distBundlePath: string;
+   /**
+    * web开发服务监听的端口
+    */
+   devServerPort: number;
 
-    /**
-     * 开发环境下nodeServer的端口
-     */
-    devNodeServerPort: number;
+   /**
+    * 开发环境下nodeServer的端口
+    */
+   devNodeServerPort: number;
 
-    getAllPageTemplates: () => string[];
+   getAllPageTemplates: () => string[];
 
-    webpack: {
-        baseConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig, chunks: string): webpack.Configuration;
+   webpack: {
+      baseConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig, chunks: string): webpack.Configuration;
 
-        clientConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
+      clientConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
 
-        serverConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
-    };
+      serverConfigProcess (config: webpack.Configuration, buildConfig: BuildConfig): webpack.Configuration;
+   };
 }
 
 const projectRootPath = process.cwd();

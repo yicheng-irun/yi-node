@@ -21,20 +21,20 @@ export default function getConfig (buildConfig: BuildConfig): webpack.Configurat
          new VueSSRServerPlugin({
             filename: 'vue-ssr-server-bundle.json',
          }),
-         new HtmlWebpackPlugin({
-            filename: 'template.html',
-            template: `${buildConfig.srcPath}/template.html`,
-            minify: { collapseWhitespace: true, minifyJS: true },
+         // new HtmlWebpackPlugin({
+         //    filename: 'template.html',
+         //    template: `${buildConfig.srcPath}/template.html`,
+         //    minify: { collapseWhitespace: true, minifyJS: true },
 
-            isProd: buildConfig.isProduction,
-            isDev: !buildConfig.isProduction,
-            isServer: true,
-            isClient: false,
-         }),
-         ...getChildPluginInstances({
-            isServer: true,
-            isClient: false,
-         }, buildConfig),
+         //    isProd: buildConfig.isProduction,
+         //    isDev: !buildConfig.isProduction,
+         //    isServer: true,
+         //    isClient: false,
+         // }),
+         // ...getChildPluginInstances({
+         //    isServer: true,
+         //    isClient: false,
+         // }, buildConfig),
       ],
       target: 'node',
       watch: !buildConfig.isProduction,
