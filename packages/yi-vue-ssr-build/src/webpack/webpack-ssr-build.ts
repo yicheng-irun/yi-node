@@ -19,7 +19,7 @@ function build (config: BuildConfig): void {
 
    clientConfig2.plugins = [
       ...clientConfig2.plugins,
-   ].concat(config.isProduction ? [] : [new webpack.NamedModulesPlugin(), new webpack.HotModuleReplacementPlugin()]);
+   ].concat(config.isProduction ? [] : [new webpack.HotModuleReplacementPlugin()]);
 
 
    if (config.isProduction) {
@@ -28,7 +28,7 @@ function build (config: BuildConfig): void {
          printInfo(err, stats, config.isProduction);
       });
    } else {
-      const devServerOptions = {
+      const devServerOptions: WebpackDevServer.Configuration = {
          host: '0.0.0.0',
          port: config.devServerPort,
          historyApiFallback: false,
@@ -43,6 +43,10 @@ function build (config: BuildConfig): void {
          },
          proxy: { // 全局代理到后端
             '/': `http://localhost:${config.devNodeServerPort}`,
+         },
+         writeToDisk: (filePath: string): boolean => {
+            if (filePath.startsWith(config.distBundlePath)) return true;
+            return false;
          },
       };
 
