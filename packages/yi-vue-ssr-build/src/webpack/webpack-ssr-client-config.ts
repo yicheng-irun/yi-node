@@ -1,17 +1,22 @@
 
-import path from 'path';
+import path, { join } from 'path';
 import webpackMerge from 'webpack-merge';
 import webpack from 'webpack';
 import VueSSRClientPlugin from 'vue-server-renderer/client-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { existsSync } from 'fs';
 import { getSSRConfig, getChildPluginInstances } from './webpack-base-config';
 import { BuildConfig } from '../build-config';
 
 
 export default function getConfig (buildConfig: BuildConfig): webpack.Configuration {
+   let entry = join(buildConfig.srcPath, 'entry-client.ts');
+   if (!existsSync(entry)) {
+      entry = join(buildConfig.srcPath, 'entry-client.js');
+   }
    const config = webpackMerge(getSSRConfig('Client', buildConfig), {
       entry: {
-         main: `${buildConfig.srcPath}/entry-client.js`,
+         main: entry,
       },
       output: {
          path: buildConfig.distPath,

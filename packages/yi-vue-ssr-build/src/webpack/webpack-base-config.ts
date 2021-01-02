@@ -71,7 +71,7 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
       mode: isProd ? 'production' : 'development',
       devtool: isProd ? false : 'cheap-module-eval-source-map', // nosources-source-map
       resolve: {
-         extensions: ['.js', '.vue', '.json'],
+         extensions: ['.js', '.vue', '.json', '.ts', '.tsx'],
          alias: {
             '@': buildConfig.srcPath,
          },
@@ -90,7 +90,7 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
                },
             },
             {
-               test: /\.(js|vue)$/,
+               test: /\.(js|ts|vue)$/,
                loader: path.resolve(__dirname, './loaders/condition-comment-loader'),
                options: {
                   isProd,
@@ -104,9 +104,21 @@ export function getSSRConfig (chunks: string, buildConfig: BuildConfig): webpack
                },
             },
             {
-               test: /\.js$/,
-               use: 'babel-loader',
+               test: /\.(ts|js)(x?)$/,
                exclude: /node_modules/,
+               use: [
+                  {
+                     loader: 'babel-loader',
+                  },
+                  {
+                     options: {
+                        transpileOnly: true,
+                        appendTsSuffixTo: ['\\.vue$'],
+                        happyPackMode: false,
+                     },
+                     loader: 'ts-loader',
+                  },
+               ],
             },
             {
                test: /\.css$/,

@@ -1,15 +1,19 @@
 import webpackMerge from 'webpack-merge';
 import webpack from 'webpack';
 import VueSSRServerPlugin from 'vue-server-renderer/server-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { getSSRConfig, getChildPluginInstances } from './webpack-base-config';
+import { existsSync } from 'fs';
+import { getSSRConfig } from './webpack-base-config';
 import { BuildConfig } from '../build-config';
 
 
 export default function getConfig (buildConfig: BuildConfig): webpack.Configuration {
+   let entry = `${buildConfig.srcPath}/entry-server.ts`;
+   if (!existsSync(entry)) {
+      entry = `${buildConfig.srcPath}/entry-server.js`;
+   }
    const config = webpackMerge(getSSRConfig('Server', buildConfig), {
       entry: {
-         main: `${buildConfig.srcPath}/entry-server.js`,
+         main: entry,
       },
       output: {
          path: `${buildConfig.distBundlePath}/`,
