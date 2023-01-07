@@ -71,7 +71,7 @@
     "babel-plugin-import": "^1.13.0",
     "concurrently": "^4.1.2",
     "dotenv": "^8.2.0",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "indexof": "0.0.1",
     "jodit": "^3.3.24",
     "less": "^3.11.3",
